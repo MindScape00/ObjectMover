@@ -428,7 +428,7 @@
 							<OnTextChanged>
 								if self:GetText() == self:GetText():match("%d+") or self:GetText() == self:GetText():match("%d+%.%d+") or self:GetText() == self:GetText():match("%.%d+") then
 									self:SetTextColor(255,255,255,1)
-									OPOptionsWidth = self:GetText()
+									OPMasterTable.Options["Width"] = self:GetText()
 								elseif self:GetText() == "" then
 									self:SetTextColor(255,255,255,1)
 								elseif self:GetText():find("%a") then
@@ -437,7 +437,7 @@
 									self:SetTextColor(1,0,0,1)
 								end
 							</OnTextChanged>
-							<OnShow>if OPOptionsWidth ~= nil then self:SetText(OPOptionsWidth) end</OnShow>
+							<OnShow>if OPMasterTable.Options["Width"] ~= nil then self:SetText(OPMasterTable.Options["Width"]) end</OnShow>
 						</Scripts>
 						<FontString font="Fonts\ARIALN.TTF" indented="true">
 							<FontHeight val="10" />
@@ -484,7 +484,7 @@
 							<OnTextChanged>
 								if self:GetText() == self:GetText():match("%d+") or self:GetText() == self:GetText():match("%d+%.%d+") or self:GetText() == self:GetText():match("%.%d+") then
 									self:SetTextColor(255,255,255,1)
-									OPOptionsObjectID = self:GetText()
+									OPMasterTable.Options["ObjectID"] = self:GetText()
 								elseif self:GetText() == "" then
 									self:SetTextColor(255,255,255,1)
 								elseif self:GetText():find("%a") then
@@ -493,7 +493,7 @@
 									self:SetTextColor(1,0,0,1)
 								end
 							</OnTextChanged>
-							<OnShow>if OPOptionsObjectID ~= nil then self:SetText(OPOptionsObjectID) end</OnShow>
+							<OnShow>if OPMasterTable.Options["ObjectID"] ~= nil then self:SetText(OPMasterTable.Options["ObjectID"]) end</OnShow>
 						</Scripts>
 						<FontString font="Fonts\ARIALN.TTF" text="" indented="true">
 							<FontHeight val="10" />
@@ -614,7 +614,7 @@
 							<OnTextChanged>
 								if self:GetText() == self:GetText():match("%d+") or self:GetText() == self:GetText():match("%d+%.%d+") or self:GetText() == self:GetText():match("%.%d+") then
 									self:SetTextColor(255,255,255,1)
-									OPOptionsHeight = self:GetText()
+									OPMasterTable.Options["Height"] = self:GetText()
 								elseif self:GetText() == "" then
 									self:SetTextColor(255,255,255,1)
 								elseif self:GetText():find("%a") then
@@ -623,7 +623,7 @@
 									self:SetTextColor(1,0,0,1)
 								end
 							</OnTextChanged>
-							<OnShow>if OPOptionsHeight ~= nil then self:SetText(OPOptionsHeight) end</OnShow>
+							<OnShow>if OPMasterTable.Options["Height"] ~= nil then self:SetText(OPMasterTable.Options["Height"]) end</OnShow>
 						</Scripts>
 						<FontString font="Fonts\ARIALN.TTF" indented="true">
 							<FontHeight val="10" />
@@ -671,7 +671,7 @@
 								if self:GetText() == self:GetText():match("%d+") or self:GetText() == self:GetText():match("%d+%.%d+") or self:GetText() == self:GetText():match("%.%d+") then
 									ScaleObject:Enable()
 									self:SetTextColor(255,255,255,1)
-									OPOptionsScale = self:GetText()
+									OPMasterTable.Options["Scale"] = self:GetText()
 								elseif self:GetText() == "" then
 									self:SetTextColor(255,255,255,1)
 									ScaleObject:Disable()
@@ -683,7 +683,7 @@
 									ScaleObject:SetChecked(false)
 								end
 							</OnTextChanged>
-							<OnShow>if OPOptionsScale ~= nil then self:SetText(OPOptionsScale) end</OnShow>
+							<OnShow>if OPMasterTable.Options["Scale"] ~= nil then self:SetText(OPMasterTable.Options["Scale"]) end</OnShow>
 						</Scripts>
 						<FontString font="Fonts\ARIALN.TTF" indented="true">
 							<FontHeight val="10" />
@@ -736,12 +736,12 @@
 							</OnEscapePressed>
 							<OnClick>
 								if self:GetChecked() == true then
-									OPOptionsScaleTog = true
+									OPMasterTable.Options["ScaleTog"] = true
 								else
-									OPOptionsScaleTog = false
+									OPMasterTable.Options["ScaleTog"] = false
 								end
 							</OnClick>
-							<OnShow>if OPOptionsScaleTog == true then self:SetChecked(true) end</OnShow>
+							<OnShow>if OPMasterTable.Options["ScaleTog"] == true then self:SetChecked(true) end</OnShow>
 						</Scripts>
 						<NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
 						<PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
@@ -783,7 +783,7 @@
 							<OnTextChanged>
 								if self:GetText() == self:GetText():match("%d+") or self:GetText() == self:GetText():match("%d+%.%d+") or self:GetText() == self:GetText():match("%.%d+") then
 									self:SetTextColor(255,255,255,1)
-									OPOptionsLength = self:GetText()
+									OPMasterTable.Options["Length"] = self:GetText()
 								elseif self:GetText() == "" then
 									self:SetTextColor(255,255,255,1)
 								elseif self:GetText():find("%a") then
@@ -792,7 +792,7 @@
 									self:SetTextColor(1,0,0,1)
 								end
 							</OnTextChanged>
-							<OnShow>if OPOptionsLength ~= nil then self:SetText(OPOptionsLength) end</OnShow>
+							<OnShow>if OPMasterTable.Options["Length"] ~= nil then self:SetText(OPMasterTable.Options["Length"]) end</OnShow>
 						</Scripts>
 						<FontString font="Fonts\ARIALN.TTF" indented="true">
 							<FontHeight val="10" />
@@ -893,12 +893,12 @@
 							</OnEscapePressed>
 							<OnClick>
 								if self:GetChecked() == true then
-									OPOptionsSpawnOnMove = true
+									OPMasterTable.Options["SpawnOnMove"] = true
 								else
-									OPOptionsSpawnOnMove = false
+									OPMasterTable.Options["SpawnOnMove"] = false
 								end
 							</OnClick>
-							<OnShow>if OPOptionsSpawnOnMove == true then self:SetChecked(true) end</OnShow>
+							<OnShow>if OPMasterTable.Options["SpawnOnMove"] == true then self:SetChecked(true) end</OnShow>
 						</Scripts>
 						<NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
 						<PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
@@ -1060,12 +1060,12 @@
 							</OnEscapePressed>
 							<OnClick>
 								if self:GetChecked() == true then
-									OPOptionsMoveObject = true
+									OPMasterTable.Options["MoveObject"] = true
 								else
-									OPOptionsMoveObject = false
+									OPMasterTable.Options["MoveObject"] = false
 								end
 							</OnClick>
-							<OnShow>if OPOptionsMoveObject == true then self:SetChecked(true) end</OnShow>
+							<OnShow>if OPMasterTable.Options["MoveObject"] == true then self:SetChecked(true) end</OnShow>
 						</Scripts>
 						<NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
 						<PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
@@ -1235,6 +1235,7 @@
 								if self:GetText() == self:GetText():match("%d+") or self:GetText() == self:GetText():match("%d+%.%d+") or self:GetText() == self:GetText():match("%.%d+") then
 									local OPRotXEditVal = self:GetText()
 									OPRotationSliderX:SetValue(OPRotXEditVal)
+									OPClearRotateChatFilter()
 								end
 							</OnEditFocusLost>
 						</Scripts>
@@ -1398,6 +1399,7 @@
 								if self:GetText() == self:GetText():match("%d+") or self:GetText() == self:GetText():match("%d+%.%d+") or self:GetText() == self:GetText():match("%.%d+") then
 									local OPRotYEditVal = self:GetText()
 									OPRotationSliderY:SetValue(OPRotYEditVal)
+									OPClearRotateChatFilter()
 								end
 							</OnEditFocusLost>
 						</Scripts>
@@ -1561,6 +1563,7 @@
 								if self:GetText() == self:GetText():match("%d+") or self:GetText() == self:GetText():match("%d+%.%d+") or self:GetText() == self:GetText():match("%.%d+") then
 									local OPRotZEditVal = self:GetText()
 									OPRotationSliderZ:SetValue(OPRotZEditVal)
+									OPClearRotateChatFilter()
 								end
 							</OnEditFocusLost>
 						</Scripts>

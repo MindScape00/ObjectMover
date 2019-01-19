@@ -1,3 +1,10 @@
+v4.2.0 (Aug 17, 2017)
+	- Fixed Up / Down not working until Forward / Back was used once
+	- Fixed Up / Down not using the correct number (again, sorry - ACTUALLY FIXED NOW!)
+	- Changed saved variables into a table instead of a different saved variable for each one - allows new variables to be added on the fly, and provided some work on using tables and how they work so I can try and make auto-dimensions work later.
+
+----------------------------------------
+
 v4.1.1 (Aug 7, 2017)
 	- Fixed Left / Right & Up / Down using their correct numbers instead of just always using the Length Value. Oops..
 	- Introduced Temporary Rotation Step Increment Modifiers: Hold Shift to snap to full degrees, alt to snap to 0.1 degrees, both Alt+Shift to snap to every 5 degrees. Default without any modifiers is still 0.01 degrees.

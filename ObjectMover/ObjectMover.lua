@@ -5,6 +5,10 @@
 local OPmoveLength, OPmoveWidth, OPmoveHeight, OPmoveModifier, MessageCount, ObjectClarifier, SpawnClarifier, ScaleClarifier, RotateClarifier = 0, 0, 0, 1, 0, false, false, false, false
 BINDING_HEADER_OBJECTMANIP, SLASH_SHOWCLOSE1, SLASH_SHOWCLOSE2 = "Object Mover", "/obj", "/om"
 
+OPMasterTable = {}
+OPMasterTable.Options = {}
+OPAutoDimObjectDB = {}
+
 OPDebug = 0 -- // 0 - Off, 1 - On (Verbose)
 OPFramesAreLoaded = false
 FrameLoadingPoints = 0
@@ -27,25 +31,18 @@ OPloginhandle:SetScript("OnEvent", function()
 	OPMiniMapLoadIt()
 end);
 
-function OPInitializeObjectDB()
-	if type(OPAutoDimObjectDB) == "table" then -- Table for saving Spells for casting
-	else
-		OPAutoDimObjectDB = {}
-	end
-end
-
 function OPMiniMapSaveIt()
 	local point, relativeTo, relativePoint, xOffset, yOffset = ObjectManipulator_MinimapButton:GetPoint()
-	OPMinimapButtonSavePoint = strjoin(" ", point, "Minimap", relativePoint, xOffset, yOffset)
-	--print(OPMinimapButtonSavePoint)
+	OPMasterTable.Options["MinimapButtonSavePoint"] = strjoin(" ", point, "Minimap", relativePoint, xOffset, yOffset)
+	--print(OPMasterTable.Options["MinimapButtonSavePoint"])
 end
 
 function OPMiniMapLoadIt()
-	if OPMinimapButtonSavePoint ~= nil and OPMinimapButtonSavePoint ~= "" then
-		local point, relativeTo, relativePoint, xOffset, yOffset = strsplit(" ", OPMinimapButtonSavePoint)
+	if OPMasterTable.Options["MinimapButtonSavePoint"] ~= nil and OPMasterTable.Options["MinimapButtonSavePoint"] ~= "" then
+		local point, relativeTo, relativePoint, xOffset, yOffset = strsplit(" ", OPMasterTable.Options["MinimapButtonSavePoint"])
 		ObjectManipulator_MinimapButton:SetPoint(point, "Minimap", relativePoint, xOffset, yOffset)
 	end
-	--print(OPMinimapButtonSavePoint)
+	--print(OPMasterTable.Options["MinimapButtonSavePoint"])
 end
 -------------------------------------------------------------------------------
 -- Simple Chat Functions
@@ -203,9 +200,9 @@ function OPDown()
 	updateDimensions("height")
 	if OPmoveHeight and OPmoveHeight ~= "" and OPmoveHeight ~= 0 and OPmoveHeight ~= nil then
 		if OPMoveObjectInstead:GetChecked() == true then
-			cmd("go move down "..OPmoveLength)
+			cmd("go move down "..OPmoveHeight)
 		else
-			cmd("gps down "..OPmoveLength)
+			cmd("gps down "..OPmoveHeight)
 		end
 		if SpawnonMove:GetChecked() == true then
 			OPSpawn()
