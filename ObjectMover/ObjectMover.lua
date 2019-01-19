@@ -146,9 +146,9 @@ function OPLeft()
 	updateDimensions("width")
 	if OPmoveWidth and OPmoveWidth ~= "" and OPmoveWidth ~= 0 and OPmoveWidth ~= nil then
 		if OPMoveObjectInstead:GetChecked() == true then
-			cmd("go move left "..OPmoveLength)
+			cmd("go move left "..OPmoveWidth)
 		else
-			cmd("gps left "..OPmoveLength)
+			cmd("gps left "..OPmoveWidth)
 		end
 		if SpawnonMove:GetChecked() == true then
 			OPSpawn()
@@ -165,9 +165,9 @@ function OPRight()
 	updateDimensions("width")
 	if OPmoveWidth and OPmoveWidth ~= "" and OPmoveWidth ~= 0 and OPmoveWidth ~= nil then
 		if OPMoveObjectInstead:GetChecked() == true then
-			cmd("go move right "..OPmoveLength)
+			cmd("go move right "..OPmoveWidth)
 		else
-			cmd("gps right "..OPmoveLength)
+			cmd("gps right "..OPmoveWidth)
 		end
 		if SpawnonMove:GetChecked() == true then
 			OPSpawn()
@@ -184,9 +184,9 @@ function OPUp()
 	updateDimensions("height")
 	if OPmoveHeight and OPmoveHeight ~= "" and OPmoveHeight ~= 0 and OPmoveHeight ~= nil then
 		if OPMoveObjectInstead:GetChecked() == true then
-			cmd("go move up "..OPmoveLength)
+			cmd("go move up "..OPmoveHeight)
 		else
-			cmd("gps up "..OPmoveLength)
+			cmd("gps up "..OPmoveHeight)
 		end
 		if SpawnonMove:GetChecked() == true then
 			OPSpawn()

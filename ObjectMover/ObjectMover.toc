@@ -1,10 +1,10 @@
 ## Interface: 70200
 ## Title: ObjectMover
 ## Author: MindScape
-## Version: 4.0.0
+## Version: 4.1.1
 ## Notes: Tool for teleporting given distances, spawning game objects, and manipulating rotation.
 ## DefaultState: Enabled
-## SavedVariables: OPAutoDimObjectDB, OPOptionsMoveObject, OPOptionsSpawnOnMove, OPOptionsObjectID, OPOptionsLength, OPOptionsWidth, OPOptionsHeight, OPOptionsScale, OPOptionsScaleTog, OPMinimapButtonSavePoint
+## SavedVariables: OPAutoDimObjectDB, OPOptionsMoveObject, OPOptionsSpawnOnMove, OPOptionsObjectID, OPOptionsLength, OPOptionsWidth, OPOptionsHeight, OPOptionsScale, OPOptionsScaleTog, OPMinimapButtonSavePoint, OPOptionsSliderStep
 
 # Original Addon by Dkcaptain / Almost completely remade to update to Legion Enteleai and expanded by MindScape
 

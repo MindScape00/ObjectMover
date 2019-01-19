@@ -1249,7 +1249,7 @@
 							</Shadow>
 						</FontString>
 					</EditBox>
-					<Slider name="OPRotationSliderX" orientation="HORIZONTAL" enableMouse="true" defaultValue="0" minValue="0" maxValue="360" valueStep="0.01" ObeyStepOnDrag="true">
+					<Slider name="OPRotationSliderX" orientation="HORIZONTAL" enableMouse="true" defaultValue="0" minValue="0" maxValue="360" valueStep="0.1" ObeyStepOnDrag="true">
 						<Size>
 							<AbsDimension x="250" y="14" />
 						</Size>
@@ -1330,6 +1330,17 @@
 						<Scripts>
 							<OnValueChanged>
 								if OPFramesAreLoaded then
+									if IsShiftKeyDown() then
+										if IsAltKeyDown() then
+											self:SetValueStep(5)
+										else
+											self:SetValueStep(1)
+										end
+									elseif IsAltKeyDown() then
+										self:SetValueStep(0.01)
+									else
+										self:SetValueStep(0.1)
+									end
 									local OPRotSliderValX = self:GetValue()
 									local OPRotSliderValX = roundToNthDecimal(OPRotSliderValX,3)
 									OPRotationEditBoxX:SetText(OPRotSliderValX)
@@ -1482,6 +1493,17 @@
 						<Scripts>
 							<OnValueChanged> 
 								if OPFramesAreLoaded then
+									if IsShiftKeyDown() then
+										if IsAltKeyDown() then
+											self:SetValueStep(5)
+										else
+											self:SetValueStep(1)
+										end
+									elseif IsAltKeyDown() then
+										self:SetValueStep(0.01)
+									else
+										self:SetValueStep(0.1)
+									end
 									local OPRotSliderValY = self:GetValue()
 									local OPRotSliderValY = roundToNthDecimal(OPRotSliderValY,3)
 									OPRotationEditBoxY:SetText(OPRotSliderValY)
@@ -1634,6 +1656,17 @@
 						<Scripts>
 							<OnValueChanged> 
 								if OPFramesAreLoaded then
+									if IsShiftKeyDown() then
+										if IsAltKeyDown() then
+											self:SetValueStep(5)
+										else
+											self:SetValueStep(1)
+										end
+									elseif IsAltKeyDown() then
+										self:SetValueStep(0.01)
+									else
+										self:SetValueStep(0.1)
+									end
 									local OPRotSliderValZ = self:GetValue()
 									local OPRotSliderValZ = roundToNthDecimal(OPRotSliderValZ,3)
 									OPRotationEditBoxZ:SetText(OPRotSliderValZ)

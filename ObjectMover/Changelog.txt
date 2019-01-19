@@ -1,4 +1,10 @@
-v4.0.0 (Aug. 5, 2017)
+v4.1.1 (Aug 7, 2017)
+	- Fixed Left / Right & Up / Down using their correct numbers instead of just always using the Length Value. Oops..
+	- Introduced Temporary Rotation Step Increment Modifiers: Hold Shift to snap to full degrees, alt to snap to 0.1 degrees, both Alt+Shift to snap to every 5 degrees. Default without any modifiers is still 0.01 degrees.
+
+----------------------------------------
+
+v4.0.0 (Aug 5, 2017)
 	- Remade all movement functions to utilize ".gps <dir> <unit>".
 	- Remade Chat Clarifiers to filter and gather data from chat messages.
 	- Removed old deprecated functions and options (i.e., Save on Spawn)
