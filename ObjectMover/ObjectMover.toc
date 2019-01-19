@@ -1,7 +1,7 @@
 ## Interface: 70200
 ## Title: ObjectMover
 ## Author: MindScape
-## Version: 5.0.0
+## Version: 5.0.0c
 ## Notes: Tool for moving yourself or a GameObject given distances, spawning game objects, and manipulating rotation. Includes Optional KeyBindings
 ## DefaultState: Enabled
 ## SavedVariables: OPAutoDimObjectDB, OPMasterTable

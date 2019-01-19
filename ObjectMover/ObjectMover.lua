@@ -767,30 +767,38 @@ end
 
 SLASH_OPDELPARAM1 = '/opdelparam';
 function SlashCmdList.OPDELPARAM(msg, editbox) -- 4.
-	for k,v in ipairs(OPMasterTable.ParamPresetKeys) do
-		if msg == v then
-			table.remove(OPMasterTable.ParamPresetKeys, k)
-			OPMasterTable.ParamPresetContent[msg] = nil
-			print("ObjectMover: Deleting Parameter Pre-set "..msg)
-		else
-			if OPMasterTable.Options["debug"] then
-				print("OPDEBUG: "..msg.." is not a saved Param Pre-set?")
+	if msg then
+		for k,v in ipairs(OPMasterTable.ParamPresetKeys) do
+			if msg == v then
+				table.remove(OPMasterTable.ParamPresetKeys, k)
+				OPMasterTable.ParamPresetContent[msg] = nil
+				print("ObjectMover: Deleting Parameter Pre-set "..msg)
+			else
+				if OPMasterTable.Options["debug"] then
+					print("OPDEBUG: "..msg.." is not a saved Param Pre-set?")
+				end
 			end
 		end
+	else
+		print("ObjectMover SYNTAX: '/opdelparam [name of Parameter Pre-set to delete]'")
 	end
 end
 
 SLASH_OPDELROT1 = '/opdelrot';
 function SlashCmdList.OPDELROT(msg, editbox) -- 4.
-	for k,v in ipairs(OPMasterTable.RotPresetKeys) do
-		if msg == v then
-			table.remove(OPMasterTable.RotPresetKeys, k)
-			OPMasterTable.RotPresetContent[msg] = nil
-			print("ObjectMover: Deleting Rotation Pre-set: "..msg)
-		else
-			if OPMasterTable.Options["debug"] then
-				print("OPDEBUG: "..msg.." is not a saved Rot Pre-set?")
+	if msg then
+		for k,v in ipairs(OPMasterTable.RotPresetKeys) do
+			if msg == v then
+				table.remove(OPMasterTable.RotPresetKeys, k)
+				OPMasterTable.RotPresetContent[msg] = nil
+				print("ObjectMover: Deleting Rotation Pre-set: "..msg)
+			else
+				if OPMasterTable.Options["debug"] then
+					print("OPDEBUG: "..msg.." is not a saved Rot Pre-set?")
+				end
 			end
 		end
+	else
+		print("ObjectMover SYNTAX: '/opdelparam [name of Parameter Pre-set to delete]'")
 	end
 end

@@ -1313,7 +1313,7 @@
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
 								self.Timer = C_Timer.NewTimer(0.7,function()
-									GameTooltip:SetText("Spawn an Object at your location every time you move, or you move an object.", nil, nil, nil, nil, true)
+									GameTooltip:SetText("Spawn an Object at your location every time you move, or you move an object.\n\rNot recommended for use with 'Move Object' enabled.", nil, nil, nil, nil, true)
 									GameTooltip:Show()
 								end)
 							</OnEnter>
@@ -1536,7 +1536,8 @@
 									OPMasterTable.Options["RelativeToPlayer"] = false
 								end
 							</OnClick>
-							<OnShow>if OPMasterTable.Options["RelativeToPlayer"] == true then self:SetChecked(true) end
+							<OnShow>
+							if OPMasterTable.Options["RelativeToPlayer"] == true then self:SetChecked(true) end
 							if OPMoveObjectInstead:GetChecked() then
 								self:Enable()
 							else
