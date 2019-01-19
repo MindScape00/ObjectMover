@@ -1,8 +1,10 @@
 <Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd" xmlns="http://www.blizzard.com/wow/ui/">
 	<Frame name="OPMainFrame" hidden="true" enableMouse="true" movable="true" clampedToScreen="true">
-		<Size x="355" y="300" />
+		<Size x="355" y="330" />
 		<Anchors>
-			<Anchor point="TOP" relativeTo="UIParent" />
+			<Anchor point="TOPRIGHT" relativeTo="UIParent">
+				<Offset y="-280"/>
+			</Anchor>
 		</Anchors>
 		<TitleRegion setAllPoints="true" />
 		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
@@ -49,6 +51,17 @@
 							<OnClick>
 								OPSpawn()
 							</OnClick>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Spawns a GameObject using the ID from the Object ID field in Object Parameters.", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
 						</Scripts>
 						<NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
 							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
@@ -80,6 +93,17 @@
 							<OnClick>
 								CheckIfValid(OPLengthBox, true, OPBackward)
 							</OnClick>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Moves you (or the selected object, if you have Move Object enabled in Options) backwards by the amount specified in the Length field in Object Parameters.", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
 						</Scripts>
 						<NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
 							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
@@ -111,6 +135,17 @@
 							<OnClick>
 								CheckIfValid(OPLengthBox, true, OPForward)
 							</OnClick>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Moves you (or the selected object, if you have Move Object enabled in Options) forwards by the amount specified in the Length field in Object Parameters.", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
 						</Scripts>
 						<NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
 							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
@@ -143,6 +178,17 @@
 							<OnClick>
 								CheckIfValid(OPWidthBox, true, OPLeft)
 							</OnClick>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Moves you (or the selected object, if you have Move Object enabled in Options) left by the amount specified in the Width field in Object Parameters.", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
 						</Scripts>
 						<NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
 							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
@@ -203,6 +249,17 @@
 							<OnClick>
 								CheckIfValid(OPHeightBox, true, OPUp)
 							</OnClick>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Moves you (or the selected object, if you have Move Object enabled in Options) up by the amount specified in the Height field in Object Parameters.", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
 						</Scripts>
 						<NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
 							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
@@ -234,6 +291,17 @@
 							<OnClick>
 								OPTeletoObject()
 							</OnClick>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Teleports you to the selected GameObject.", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
 						</Scripts>
 						<NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
 							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
@@ -265,6 +333,17 @@
 							<OnClick>
 								CheckIfValid(OPWidthBox, true, OPRight)
 							</OnClick>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Moves you (or the selected object, if you have Move Object enabled in Options) right by the amount specified in the Width field in Object Parameters.", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
 						</Scripts>
 						<NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
 							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
@@ -297,6 +376,17 @@
 							<OnClick>
 								CheckIfValid(OPHeightBox, true, OPDown)
 							</OnClick>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Moves you (or the selected object, if you have Move Object enabled in Options) down by the amount specified in the Height field in Object Parameters.", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
 						</Scripts>
 						<NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
 							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
@@ -368,88 +458,6 @@
 							</Layer>
 						</Layers>
 					</Frame>
-					<Frame name="OPObjectIDTitle">
-						<Size x="70" y="12" />
-						<Anchors>
-							<Anchor point="CENTER">
-								<Offset x="-30" y="55" />
-							</Anchor>
-						</Anchors>
-						<Layers>
-							<Layer>
-								<FontString name="OPObjectIDTitleText" font="Fonts\FRIZQT__.TTF" text="    Object ID:">
-									<Anchors>
-										<Anchor point="TOPLEFT" />
-										<Anchor point="BOTTOMRIGHT" />
-									</Anchors>
-									<FontHeight val="10" />
-									<Color r="1" g="1" b="1" />
-									<Shadow>
-										<Offset>
-											<AbsDimension x="1" y="-1" />
-										</Offset>
-										<Color r="0" g="0" b="0" />
-									</Shadow>
-								</FontString>
-							</Layer>
-						</Layers>
-					</Frame>
-					<EditBox name="OPWidthBox" autoFocus="false">
-						<HighlightColor r="0.5" g="0.5" b="0.5" a="0.75"/>
-						<TextInsets>
-							<AbsInset left="5" right="0" top="0" bottom="0" />
-						</TextInsets>
-						<Size x="64" y="23" />
-						<Anchors>
-							<Anchor point="CENTER">
-								<Offset x="40" y="5" />
-							</Anchor>
-						</Anchors>
-						<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-							<BackgroundInsets>
-								<AbsInset left="5" right="5" top="5" bottom="5" />
-							</BackgroundInsets>
-							<TileSize>
-								<AbsValue val="16" />
-							</TileSize>
-							<EdgeSize>
-								<AbsValue val="16" />
-							</EdgeSize>
-							<Color r="0.1" g="0.1" b="0.1" a="0.75"/>
-							<BorderColor r="0.5" g="0.5" b="0.5"/>
-						</Backdrop>
-						<Scripts>
-							<OnEscapePressed>
-								self:ClearFocus()
-							</OnEscapePressed>
-							<OnEnterPressed>
-								self:ClearFocus()
-							</OnEnterPressed>
-							<OnTextChanged>
-								if self:GetText() == self:GetText():match("%d+") or self:GetText() == self:GetText():match("%d+%.%d+") or self:GetText() == self:GetText():match("%.%d+") then
-									self:SetTextColor(255,255,255,1)
-									OPMasterTable.Options["Width"] = self:GetText()
-								elseif self:GetText() == "" then
-									self:SetTextColor(255,255,255,1)
-								elseif self:GetText():find("%a") then
-									self:SetText(self:GetText():gsub("%a", ""))
-								else
-									self:SetTextColor(1,0,0,1)
-								end
-							</OnTextChanged>
-							<OnShow>if OPMasterTable.Options["Width"] ~= nil then self:SetText(OPMasterTable.Options["Width"]) end</OnShow>
-						</Scripts>
-						<FontString font="Fonts\ARIALN.TTF" indented="true">
-							<FontHeight val="10" />
-							<Color r="1" g="1" b="1" />
-							<Shadow>
-								<Offset>
-									<AbsDimension x="1" y="-1" />
-								</Offset>
-								<Color r="0" g="0" b="0" />
-							</Shadow>
-						</FontString>
-					</EditBox>
 					<EditBox name="OPObjectIDBox" autoFocus="false">
 						<HighlightColor r="0.5" g="0.5" b="0.5" a="0.75"/>
 						<TextInsets>
@@ -458,7 +466,7 @@
 						<Size x="64" y="23" />
 						<Anchors>
 							<Anchor point="CENTER">
-								<Offset x="40" y="55" />
+								<Offset x="20" y="55" />
 							</Anchor>
 						</Anchors>
 						<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
@@ -475,6 +483,17 @@
 							<BorderColor r="0.5" g="0.5" b="0.5"/>
 						</Backdrop>
 						<Scripts>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Set the Object ID you wish to spawn (From 'Spawn' button, Spawn on Move, or Hotkey).", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
 							<OnEscapePressed>
 								self:ClearFocus()
 							</OnEscapePressed>
@@ -506,16 +525,16 @@
 							</Shadow>
 						</FontString>
 					</EditBox>
-					<Frame name="OPHeightTitle">
-						<Size x="55" y="12" />
+					<Frame name="OPObjectIDTitle">
+						<Size x="65" y="12" />
 						<Anchors>
-							<Anchor point="CENTER">
-								<Offset x="-25" y="-20" />
+							<Anchor point="RIGHT" relativeTo="OPObjectIDBox" relativePoint="LEFT">
+								<Offset x="-3" y="0"/>
 							</Anchor>
 						</Anchors>
 						<Layers>
 							<Layer>
-								<FontString name="OPHeightTitleText" font="Fonts\FRIZQT__.TTF" text="     Height:">
+								<FontString name="OPObjectIDTitleText" font="Fonts\FRIZQT__.TTF" text="    Object ID:">
 									<Anchors>
 										<Anchor point="TOPLEFT" />
 										<Anchor point="BOTTOMRIGHT" />
@@ -532,223 +551,6 @@
 							</Layer>
 						</Layers>
 					</Frame>
-					<Frame name="OPLengthTitle">
-						<Size x="55" y="12" />
-						<Anchors>
-							<Anchor point="CENTER">
-								<Offset x="-25" y="30" />
-							</Anchor>
-						</Anchors>
-						<Layers>
-							<Layer>
-								<FontString name="OPLengthTitleText" font="Fonts\FRIZQT__.TTF" text="     Length:">
-									<Anchors>
-										<Anchor point="TOPLEFT" />
-										<Anchor point="BOTTOMRIGHT" />
-									</Anchors>
-									<FontHeight val="10" />
-									<Color r="1" g="1" b="1" />
-									<Shadow>
-										<Offset>
-											<AbsDimension x="1" y="-1" />
-										</Offset>
-										<Color r="0" g="0" b="0" />
-									</Shadow>
-								</FontString>
-							</Layer>
-						</Layers>
-					</Frame>
-					<Frame name="OPWidthTitle">
-						<Size x="55" y="12" />
-						<Anchors>
-							<Anchor point="CENTER">
-								<Offset x="-25" y="5" />
-							</Anchor>
-						</Anchors>
-						<Layers>
-							<Layer>
-								<FontString name="OPWidthTitleText" font="Fonts\FRIZQT__.TTF" text="      Width:">
-									<Anchors>
-										<Anchor point="TOPLEFT" />
-										<Anchor point="BOTTOMRIGHT" />
-									</Anchors>
-									<FontHeight val="10" />
-									<Color r="1" g="1" b="1" />
-									<Shadow>
-										<Offset>
-											<AbsDimension x="1" y="-1" />
-										</Offset>
-										<Color r="0" g="0" b="0" />
-									</Shadow>
-								</FontString>
-							</Layer>
-						</Layers>
-					</Frame>
-					<EditBox name="OPHeightBox" autoFocus="false">
-						<HighlightColor r="0.5" g="0.5" b="0.5" a="0.75"/>
-						<TextInsets>
-							<AbsInset left="5" right="0" top="0" bottom="0" />
-						</TextInsets>
-						<Size x="64" y="23" />
-						<Anchors>
-							<Anchor point="CENTER">
-								<Offset x="40" y="-20" />
-							</Anchor>
-						</Anchors>
-						<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-							<BackgroundInsets>
-								<AbsInset left="5" right="5" top="5" bottom="5" />
-							</BackgroundInsets>
-							<TileSize val="16" />
-							<EdgeSize val="16" />
-							<Color r="0.1" g="0.1" b="0.1" a="0.75"/>
-							<BorderColor r="0.5" g="0.5" b="0.5"/>
-						</Backdrop>
-						<Scripts>
-							<OnEscapePressed>
-								self:ClearFocus()
-							</OnEscapePressed>
-							<OnEnterPressed>
-								self:ClearFocus()
-							</OnEnterPressed>
-							<OnTextChanged>
-								if self:GetText() == self:GetText():match("%d+") or self:GetText() == self:GetText():match("%d+%.%d+") or self:GetText() == self:GetText():match("%.%d+") then
-									self:SetTextColor(255,255,255,1)
-									OPMasterTable.Options["Height"] = self:GetText()
-								elseif self:GetText() == "" then
-									self:SetTextColor(255,255,255,1)
-								elseif self:GetText():find("%a") then
-									self:SetText(self:GetText():gsub("%a", ""))
-								else
-									self:SetTextColor(1,0,0,1)
-								end
-							</OnTextChanged>
-							<OnShow>if OPMasterTable.Options["Height"] ~= nil then self:SetText(OPMasterTable.Options["Height"]) end</OnShow>
-						</Scripts>
-						<FontString font="Fonts\ARIALN.TTF" indented="true">
-							<FontHeight val="10" />
-							<Color r="1" g="1" b="1" />
-							<Shadow>
-								<Offset>
-									<AbsDimension x="1" y="-1" />
-								</Offset>
-								<Color r="0" g="0" b="0" />
-							</Shadow>
-						</FontString>
-					</EditBox>
-					<EditBox name="OPScaleBox" autoFocus="false">
-						<HighlightColor r="0.5" g="0.5" b="0.5" a="0.75" />
-						<TextInsets>
-              <AbsInset left="5" right="0" top="0" bottom="0" />
-            </TextInsets>
-						<Size x="64" y="23" />
-						<Anchors>
-							<Anchor point="CENTER">
-								<Offset x="40" y="-45" />
-							</Anchor>
-						</Anchors>
-						<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-							<BackgroundInsets>
-								<AbsInset left="5" right="5" top="5" bottom="5" />
-							</BackgroundInsets>
-							<TileSize>
-								<AbsValue val="16" />
-							</TileSize>
-							<EdgeSize>
-								<AbsValue val="16" />
-							</EdgeSize>
-							<Color r="0.1" g="0.1" b="0.1" a="0.75"/>
-							<BorderColor r="0.5" g="0.5" b="0.5"/>
-						</Backdrop>
-						<Scripts>
-							<OnEnterPressed>
-								self:ClearFocus()
-							</OnEnterPressed>
-							<OnEscapePressed>
-								self:ClearFocus()
-							</OnEscapePressed>
-							<OnTextChanged>
-								if self:GetText() == self:GetText():match("%d+") or self:GetText() == self:GetText():match("%d+%.%d+") or self:GetText() == self:GetText():match("%.%d+") then
-									ScaleObject:Enable()
-									self:SetTextColor(255,255,255,1)
-									OPMasterTable.Options["Scale"] = self:GetText()
-								elseif self:GetText() == "" then
-									self:SetTextColor(255,255,255,1)
-									ScaleObject:Disable()
-								elseif self:GetText():find("%a") then
-									self:SetText(self:GetText():gsub("%a", ""))
-								else
-									self:SetTextColor(1,0,0,1)
-									ScaleObject:Disable()
-									ScaleObject:SetChecked(false)
-								end
-							</OnTextChanged>
-							<OnShow>if OPMasterTable.Options["Scale"] ~= nil then self:SetText(OPMasterTable.Options["Scale"]) end</OnShow>
-						</Scripts>
-						<FontString font="Fonts\ARIALN.TTF" indented="true">
-							<FontHeight val="10" />
-							<Color r="1" g="1" b="1" />
-							<Shadow>
-								<Offset>
-									<AbsDimension x="1" y="-1" />
-								</Offset>
-								<Color r="0" g="0" b="0" />
-							</Shadow>
-						</FontString>
-					</EditBox>
-					<Frame name="OPScaleTitle">
-						<Size x="55" y="12" />
-						<Anchors>
-							<Anchor point="CENTER">
-								<Offset x="-25" y="-45" />
-							</Anchor>
-						</Anchors>
-						<Backdrop bgFile="" edgeFile="" />
-						<Layers>
-							<Layer>
-								<FontString name="OPScaleTitleText" font="Fonts\FRIZQT__.TTF" text="       Scale:">
-									<Anchors>
-										<Anchor point="TOPLEFT" />
-										<Anchor point="BOTTOMRIGHT" />
-									</Anchors>
-									<FontHeight val="10" />
-									<Color r="1" g="1" b="1" />
-									<Shadow>
-										<Offset>
-											<AbsDimension x="1" y="-1" />
-										</Offset>
-										<Color r="0" g="0" b="0" />
-									</Shadow>
-								</FontString>
-							</Layer>
-						</Layers>
-					</Frame>
-					<CheckButton name="ScaleObject">
-						<Size x="24" y="24" />
-						<Anchors>
-							<Anchor point="CENTER">
-								<Offset x="-45" y="-45" />
-							</Anchor>
-						</Anchors>
-						<Scripts>
-							<OnEscapePressed>
-								              ObjectPlayForm1:Hide();
-							</OnEscapePressed>
-							<OnClick>
-								if self:GetChecked() == true then
-									OPMasterTable.Options["ScaleTog"] = true
-								else
-									OPMasterTable.Options["ScaleTog"] = false
-								end
-							</OnClick>
-							<OnShow>if OPMasterTable.Options["ScaleTog"] == true then self:SetChecked(true) end</OnShow>
-						</Scripts>
-						<NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
-						<PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
-						<HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD" />
-						<CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
-						<DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled" />
-					</CheckButton>
 					<EditBox name="OPLengthBox" autoFocus="false">
 						<HighlightColor r="0.5" g="0.5" b="0.5" a="0.75" />
 						<TextInsets>
@@ -757,7 +559,7 @@
 						<Size x="64" y="23" />
 						<Anchors>
 							<Anchor point="CENTER">
-								<Offset x="40" y="30" />
+								<Offset x="20" y="30" />
 							</Anchor>
 						</Anchors>
 						<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
@@ -774,6 +576,17 @@
 							<BorderColor r="0.5" g="0.5" b="0.5"/>
 						</Backdrop>
 						<Scripts>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Set the number to be used for Forward and Backwards Movements.\n\rMay be affected by 'Scale', and the 'Double' or 'Halve' options.", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
 							<OnEscapePressed>
 								self:ClearFocus()
 							</OnEscapePressed>
@@ -805,36 +618,645 @@
 							</Shadow>
 						</FontString>
 					</EditBox>
-					<Button name="OPGetObjectButton" text="Get Object ID">
-						<Size x="110" y="20" />
+					<Frame name="OPLengthTitle">
+						<Size x="55" y="12" />
 						<Anchors>
-							<Anchor point="BOTTOM">
-								<Offset y="10" />
+							<Anchor point="RIGHT" relativeTo="OPLengthBox" relativePoint="LEFT">
+								<Offset x="-3" y="0"/>
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer>
+								<FontString name="OPLengthTitleText" font="Fonts\FRIZQT__.TTF" text="     Length:">
+									<Anchors>
+										<Anchor point="TOPLEFT" />
+										<Anchor point="BOTTOMRIGHT" />
+									</Anchors>
+									<FontHeight val="10" />
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
+					</Frame>
+					<EditBox name="OPWidthBox" autoFocus="false">
+						<HighlightColor r="0.5" g="0.5" b="0.5" a="0.75"/>
+						<TextInsets>
+							<AbsInset left="5" right="0" top="0" bottom="0" />
+						</TextInsets>
+						<Size x="64" y="23" />
+						<Anchors>
+							<Anchor point="CENTER">
+								<Offset x="20" y="5" />
+							</Anchor>
+						</Anchors>
+						<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+							<BackgroundInsets>
+								<AbsInset left="5" right="5" top="5" bottom="5" />
+							</BackgroundInsets>
+							<TileSize>
+								<AbsValue val="16" />
+							</TileSize>
+							<EdgeSize>
+								<AbsValue val="16" />
+							</EdgeSize>
+							<Color r="0.1" g="0.1" b="0.1" a="0.75"/>
+							<BorderColor r="0.5" g="0.5" b="0.5"/>
+						</Backdrop>
+						<Scripts>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Set the number to be used for Left and Right Movements.\n\rMay be affected by 'Scale', and the 'Double' or 'Halve' options.", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
+							<OnEscapePressed>
+								self:ClearFocus()
+							</OnEscapePressed>
+							<OnEnterPressed>
+								self:ClearFocus()
+							</OnEnterPressed>
+							<OnTextChanged>
+								if self:GetText() == self:GetText():match("%d+") or self:GetText() == self:GetText():match("%d+%.%d+") or self:GetText() == self:GetText():match("%.%d+") then
+									self:SetTextColor(255,255,255,1)
+									OPMasterTable.Options["Width"] = self:GetText()
+								elseif self:GetText() == "" then
+									self:SetTextColor(255,255,255,1)
+								elseif self:GetText():find("%a") then
+									self:SetText(self:GetText():gsub("%a", ""))
+								else
+									self:SetTextColor(1,0,0,1)
+								end
+							</OnTextChanged>
+							<OnShow>if OPMasterTable.Options["Width"] ~= nil then self:SetText(OPMasterTable.Options["Width"]) end</OnShow>
+						</Scripts>
+						<FontString font="Fonts\ARIALN.TTF" indented="true">
+							<FontHeight val="10" />
+							<Color r="1" g="1" b="1" />
+							<Shadow>
+								<Offset>
+									<AbsDimension x="1" y="-1" />
+								</Offset>
+								<Color r="0" g="0" b="0" />
+							</Shadow>
+						</FontString>
+					</EditBox>
+					<Frame name="OPWidthTitle">
+						<Size x="55" y="12" />
+						<Anchors>
+							<Anchor point="RIGHT" relativeTo="OPWidthBox" relativePoint="LEFT">
+								<Offset x="-3" y="0"/>
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer>
+								<FontString name="OPWidthTitleText" font="Fonts\FRIZQT__.TTF" text="      Width:">
+									<Anchors>
+										<Anchor point="TOPLEFT" />
+										<Anchor point="BOTTOMRIGHT" />
+									</Anchors>
+									<FontHeight val="10" />
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
+					</Frame>
+					<EditBox name="OPHeightBox" autoFocus="false">
+						<HighlightColor r="0.5" g="0.5" b="0.5" a="0.75"/>
+						<TextInsets>
+							<AbsInset left="5" right="0" top="0" bottom="0" />
+						</TextInsets>
+						<Size x="64" y="23" />
+						<Anchors>
+							<Anchor point="CENTER">
+								<Offset x="20" y="-20" />
+							</Anchor>
+						</Anchors>
+						<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+							<BackgroundInsets>
+								<AbsInset left="5" right="5" top="5" bottom="5" />
+							</BackgroundInsets>
+							<TileSize val="16" />
+							<EdgeSize val="16" />
+							<Color r="0.1" g="0.1" b="0.1" a="0.75"/>
+							<BorderColor r="0.5" g="0.5" b="0.5"/>
+						</Backdrop>
+						<Scripts>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Set the number to be used for Up and Down Movements.\n\rMay be affected by 'Scale', and the 'Double' or 'Halve' options.", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
+							<OnEscapePressed>
+								self:ClearFocus()
+							</OnEscapePressed>
+							<OnEnterPressed>
+								self:ClearFocus()
+							</OnEnterPressed>
+							<OnTextChanged>
+								if self:GetText() == self:GetText():match("%d+") or self:GetText() == self:GetText():match("%d+%.%d+") or self:GetText() == self:GetText():match("%.%d+") then
+									self:SetTextColor(255,255,255,1)
+									OPMasterTable.Options["Height"] = self:GetText()
+								elseif self:GetText() == "" then
+									self:SetTextColor(255,255,255,1)
+								elseif self:GetText():find("%a") then
+									self:SetText(self:GetText():gsub("%a", ""))
+								else
+									self:SetTextColor(1,0,0,1)
+								end
+							</OnTextChanged>
+							<OnShow>if OPMasterTable.Options["Height"] ~= nil then self:SetText(OPMasterTable.Options["Height"]) end</OnShow>
+						</Scripts>
+						<FontString font="Fonts\ARIALN.TTF" indented="true">
+							<FontHeight val="10" />
+							<Color r="1" g="1" b="1" />
+							<Shadow>
+								<Offset>
+									<AbsDimension x="1" y="-1" />
+								</Offset>
+								<Color r="0" g="0" b="0" />
+							</Shadow>
+						</FontString>
+					</EditBox>
+					<Frame name="OPHeightTitle">
+						<Size x="55" y="12" />
+						<Anchors>
+							<Anchor point="RIGHT" relativeTo="OPHeightBox" relativePoint="LEFT">
+								<Offset x="-3" y="0"/>
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer>
+								<FontString name="OPHeightTitleText" font="Fonts\FRIZQT__.TTF" text="     Height:">
+									<Anchors>
+										<Anchor point="TOPLEFT" />
+										<Anchor point="BOTTOMRIGHT" />
+									</Anchors>
+									<FontHeight val="10" />
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
+					</Frame>
+					<EditBox name="OPScaleBox" autoFocus="false">
+						<HighlightColor r="0.5" g="0.5" b="0.5" a="0.75" />
+						<TextInsets>
+							<AbsInset left="5" right="0" top="0" bottom="0" />
+						</TextInsets>
+						<Size x="64" y="23" />
+						<Anchors>
+							<Anchor point="CENTER">
+								<Offset x="20" y="-45" />
+							</Anchor>
+						</Anchors>
+						<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+							<BackgroundInsets>
+								<AbsInset left="5" right="5" top="5" bottom="5" />
+							</BackgroundInsets>
+							<TileSize>
+								<AbsValue val="16" />
+							</TileSize>
+							<EdgeSize>
+								<AbsValue val="16" />
+							</EdgeSize>
+							<Color r="0.1" g="0.1" b="0.1" a="0.75"/>
+							<BorderColor r="0.5" g="0.5" b="0.5"/>
+						</Backdrop>
+						<Scripts>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Set the number to scale the object to when spawned by ObjectMover.\n\rAlso modifies the Length, Width, and Height parameters by multiplying them by the scale (checkbox must be enabled for this to do anything).", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
+							<OnEnterPressed>
+								self:ClearFocus()
+							</OnEnterPressed>
+							<OnEscapePressed>
+								self:ClearFocus()
+							</OnEscapePressed>
+							<OnTextChanged>
+								if self:GetText() == self:GetText():match("%d+") or self:GetText() == self:GetText():match("%d+%.%d+") or self:GetText() == self:GetText():match("%.%d+") then
+									ScaleObject:Enable()
+									self:SetTextColor(255,255,255,1)
+									OPMasterTable.Options["Scale"] = self:GetText()
+								elseif self:GetText() == "" then
+									self:SetTextColor(255,255,255,1)
+									ScaleObject:Disable()
+								elseif self:GetText():find("%a") then
+									self:SetText(self:GetText():gsub("%a", ""))
+								else
+									self:SetTextColor(1,0,0,1)
+									ScaleObject:Disable()
+								end
+							</OnTextChanged>
+							<OnShow>if OPMasterTable.Options["Scale"] ~= nil then self:SetText(OPMasterTable.Options["Scale"]) end</OnShow>
+						</Scripts>
+						<FontString font="Fonts\ARIALN.TTF" indented="true">
+							<FontHeight val="10" />
+							<Color r="1" g="1" b="1" />
+							<Shadow>
+								<Offset>
+									<AbsDimension x="1" y="-1" />
+								</Offset>
+								<Color r="0" g="0" b="0" />
+							</Shadow>
+						</FontString>
+					</EditBox>
+					<Frame name="OPScaleTitle">
+						<Size x="55" y="12" />
+						<Anchors>
+							<Anchor point="RIGHT" relativeTo="OPScaleBox" relativePoint="LEFT">
+								<Offset x="-3" y="0"/>
+							</Anchor>
+						</Anchors>
+						<Backdrop bgFile="" edgeFile="" />
+						<Layers>
+							<Layer>
+								<FontString name="OPScaleTitleText" font="Fonts\FRIZQT__.TTF" text="       Scale:">
+									<Anchors>
+										<Anchor point="TOPLEFT" />
+										<Anchor point="BOTTOMRIGHT" />
+									</Anchors>
+									<FontHeight val="10" />
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
+					</Frame>
+					<CheckButton name="ScaleObject">
+						<Size x="24" y="24" />
+						<Anchors>
+							<Anchor point="RIGHT" relativeTo="OPScaleTitle" relativePoint="LEFT">
+								<Offset x="20" y="0"/>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Enable Scale Option\n\rAll dimensions (Length, Width, Height) will be multiplied by the defined scale, and objects spawned by ObjectMover will be automatically set to that scale.\n\rMay stack with 'Double' and 'Halve' modifiers.\n\rIf disabled, Scale will have no effect anywhere.", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
+							<OnClick>
+								if self:GetChecked() == true then
+									OPMasterTable.Options["ScaleTog"] = true
+								else
+									OPMasterTable.Options["ScaleTog"] = false
+								end
+							</OnClick>
+							<OnShow>if OPMasterTable.Options["ScaleTog"] == true then self:SetChecked(true) end</OnShow>
+						</Scripts>
+						<NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
+						<PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
+						<HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD" />
+						<CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
+						<DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled" />
+					</CheckButton>
+					<Button name="OPGetObjectIDButton" inherits="UIPanelButtonTemplate" text="Get ID">
+						<Size x="24" y="22" />
+						<Anchors>
+							<Anchor point="left" relativeTo="OPObjectIDBox" relativePoint="right">
+								<Offset x="-2" y="1" />
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Select the nearest GameObject and sets it's ID as the Object ID parameter.", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
+							<OnClick>
+								OPGetObject()
+							</OnClick>
+							<OnLoad>
+							self:SetText("Get\nID")
+							</OnLoad>
+						</Scripts>
+						<ButtonText name="$parentText">
+							<FontHeight val="8" />
+						</ButtonText>
+						<NormalFont style="GameFontNormalTiny2" />
+						<HighlightFont style="GameFontWhiteTiny2" />
+						<DisabledFont style="GameFontDisableTiny2" />
+					</Button>
+					<Button name="OPLengthDoubleButton" inherits="UIPanelButtonTemplate" text="x2">
+						<Size x="24" y="11" />
+						<Anchors>
+							<Anchor point="topleft" relativeTo="OPLengthBox" relativePoint="topright">
+								<Offset x="-2" />
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Doubles the current Length value by changing the actual box value.\n\rNot dynamic like the 'Double' option.", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
+							<OnClick>
+								OPLengthBox:SetText(OPLengthBox:GetText()*2)
+							</OnClick>
+						</Scripts>
+						<ButtonText name="$parentText">
+							<FontHeight val="8" />
+						</ButtonText>
+						<NormalFont style="GameFontNormalTiny2" />
+						<HighlightFont style="GameFontWhiteTiny2" />
+						<DisabledFont style="GameFontDisableTiny2" />
+					</Button>
+					<Button name="OPLengthHalfButton" inherits="UIPanelButtonTemplate" text="1/2">
+						<Size x="24" y="11" />
+						<Anchors>
+							<Anchor point="bottomleft" relativeTo="OPLengthBox" relativePoint="bottomright">
+								<Offset x="-2" y="1" />
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Halves the current Length value.\n\rNot dynamic like the 'Halve' option.", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
+							<OnClick>
+								OPLengthBox:SetText(OPLengthBox:GetText()/2)
+							</OnClick>
+						</Scripts>
+						<ButtonText name="$parentText">
+							<FontHeight val="8" />
+						</ButtonText>
+						<NormalFont style="GameFontNormalTiny2" />
+						<HighlightFont style="GameFontWhiteTiny2" />
+						<DisabledFont style="GameFontDisableTiny2" />
+					</Button>
+					<Button name="OPWidthDoubleButton" inherits="UIPanelButtonTemplate" text="x2">
+						<Size x="24" y="11" />
+						<Anchors>
+							<Anchor point="topleft" relativeTo="OPWidthBox" relativePoint="topright">
+								<Offset x="-2" />
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Doubles the current Width value by changing the actual box value.\n\rNot dynamic like the 'Double' option.", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
+							<OnClick>
+								OPWidthBox:SetText(OPWidthBox:GetText()*2)
+							</OnClick>
+						</Scripts>
+						<ButtonText name="$parentText">
+							<FontHeight val="8" />
+						</ButtonText>
+						<NormalFont style="GameFontNormalTiny2" />
+						<HighlightFont style="GameFontWhiteTiny2" />
+						<DisabledFont style="GameFontDisableTiny2" />
+					</Button>
+					<Button name="OPWidthHalfButton" inherits="UIPanelButtonTemplate" text="1/2">
+						<Size x="24" y="11" />
+						<Anchors>
+							<Anchor point="bottomleft" relativeTo="OPWidthBox" relativePoint="bottomright">
+								<Offset x="-2" y="1" />
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Halves the current Width value.\n\rNot dynamic like the 'Halve' option.", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
+							<OnClick>
+								OPWidthBox:SetText(OPWidthBox:GetText()/2)
+							</OnClick>
+						</Scripts>
+						<ButtonText name="$parentText">
+							<FontHeight val="8" />
+						</ButtonText>
+						<NormalFont style="GameFontNormalTiny2" />
+						<HighlightFont style="GameFontWhiteTiny2" />
+						<DisabledFont style="GameFontDisableTiny2" />
+					</Button>
+					<Button name="OPHeightDoubleButton" inherits="UIPanelButtonTemplate" text="x2">
+						<Size x="24" y="11" />
+						<Anchors>
+							<Anchor point="topleft" relativeTo="OPHeightBox" relativePoint="topright">
+								<Offset x="-2" />
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Doubles the current Height value by changing the actual box value.\n\rNot dynamic like the 'Double' option.", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
+							<OnClick>
+								OPHeightBox:SetText(OPHeightBox:GetText()*2)
+							</OnClick>
+						</Scripts>
+						<ButtonText name="$parentText">
+							<FontHeight val="8" />
+						</ButtonText>
+						<NormalFont style="GameFontNormalTiny2" />
+						<HighlightFont style="GameFontWhiteTiny2" />
+						<DisabledFont style="GameFontDisableTiny2" />
+					</Button>
+					<Button name="OPHeightHalfButton" inherits="UIPanelButtonTemplate" text="1/2">
+						<Size x="24" y="11" />
+						<Anchors>
+							<Anchor point="bottomleft" relativeTo="OPHeightBox" relativePoint="bottomright">
+								<Offset x="-2" y="1" />
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Halves the current Height value.\n\rNot dynamic like the 'Halve' option.", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
+							<OnClick>
+								OPHeightBox:SetText(OPHeightBox:GetText()/2)
+							</OnClick>
+						</Scripts>
+						<ButtonText name="$parentText">
+							<FontHeight val="8" />
+						</ButtonText>
+						<NormalFont style="GameFontNormalTiny2" />
+						<HighlightFont style="GameFontWhiteTiny2" />
+						<DisabledFont style="GameFontDisableTiny2" />
+					</Button>
+					<Button name="OPScaleDoubleButton" inherits="UIPanelButtonTemplate" text="x2">
+						<Size x="24" y="11" />
+						<Anchors>
+							<Anchor point="topleft" relativeTo="OPScaleBox" relativePoint="topright">
+								<Offset x="-2" />
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Doubles the current Height value by changing the actual box value.\n\rNot dynamic like the 'Double' option.", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
+							<OnClick>
+								OPScaleBox:SetText(OPScaleBox:GetText()*2)
+							</OnClick>
+						</Scripts>
+						<ButtonText name="$parentText">
+							<FontHeight val="8" />
+						</ButtonText>
+						<NormalFont style="GameFontNormalTiny2" />
+						<HighlightFont style="GameFontWhiteTiny2" />
+						<DisabledFont style="GameFontDisableTiny2" />
+					</Button>
+					<Button name="OPScaleHalfButton" inherits="UIPanelButtonTemplate" text="1/2">
+						<Size x="24" y="11" />
+						<Anchors>
+							<Anchor point="bottomleft" relativeTo="OPScaleBox" relativePoint="bottomright">
+								<Offset x="-2" y="1" />
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Halves the current Height value.\n\rNot dynamic like the 'Halve' option.", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
+							<OnClick>
+								OPScaleBox:SetText(OPScaleBox:GetText()/2)
+							</OnClick>
+						</Scripts>
+						<ButtonText name="$parentText">
+							<FontHeight val="8" />
+						</ButtonText>
+						<NormalFont style="GameFontNormalTiny2" />
+						<HighlightFont style="GameFontWhiteTiny2" />
+						<DisabledFont style="GameFontDisableTiny2" />
+					</Button>
+					<Button name="OPParamSaveButton" inherits="UIPanelButtonTemplate" text="Save">
+						<Size x="56" y="16" />
+						<Anchors>
+							<Anchor point="BOTTOMLEFT">
+								<Offset x="8" y="9" />
 							</Anchor>
 						</Anchors>
 						<Scripts>
 							<OnClick>
-								OPGetObject()
+								OPShowParamSaveMenu();
 							</OnClick>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Opens up a new dialogue to save the current Object Parameters (ID, Length, Width, Height, and Scale) for quickly loading later.\n\rLeaving an option blank, or as '0', will cause it to not load (i.e., leaving the ObjectID blank will cause it to not change your current ObjectID when loaded).", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
 						</Scripts>
-						<NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
-							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-						</NormalTexture>
-						<PushedTexture file="Interface\Buttons\UI-Panel-Button-Down">
-							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-						</PushedTexture>
-						<DisabledTexture file="Interface\Buttons\UI-Panel-Button-Disabled">
-							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-						</DisabledTexture>
-						<HighlightTexture file="Interface\Buttons\UI-Panel-Button-Highlight" alphaMode="ADD">
-							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-						</HighlightTexture>
-						<ButtonText name="$parentText">
-							<FontHeight val="12" />
-						</ButtonText>
-						<NormalFont style="GameFontNormal" />
-						<HighlightFont style="GameFontHighlight" />
-						<DisabledFont style="GameFontDisable" />
+						<ButtonText name="$parentText" />
+						<NormalFont style="GameFontNormalSmall" />
+						<HighlightFont style="GameFontHighlightSmall" />
+						<DisabledFont style="GameFontDisableSmall" />
 					</Button>
 				</Frames>
 			</Frame>
@@ -872,52 +1294,7 @@
 							<Layer>
 								<FontString name="$parentText" font="Fonts\FRIZQT__.TTF" text="Spawn on Move">
 									<Anchors>
-										<Anchor point="LEFT">
-											<Offset x="-79" />
-										</Anchor>
-									</Anchors>
-									<FontHeight val="9" />
-									<Color r="1" g="1" b="1" />
-									<Shadow>
-										<Offset>
-											<AbsDimension x="1" y="-1" />
-										</Offset>
-										<Color r="0" g="0" b="0" />
-									</Shadow>
-								</FontString>
-							</Layer>
-						</Layers>
-						<Scripts>
-							<OnEscapePressed>
-								              ObjectPlayForm1:Hide();
-							</OnEscapePressed>
-							<OnClick>
-								if self:GetChecked() == true then
-									OPMasterTable.Options["SpawnOnMove"] = true
-								else
-									OPMasterTable.Options["SpawnOnMove"] = false
-								end
-							</OnClick>
-							<OnShow>if OPMasterTable.Options["SpawnOnMove"] == true then self:SetChecked(true) end</OnShow>
-						</Scripts>
-						<NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
-						<PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
-						<HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD" />
-						<CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
-						<DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled" />
-					</CheckButton>
-					<CheckButton name="AutoDimensions">
-						<Size x="24" y="24" />
-						<Anchors>
-							<Anchor point="RIGHT">
-								<Offset x="-5" y="-5" />
-							</Anchor>
-						</Anchors>
-						<Layers>
-							<Layer>
-								<FontString name="$parentText" font="Fonts\FRIZQT__.TTF" text="Auto Dimensions">
-									<Anchors>
-										<Anchor point="right">
+										<Anchor point="RIGHT">
 											<Offset x="-25" />
 										</Anchor>
 									</Anchors>
@@ -933,10 +1310,25 @@
 							</Layer>
 						</Layers>
 						<Scripts>
-							<OnEscapePressed>
-								              ObjectPlayForm1:Hide();
-							</OnEscapePressed>
-							<OnLoad>self:Disable()</OnLoad>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Spawn an Object at your location every time you move, or you move an object.", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
+							<OnClick>
+								if self:GetChecked() == true then
+									OPMasterTable.Options["SpawnOnMove"] = true
+								else
+									OPMasterTable.Options["SpawnOnMove"] = false
+								end
+							</OnClick>
+							<OnShow>if OPMasterTable.Options["SpawnOnMove"] == true then self:SetChecked(true) end</OnShow>
 						</Scripts>
 						<NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
 						<PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
@@ -944,7 +1336,7 @@
 						<CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
 						<DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled" />
 					</CheckButton>
-					<CheckButton name="Halve">
+					<CheckButton name="OPHalveToggle">
 						<Size x="24" y="24" />
 						<Anchors>
 							<Anchor point="LEFT">
@@ -971,12 +1363,20 @@
 							</Layer>
 						</Layers>
 						<Scripts>
-							<OnEscapePressed>
-								              ObjectPlayForm1:Hide();
-							</OnEscapePressed>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Only uses half the value supplied in Length, Width, and Height, when moving.", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
 							<OnMouseUp>
-								if Bifold:GetChecked() == true then
-									Bifold:SetChecked(false)
+								if OPBifoldToggle:GetChecked() == true then
+									OPBifoldToggle:SetChecked(false)
 								end
 							</OnMouseUp>
 						</Scripts>
@@ -986,7 +1386,7 @@
 						<CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
 						<DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled" />
 					</CheckButton>
-					<CheckButton name="Bifold">
+					<CheckButton name="OPBifoldToggle">
 						<Size x="24" y="24" />
 						<Anchors>
 							<Anchor point="LEFT">
@@ -1013,12 +1413,20 @@
 							</Layer>
 						</Layers>
 						<Scripts>
-							<OnEscapePressed>
-								              ObjectPlayForm1:Hide();
-							</OnEscapePressed>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Uses double the value supplied in Length, Width, and Height, when moving.", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
 							<OnMouseUp>
-								if Halve:GetChecked() == true then
-									Halve:SetChecked(false)
+								if OPHalveToggle:GetChecked() == true then
+									OPHalveToggle:SetChecked(false)
 								end
 							</OnMouseUp>
 						</Scripts>
@@ -1055,14 +1463,24 @@
 							</Layer>
 						</Layers>
 						<Scripts>
-							<OnEscapePressed>
-								              ObjectPlayForm1:Hide();
-							</OnEscapePressed>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Moves your selected object instead of yourself.", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
 							<OnClick>
 								if self:GetChecked() == true then
 									OPMasterTable.Options["MoveObject"] = true
+									RelativeToPlayer:Enable()
 								else
 									OPMasterTable.Options["MoveObject"] = false
+									RelativeToPlayer:Disable()
 								end
 							</OnClick>
 							<OnShow>if OPMasterTable.Options["MoveObject"] == true then self:SetChecked(true) end</OnShow>
@@ -1073,19 +1491,19 @@
 						<CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
 						<DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled" />
 					</CheckButton>
-					<CheckButton name="Messages">
+					<CheckButton name="RelativeToPlayer">
 						<Size x="24" y="24" />
 						<Anchors>
 							<Anchor point="RIGHT">
-								<Offset x="-5" y="-30" />
+								<Offset x="-5" y="-5" />
 							</Anchor>
 						</Anchors>
 						<Layers>
 							<Layer>
-								<FontString name="ShowMessagesText" font="Fonts\FRIZQT__.TTF" text="Messages">
+								<FontString name="$parentText" font="Fonts\FRIZQT__.TTF" text="Move Relative">
 									<Anchors>
-										<Anchor point="LEFT">
-											<Offset x="-50" />
+										<Anchor point="RIGHT">
+											<Offset x="-25" />
 										</Anchor>
 									</Anchors>
 									<FontHeight val="9" />
@@ -1100,9 +1518,76 @@
 							</Layer>
 						</Layers>
 						<Scripts>
-							<OnEscapePressed>
-								              ObjectPlayForm1:Hide();
-							</OnEscapePressed>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Moves the Object relative to direction you are facing.\n\rOnly works in 'Move Object' mode.", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
+							<OnClick>
+								if self:GetChecked() == true then
+									OPMasterTable.Options["RelativeToPlayer"] = true
+								else
+									OPMasterTable.Options["RelativeToPlayer"] = false
+								end
+							</OnClick>
+							<OnShow>if OPMasterTable.Options["RelativeToPlayer"] == true then self:SetChecked(true) end
+							if OPMoveObjectInstead:GetChecked() then
+								self:Enable()
+							else
+								self:Disable()
+							end
+							</OnShow>
+						</Scripts>
+						<NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
+						<PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
+						<HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD" />
+						<CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
+						<DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled" />
+					</CheckButton>
+					<CheckButton name="OPShowMessages">
+						<Size x="24" y="24" />
+						<Anchors>
+							<Anchor point="RIGHT">
+								<Offset x="-5" y="-30" />
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer>
+								<FontString name="ShowMessagesText" font="Fonts\FRIZQT__.TTF" text="Messages">
+									<Anchors>
+										<Anchor point="RIGHT">
+											<Offset x="-25" />
+										</Anchor>
+									</Anchors>
+									<FontHeight val="9" />
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Scripts>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Toggles filtering of server reply messages for 'object rotated', 'object moved', ect.", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
 						</Scripts>
 						<NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
 						<PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
@@ -1141,7 +1626,7 @@
 				</Frames>
 			</Frame>
 			<Frame name="OPPanel4">
-				<Size x="335" y="102" />
+				<Size x="335" y="132" />
 				<Anchors>
 					<Anchor point="BOTTOMLEFT">
 						<Offset x="10" y="10" />
@@ -1214,6 +1699,9 @@
 							<BorderColor r="0.5" g="0.5" b="0.5"/>
 						</Backdrop>
 						<Scripts>
+							<OnLoad>
+								self:SetText("0")
+							</OnLoad>
 							<OnEscapePressed>
 								self:ClearFocus()
 							</OnEscapePressed>
@@ -1234,10 +1722,22 @@
 							<OnEditFocusLost>
 								if self:GetText() == self:GetText():match("%d+") or self:GetText() == self:GetText():match("%d+%.%d+") or self:GetText() == self:GetText():match("%.%d+") then
 									local OPRotXEditVal = self:GetText()
+									OPRotationSliderX:SetValueStep(0.0001)
 									OPRotationSliderX:SetValue(OPRotXEditVal)
 									OPClearRotateChatFilter()
 								end
 							</OnEditFocusLost>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Set the value to Roll (Rotate / Tilt Sideways) the selected GameObject to.\n\rObjects will be set to the current Roll, Pitch, and Turn values all together.\n\rTyped in numbers will automatically round to 4 decimal places.", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
 						</Scripts>
 						<FontString font="Fonts\ARIALN.TTF" indented="true">
 							<FontHeight val="10" />
@@ -1250,14 +1750,14 @@
 							</Shadow>
 						</FontString>
 					</EditBox>
-					<Slider name="OPRotationSliderX" orientation="HORIZONTAL" enableMouse="true" defaultValue="0" minValue="0" maxValue="360" valueStep="0.1" ObeyStepOnDrag="true">
+					<Slider name="OPRotationSliderX" orientation="HORIZONTAL" enableMouse="true" defaultValue="0" minValue="-1" maxValue="360" valueStep="0.1" ObeyStepOnDrag="true">
 						<Size>
 							<AbsDimension x="250" y="14" />
 						</Size>
 						<Anchors>
-							<Anchor point="TOPLEFT">
+							<Anchor point="TOPLEFT" relativeTo="OPRotationEditBoxX">
 								<Offset>
-									<AbsDimension x="10" y="-20" />
+									<AbsDimension x="-253" y="-5" />
 								</Offset>
 							</Anchor>
 						</Anchors>
@@ -1274,7 +1774,7 @@
 						</Backdrop>
 						<Layers>
 							<Layer>
-								<FontString name="$parentTitle" font="Fonts\FRIZQT__.TTF" text="Roll">
+								<FontString name="$parentTitle" font="Fonts\FRIZQT__.TTF" text="Roll (X | Sideways)">
 									<Anchors>
 										<Anchor point="TOPLEFT">
 											<Offset x="10" y="10" />
@@ -1329,28 +1829,82 @@
 							</Size>
 						</ThumbTexture>
 						<Scripts>
+							<OnMouseDown>
+								OPIMFUCKINGROTATINGDONTSPAMME = true
+								if self.dragEndTimer then
+									self.dragEndTimer:Cancel()
+								end
+								self.sliderDragChange = true
+								self.isDragging = true
+							</OnMouseDown>
+							<OnMouseUp>
+								OPClearRotateChatFilter()
+								self.isDragging = false
+								self.dragEndTimer = C_Timer.NewTimer(0.2,function()
+									if not self.isMousedOver then
+										self.sliderDragChange = false
+										if OPMasterTable.Options["debug"] then
+											print("OPDEBUG: dragEndTimer disabled sliderDragChange. Rounding Disabled.")
+										end
+									end
+								end)
+							</OnMouseUp>
 							<OnValueChanged>
 								if OPFramesAreLoaded then
-									if IsShiftKeyDown() then
-										if IsAltKeyDown() then
-											self:SetValueStep(5)
+									local OPRotSliderValX = self:GetValue()
+									if OPMasterTable.Options["debug"] then
+										print(self.sliderDragChange)
+									end
+									if self.sliderDragChange then
+										if OPMasterTable.Options["debug"] then
+											print("Val ("..OPRotSliderValX..") Rounded to 3 decimals")
+										end
+										OPRotSliderValX = roundToNthDecimal(OPRotSliderValX,3)
+										if IsShiftKeyDown() then
+											if IsAltKeyDown() then
+												self:SetValueStep(5)
+											else
+												self:SetValueStep(0.1)
+											end
+										elseif IsAltKeyDown() then
+											self:SetValueStep(0.01)
 										else
 											self:SetValueStep(1)
 										end
-									elseif IsAltKeyDown() then
-										self:SetValueStep(0.01)
 									else
-										self:SetValueStep(0.1)
+										if OPMasterTable.Options["debug"] then
+											print("Val ("..OPRotSliderValX..") Rounded to 4 decimals")
+										end
+										OPRotSliderValX = roundToNthDecimal(OPRotSliderValX,4)
 									end
-									local OPRotSliderValX = self:GetValue()
-									local OPRotSliderValX = roundToNthDecimal(OPRotSliderValX,3)
 									OPRotationEditBoxX:SetText(OPRotSliderValX)
 									OPRotateObject();
 								end
 							</OnValueChanged>
-							<OnMouseDown>OPIMFUCKINGROTATINGDONTSPAMME = true</OnMouseDown>
-							<OnMouseUp>OPClearRotateChatFilter()</OnMouseUp>
 							<OnLoad>OPInitializeLoading();</OnLoad>
+							<OnEnter>
+								self.sliderDragChange = true
+								self.isMousedOver = true
+								if OPMasterTable.Options["debug"] then
+									print("Ye' entered the drag frame, you might drag, so lets classify you as dragging for rounding filter")
+								end
+								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Drag to change current Roll (Rotate / Tilt Sideways). Values less than 0 will default to 0 (-1 is for saving only).\n\rRotation will automatically apply (including Pitch and Turn) as it changes.\n\rModifiers (Hold while Dragging):\nDefault - whole numbers (1)\nSHIFT - 1 decimal place (0.1)\nALT - 2 decimal places (0.01),", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								self.isMousedOver = false
+								if not self.isDragging then
+									self.sliderDragChange = false
+									if OPMasterTable.Options["debug"] then
+										print("sliderDragChange turned off cuz u left while not dragging.")
+									end
+								end
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
 						</Scripts>
 					</Slider>
 					<EditBox name="OPRotationEditBoxY" autoFocus="false">
@@ -1378,6 +1932,9 @@
 							<BorderColor r="0.5" g="0.5" b="0.5"/>
 						</Backdrop>
 						<Scripts>
+							<OnLoad>
+								self:SetText("0")
+							</OnLoad>
 							<OnEscapePressed>
 								self:ClearFocus()
 							</OnEscapePressed>
@@ -1398,10 +1955,22 @@
 							<OnEditFocusLost>
 								if self:GetText() == self:GetText():match("%d+") or self:GetText() == self:GetText():match("%d+%.%d+") or self:GetText() == self:GetText():match("%.%d+") then
 									local OPRotYEditVal = self:GetText()
+									OPRotationSliderY:SetValueStep(0.0001)
 									OPRotationSliderY:SetValue(OPRotYEditVal)
 									OPClearRotateChatFilter()
 								end
 							</OnEditFocusLost>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Set the value to Pitch (Rotate / Tilt Forward) the selected GameObject to.\n\rObjects will be set to the current Roll, Pitch, and Turn values all together.\n\rTyped in numbers will automatically round to 4 decimal places.", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
 						</Scripts>
 						<FontString font="Fonts\ARIALN.TTF" indented="true">
 							<FontHeight val="10" />
@@ -1414,14 +1983,14 @@
 							</Shadow>
 						</FontString>
 					</EditBox>
-					<Slider name="OPRotationSliderY" orientation="HORIZONTAL" enableMouse="true" defaultValue="0" minValue="0" maxValue="360" valueStep="0.01" ObeyStepOnDrag="true">
+					<Slider name="OPRotationSliderY" orientation="HORIZONTAL" enableMouse="true" defaultValue="0" minValue="-1" maxValue="360" valueStep="0.01" ObeyStepOnDrag="true">
 						<Size>
 							<AbsDimension x="250" y="14" />
 						</Size>
 						<Anchors>
-							<Anchor point="TOPLEFT">
+							<Anchor point="TOPLEFT" relativeTo="OPRotationEditBoxY">
 								<Offset>
-									<AbsDimension x="10" y="-47" />
+									<AbsDimension x="-253" y="-5" />
 								</Offset>
 							</Anchor>
 						</Anchors>
@@ -1438,7 +2007,7 @@
 						</Backdrop>
 						<Layers>
 							<Layer>
-								<FontString name="$parentTitle" font="Fonts\FRIZQT__.TTF" text="Pitch">
+								<FontString name="$parentTitle" font="Fonts\FRIZQT__.TTF" text="Pitch (Y | Forward)">
 									<Anchors>
 										<Anchor point="TOPLEFT">
 											<Offset x="10" y="10" />
@@ -1493,28 +2062,82 @@
 							</Size>
 						</ThumbTexture>
 						<Scripts>
-							<OnValueChanged> 
+							<OnMouseDown>
+								OPIMFUCKINGROTATINGDONTSPAMME = true
+								if self.dragEndTimer then
+									self.dragEndTimer:Cancel()
+								end
+								self.sliderDragChange = true
+								self.isDragging = true
+							</OnMouseDown>
+							<OnMouseUp>
+								OPClearRotateChatFilter()
+								self.isDragging = false
+								self.dragEndTimer = C_Timer.NewTimer(0.2,function()
+									if not self.isMousedOver then
+										self.sliderDragChange = false
+										if OPMasterTable.Options["debug"] then
+											print("OPDEBUG: dragEndTimer disabled sliderDragChange. Rounding Disabled.")
+										end
+									end
+								end)
+							</OnMouseUp>
+							<OnValueChanged>
 								if OPFramesAreLoaded then
-									if IsShiftKeyDown() then
-										if IsAltKeyDown() then
-											self:SetValueStep(5)
+									local OPRotSliderValY = self:GetValue()
+									if OPMasterTable.Options["debug"] then
+										print(self.sliderDragChange)
+									end
+									if self.sliderDragChange then
+										if OPMasterTable.Options["debug"] then
+											print("Val ("..OPRotSliderValY..") Rounded to 3 decimals")
+										end
+										OPRotSliderValY = roundToNthDecimal(OPRotSliderValY,3)
+										if IsShiftKeyDown() then
+											if IsAltKeyDown() then
+												self:SetValueStep(5)
+											else
+												self:SetValueStep(0.1)
+											end
+										elseif IsAltKeyDown() then
+											self:SetValueStep(0.01)
 										else
 											self:SetValueStep(1)
 										end
-									elseif IsAltKeyDown() then
-										self:SetValueStep(0.01)
 									else
-										self:SetValueStep(0.1)
+										if OPMasterTable.Options["debug"] then
+											print("Val ("..OPRotSliderValY..") Rounded to 4 decimals")
+										end
+										OPRotSliderValY = roundToNthDecimal(OPRotSliderValY,4)
 									end
-									local OPRotSliderValY = self:GetValue()
-									local OPRotSliderValY = roundToNthDecimal(OPRotSliderValY,3)
 									OPRotationEditBoxY:SetText(OPRotSliderValY)
 									OPRotateObject();
 								end
 							</OnValueChanged>
-							<OnMouseDown>OPIMFUCKINGROTATINGDONTSPAMME = true</OnMouseDown>
-							<OnMouseUp>OPClearRotateChatFilter()</OnMouseUp>
 							<OnLoad>OPInitializeLoading();</OnLoad>
+							<OnEnter>
+								self.sliderDragChange = true
+								self.isMousedOver = true
+								if OPMasterTable.Options["debug"] then
+									print("Ye' entered the drag frame, you might drag, so lets classify you as dragging for rounding filter")
+								end
+								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Drag to change current Pitch (Rotate / Tilt Forwards). Values less than 0 will default to 0 (-1 is for saving only).\n\rRotation will automatically apply (including Roll and Turn) as it changes.\n\rModifiers (Hold while Dragging):\nDefault - whole numbers (1)\nSHIFT - 1 decimal place (0.1)\nALT - 2 decimal places (0.01),", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								self.isMousedOver = false
+								if not self.isDragging then
+									self.sliderDragChange = false
+									if OPMasterTable.Options["debug"] then
+										print("sliderDragChange turned off cuz u left while not dragging.")
+									end
+								end
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
 						</Scripts>
 					</Slider>
 					<EditBox name="OPRotationEditBoxZ" autoFocus="false">
@@ -1542,6 +2165,9 @@
 							<BorderColor r="0.5" g="0.5" b="0.5"/>
 						</Backdrop>
 						<Scripts>
+							<OnLoad>
+								self:SetText("0")
+							</OnLoad>
 							<OnEscapePressed>
 								self:ClearFocus()
 							</OnEscapePressed>
@@ -1559,13 +2185,26 @@
 									self:SetTextColor(1,0,0,1)
 								end
 							</OnTextChanged>
+							<OnEditFocusGained>OPRotationSliderZ:SetValueStep(0.001)</OnEditFocusGained>
 							<OnEditFocusLost>
 								if self:GetText() == self:GetText():match("%d+") or self:GetText() == self:GetText():match("%d+%.%d+") or self:GetText() == self:GetText():match("%.%d+") then
 									local OPRotZEditVal = self:GetText()
+									OPRotationSliderZ:SetValueStep(0.0001)
 									OPRotationSliderZ:SetValue(OPRotZEditVal)
 									OPClearRotateChatFilter()
 								end
 							</OnEditFocusLost>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Set the value to Turn (Rotate Around / Face) the selected GameObject to.\n\rObjects will be set to the current Roll, Pitch, and Turn values all together.\n\rTyped in numbers will automatically round to 4 decimal places.", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
 						</Scripts>
 						<FontString font="Fonts\ARIALN.TTF" indented="true">
 							<FontHeight val="10" />
@@ -1578,14 +2217,14 @@
 							</Shadow>
 						</FontString>
 					</EditBox>
-					<Slider name="OPRotationSliderZ" orientation="HORIZONTAL" enableMouse="true" defaultValue="0" minValue="0" maxValue="360" valueStep="0.01" ObeyStepOnDrag="true">
+					<Slider name="OPRotationSliderZ" orientation="HORIZONTAL" enableMouse="true" defaultValue="0" minValue="-1" maxValue="360" valueStep="0.01" ObeyStepOnDrag="true">
 						<Size>
 							<AbsDimension x="250" y="14" />
 						</Size>
 						<Anchors>
-							<Anchor point="TOPLEFT">
+							<Anchor point="TOPLEFT" relativeTo="OPRotationEditBoxZ">
 								<Offset>
-									<AbsDimension x="10" y="-74" />
+									<AbsDimension x="-253" y="-5" />
 								</Offset>
 							</Anchor>
 						</Anchors>
@@ -1602,7 +2241,7 @@
 						</Backdrop>
 						<Layers>
 							<Layer>
-								<FontString name="$parentTitle" font="Fonts\FRIZQT__.TTF" text="Turn">
+								<FontString name="$parentTitle" font="Fonts\FRIZQT__.TTF" text="Turn (Z | Around)">
 									<Anchors>
 										<Anchor point="TOPLEFT">
 											<Offset x="10" y="10" />
@@ -1657,45 +2296,428 @@
 							</Size>
 						</ThumbTexture>
 						<Scripts>
-							<OnValueChanged> 
+							<OnMouseDown>
+								OPIMFUCKINGROTATINGDONTSPAMME = true
+								if self.dragEndTimer then
+									self.dragEndTimer:Cancel()
+								end
+								self.sliderDragChange = true
+								self.isDragging = true
+							</OnMouseDown>
+							<OnMouseUp>
+								OPClearRotateChatFilter()
+								self.isDragging = false
+								self.dragEndTimer = C_Timer.NewTimer(0.2,function()
+									if not self.isMousedOver then
+										self.sliderDragChange = false
+										if OPMasterTable.Options["debug"] then
+											print("OPDEBUG: dragEndTimer disabled sliderDragChange. Rounding Disabled.")
+										end
+									end
+								end)
+							</OnMouseUp>
+							<OnValueChanged>
 								if OPFramesAreLoaded then
-									if IsShiftKeyDown() then
-										if IsAltKeyDown() then
-											self:SetValueStep(5)
+									local OPRotSliderValZ = self:GetValue()
+									if OPMasterTable.Options["debug"] then
+										print(self.sliderDragChange)
+									end
+									if self.sliderDragChange then
+										if OPMasterTable.Options["debug"] then
+											print("Val ("..OPRotSliderValZ..") Rounded to 3 decimals")
+										end
+										OPRotSliderValZ = roundToNthDecimal(OPRotSliderValZ,3)
+										if IsShiftKeyDown() then
+											if IsAltKeyDown() then
+												self:SetValueStep(5)
+											else
+												self:SetValueStep(0.1)
+											end
+										elseif IsAltKeyDown() then
+											self:SetValueStep(0.01)
 										else
 											self:SetValueStep(1)
 										end
-									elseif IsAltKeyDown() then
-										self:SetValueStep(0.01)
 									else
-										self:SetValueStep(0.1)
+										if OPMasterTable.Options["debug"] then
+											print("Val ("..OPRotSliderValZ..") Rounded to 4 decimals")
+										end
+										OPRotSliderValZ = roundToNthDecimal(OPRotSliderValZ,4)
 									end
-									local OPRotSliderValZ = self:GetValue()
-									local OPRotSliderValZ = roundToNthDecimal(OPRotSliderValZ,3)
 									OPRotationEditBoxZ:SetText(OPRotSliderValZ)
 									OPRotateObject();
 								end
 							</OnValueChanged>
-							<OnMouseDown>OPIMFUCKINGROTATINGDONTSPAMME = true</OnMouseDown>
-							<OnMouseUp>OPClearRotateChatFilter()</OnMouseUp>
 							<OnLoad>OPInitializeLoading();</OnLoad>
+							<OnEnter>
+								self.sliderDragChange = true
+								self.isMousedOver = true
+								if OPMasterTable.Options["debug"] then
+									print("Ye' entered the drag frame, you might drag, so lets classify you as dragging for rounding filter")
+								end
+								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Drag to change current Turn (Rotate Around / Face). Values less than 0 will default to 0 (-1 is for saving only).\n\rRotation will automatically apply (including Roll and Pitch) as it changes.\n\rModifiers (Hold while Dragging):\nDefault - whole numbers (1)\nSHIFT - 1 decimal place (0.1)\nALT - 2 decimal places (0.01),", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								self.isMousedOver = false
+								if not self.isDragging then
+									self.sliderDragChange = false
+									if OPMasterTable.Options["debug"] then
+										print("sliderDragChange turned off cuz u left while not dragging.")
+									end
+								end
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
 						</Scripts>
 					</Slider>
+					<Button name="OPRotateApplyButton" inherits="UIPanelButtonTemplate" text="Apply">
+						<Size x="56" y="16" />
+						<Anchors>
+							<Anchor point="BOTTOMRIGHT">
+								<Offset y="10" x="-10" />
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								OPRotateObject();
+								OPIMFUCKINGROTATINGDONTSPAMME = true
+								OPClearRotateChatFilter()
+							</OnClick>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Applies the current Roll, Pitch, and Turn to the currently selected object.", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
+						</Scripts>
+						<ButtonText name="$parentText">
+							<FontHeight val="10" />
+						</ButtonText>
+						<NormalFont style="GameFontNormalSmall" />
+						<HighlightFont style="GameFontHighlightSmall" />
+						<DisabledFont style="GameFontDisableSmall" />
+					</Button>
+					<Button name="OPRotSaveButton" inherits="UIPanelButtonTemplate" text="Save">
+						<Size x="56" y="16" />
+						<Anchors>
+							<Anchor point="BOTTOMLEFT">
+								<Offset x="8" y="10" />
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								OPShowRotSaveMenu();
+							</OnClick>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Opens up a new dialogue to save the current Object Rotations (Roll, Pitch, and Turn) for quickly loading later.\n\rLeaving a rotation as '-1' will cause it to not load (i.e., setting Roll to '-1' will cause it to leave Roll unchanged when loaded).", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
+						</Scripts>
+						<ButtonText name="$parentText" />
+						<NormalFont style="GameFontNormalSmall" />
+						<HighlightFont style="GameFontHighlightSmall" />
+						<DisabledFont style="GameFontDisableSmall" />
+					</Button>
+					<CheckButton name="OPRotAutoUpdate">
+						<Size x="24" y="24" />
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="OPRotSaveButton" relativePoint="RIGHT">
+								<Offset x="85" y="0" />
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer>
+								<FontString name="$parentText" font="Fonts\FRIZQT__.TTF" text="Auto Update Rot.">
+									<Anchors>
+										<Anchor point="LEFT">
+											<Offset x="25" />
+										</Anchor>
+									</Anchors>
+									<FontHeight val="9" />
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Scripts>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+								self.Timer = C_Timer.NewTimer(0.7,function()
+									GameTooltip:SetText("Automatically Updates the Rotation Sliders to the objects current rotation when you select an object, and when you manually rotate the object via '.go rotate' or '.go pitch/roll/turn'.\n\rCurrently disabled until further sever-side support is fixed/added (.go info, .api get object rotation).", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
+							<OnClick>
+								if self:GetChecked() == true then
+									--OPMasterTable.Options["autoUpdateRot"] = true
+									self:SetChecked(false)
+								else
+									--OPMasterTable.Options["autoUpdateRot"] = false
+								end
+							</OnClick>
+							<OnShow>if OPMasterTable.Options["autoUpdateRot"] then self:SetChecked(true) end</OnShow>
+						</Scripts>
+						<NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
+						<PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
+						<HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD" />
+						<CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
+						<DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled" />
+					</CheckButton>
 				</Frames>
 			</Frame>
-			<Button name="Close" inherits="UIPanelCloseButton" text="Button1">
+			<Button name="$parentCloseButton" inherits="UIPanelCloseButton" text="Button1">
 				<Size x="25" y="25" />
 				<Anchors>
 					<Anchor point="TOPRIGHT">
 						<Offset x="2" y="2" />
 					</Anchor>
 				</Anchors>
+				<Scripts>
+					<OnClick>
+						if OPShowMessages:GetChecked() and tonumber(OPLengthBox:GetText()) == 6 and tonumber(OPWidthBox:GetText()) == 6 and tonumber(OPHeightBox:GetText()) == 6 then
+							print("ObjectMover EasterEgg")
+							PlaySoundFile("Interface\\AddOns\\ObjectMover\\media\\legion_73_rtg.ogg")
+						end
+						HideParentPanel(self);
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentPositionLockButton" text="Frame Position Lock">
+				<Size>
+					<AbsDimension x="25" y="25"/>
+				</Size>
+				<DisabledTexture file="Interface\Buttons\LockButton-Border"/>
+				<NormalTexture file="Interface\Buttons\LockButton-Unlocked-Up"/>
+				<PushedTexture file="Interface\Buttons\LockButton-Unlocked-Down"/>
+				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
+				<Anchors>
+					<Anchor point="RIGHT" relativeTo="$parentCloseButton" relativePoint="LEFT">
+						<Offset x="8" y="0" />
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						OPMasterTable.Options["locked"] = not OPMasterTable.Options["locked"]
+						if not OPMasterTable.Options["locked"] then
+							self:SetNormalTexture("Interface\\Buttons\\LockButton-Unlocked-Up");
+							self:SetPushedTexture("Interface\\Buttons\\LockButton-Unlocked-Down");
+							self:SetDisabledTexture("Interface\\Buttons\\LockButton-Border");
+						else
+							self:SetNormalTexture("Interface\\Buttons\\LockButton-Locked-Up");
+							self:SetPushedTexture("Interface\\Buttons\\LockButton-Unlocked-Down");
+							self:SetDisabledTexture("Interface\\Buttons\\LockButton-Border");
+						end
+					</OnClick>
+					<OnShow>
+						if not OPMasterTable.Options["locked"] then
+							self:SetNormalTexture("Interface\\Buttons\\LockButton-Unlocked-Up");
+							self:SetPushedTexture("Interface\\Buttons\\LockButton-Unlocked-Down");
+							self:SetDisabledTexture("Interface\\Buttons\\LockButton-Border");
+						else
+							self:SetNormalTexture("Interface\\Buttons\\LockButton-Locked-Up");
+							self:SetPushedTexture("Interface\\Buttons\\LockButton-Unlocked-Down");
+							self:SetDisabledTexture("Interface\\Buttons\\LockButton-Border");
+						end
+					</OnShow>
+					<OnLoad>
+						if not OPMasterTable.Options["locked"] then
+							self:SetNormalTexture("Interface\\Buttons\\LockButton-Unlocked-Up");
+							self:SetPushedTexture("Interface\\Buttons\\LockButton-Unlocked-Down");
+							self:SetDisabledTexture("Interface\\Buttons\\LockButton-Border");
+						else
+							self:SetNormalTexture("Interface\\Buttons\\LockButton-Locked-Up");
+							self:SetPushedTexture("Interface\\Buttons\\LockButton-Unlocked-Down");
+							self:SetDisabledTexture("Interface\\Buttons\\LockButton-Border");
+						end
+					</OnLoad>
+					<OnEnter>
+						GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+						self.Timer = C_Timer.NewTimer(0.7,function()
+							GameTooltip:SetText("Locks the UI from being moved.\n\r+ = Movable\n - = Not Movable", nil, nil, nil, nil, true)
+							GameTooltip:Show()
+						end)
+					</OnEnter>
+					<OnLeave>
+						GameTooltip_Hide()
+						self.Timer:Cancel()
+					</OnLeave>
+				</Scripts>
 			</Button>
 		</Frames>
 		<Scripts>
-			<OnLoad>self:RegisterForDrag("LeftButton");</OnLoad>
-			<OnDragStart>self:StartMoving();</OnDragStart>
+			<OnLoad>
+				self:RegisterForDrag("LeftButton");
+				OPCreateLoadDropDownMenus()
+			</OnLoad>
+			<OnDragStart>
+			if not OPMasterTable.Options["locked"] then
+				self:StartMoving();
+			end
+			</OnDragStart>
 			<OnDragStop>self:StopMovingOrSizing();</OnDragStop>
+		</Scripts>
+	</Frame>
+	<Frame name="OPMainSaveFrame" frameStrata="DIALOG" hidden="true" enableMouse="true" clampedToScreen="true">
+		<Size x="220" y="75" />
+		<Anchors>
+			<Anchor point="CENTER" relativeTo="UIParent">
+				<Offset y="100"/>
+			</Anchor>
+		</Anchors>
+		<TitleRegion setAllPoints="true" />
+		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+			<BackgroundInsets>
+				<AbsInset left="11" right="12" top="12" bottom="11" />
+			</BackgroundInsets>
+			<TileSize>
+				<AbsValue val="32" />
+			</TileSize>
+			<EdgeSize>
+				<AbsValue val="32" />
+			</EdgeSize>
+		</Backdrop>
+		<Frames>
+			<Frame name="$parentTitle">
+				<Size>
+					<AbsDimension x="200" y="12" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOP">
+						<Offset y="-10" />
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer>
+						<FontString name="$parentText" font="Fonts\FRIZQT__.TTF" text="Save Name:">
+							<Anchors>
+								<Anchor point="TOPLEFT" />
+								<Anchor point="BOTTOMRIGHT" />
+							</Anchors>
+							<FontHeight val="12" />
+							<Color r="1" g="0.8196079" b="0" />
+							<Shadow>
+								<Offset>
+									<AbsDimension x="1" y="-1" />
+								</Offset>
+								<Color r="0" g="0" b="0" />
+							</Shadow>
+						</FontString>
+					</Layer>
+				</Layers>
+			</Frame>
+			<EditBox name="$parentEditBox" autoFocus="false">
+				<HighlightColor r="0.5" g="0.5" b="0.5" a="0.75"/>
+				<TextInsets>
+					<AbsInset left="5" right="0" top="0" bottom="0" />
+				</TextInsets>
+				<Size x="180" y="23" />
+				<Anchors>
+					<Anchor point="CENTER">
+						<Offset y="5" />
+					</Anchor>
+				</Anchors>
+				<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+					<BackgroundInsets>
+						<AbsInset left="5" right="5" top="5" bottom="5" />
+					</BackgroundInsets>
+					<TileSize>
+						<AbsValue val="16" />
+					</TileSize>
+					<EdgeSize>
+						<AbsValue val="16" />
+					</EdgeSize>
+					<Color r="0.1" g="0.1" b="0.1" a="0.75"/>
+					<BorderColor r="0.5" g="0.5" b="0.5"/>
+				</Backdrop>
+				<Scripts>
+					<OnShow>
+						self:SetText("")
+						self:SetFocus()
+					</OnShow>
+					<OnEscapePressed>
+						self:ClearFocus()
+					</OnEscapePressed>
+					<OnEnterPressed>
+						self:ClearFocus()
+						OPSaveMenuActualSave();
+					</OnEnterPressed>
+				</Scripts>
+				<FontString font="Fonts\ARIALN.TTF" indented="true">
+					<FontHeight val="10" />
+					<Color r="1" g="1" b="1" />
+					<Shadow>
+						<Offset>
+							<AbsDimension x="1" y="-1" />
+						</Offset>
+						<Color r="0" g="0" b="0" />
+					</Shadow>
+				</FontString>
+			</EditBox>
+			<Button name="$parentSaveButton" inherits="UIPanelButtonTemplate" text="Save">
+				<Size x="64" y="16" />
+				<Anchors>
+					<Anchor point="CENTER">
+						<Offset x="-40" y="-16" />
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						OPSaveMenuActualSave();
+					</OnClick>
+				</Scripts>
+				<ButtonText name="$parentText" />
+				<NormalFont style="GameFontNormalSmall" />
+				<HighlightFont style="GameFontHighlightSmall" />
+				<DisabledFont style="GameFontDisableSmall" />
+			</Button>
+			<Button name="$parentCancelButton" inherits="UIPanelButtonTemplate" text="Cancel">
+				<Size x="64" y="16" />
+				<Anchors>
+					<Anchor point="CENTER">
+						<Offset x="40" y="-16" />
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						OPMainSaveFrame:Hide();
+						confirmRSaveOverwrite = false
+						confirmPSaveOverwrite = false
+					</OnClick>
+				</Scripts>
+				<ButtonText name="$parentText" />
+				<NormalFont style="GameFontNormalSmall" />
+				<HighlightFont style="GameFontHighlightSmall" />
+				<DisabledFont style="GameFontDisableSmall" />
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnShow>
+			</OnShow>
 		</Scripts>
 	</Frame>
 	<Button name="ObjectManipulator_MinimapButton" parent="Minimap" movable="true" enableMouse="true">

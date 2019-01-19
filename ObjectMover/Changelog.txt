@@ -1,3 +1,22 @@
+v5.0.0 (September 21, 2017)
+	- New: Move Relative option - When on, moves the object relative to your current orientation, not the objects. (I.e., object is facing east, you're facing north - 'forward' will move the object north, not east). Credits to shadowbunny88 for the initial idea and code.
+	- New: Save / Load Preset Systems for Object Parameters and Rotations.
+	- New: Apply rotation button! No longer need to move sliders around to apply rotation to a new object.
+	- New: Hover your Mouse over almost any Text EditBox / CheckBox / Button for more details on it's function or usage.
+	- New: Auto Update Rotation button - When enabled, will automatically update the sliders to the objects current rotation when you .go sel an object, or when you .go spawn an object.
+	- New: Half / Double buttons per-dimension & scale. These are not dynamic and just update the box completely. Works alongside dynamic Double and Halve options still.
+	- Added: Ability to set Key Bindings for toggling Move Object and Move Relative Options
+	- Added: Lock Frame button besides the close button - When enabled, the frame cannot be moved.
+	- Changed: Default 'Step' for Sliders is now in Whole Numbers (Use SHIFT or ALT modifiers to get decimal points), text-entry will auto-round to 4 decimal places.
+	- Fixed: Bindings for Halve / Bifold toggle.
+	- Fixed: Options set via Binding not saving.
+	- Fixed: Scale CheckButton un-checking if you are entering a new scale (now only disables the box when an invalid scale is present, re-enables when valid)
+	- Not-Fixed: Compatibility with WIM (chat filter counting) (WIM Breaks everything. Don't use it.)
+	- WIP: Auto Update Rot. - Button is added but non-functional as there's no feasible way to get the information needed from the server currently.
+
+	
+----------------------------------------
+
 v4.2.0 (Aug 17, 2017)
 	- Fixed Up / Down not working until Forward / Back was used once
 	- Fixed Up / Down not using the correct number (again, sorry - ACTUALLY FIXED NOW!)

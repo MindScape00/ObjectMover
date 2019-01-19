@@ -1,0 +1,1 @@
+- "Update Rotation on Gob Sel / Spawn" / "Auto Update Rotation (With Helptext)"

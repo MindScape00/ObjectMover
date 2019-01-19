@@ -29,14 +29,36 @@
 	<Binding name="Toggle Spawn on Move">
 			if SpawnonMove:GetChecked() == true then
 				SpawnonMove:SetChecked(false)
+				OPMasterTable.Options["SpawnOnMove"] = false
 			else
 				SpawnonMove:SetChecked(true)
+				OPMasterTable.Options["SpawnOnMove"] = true
+			end
+	</Binding>
+	<Binding name="Toggle Move Object">
+			if OPMoveObjectInstead:GetChecked() == true then
+				OPMoveObjectInstead:SetChecked(false)
+				OPMasterTable.Options["MoveObject"] = false
+				RelativeToPlayer:Disable()
+			else
+				OPMoveObjectInstead:SetChecked(true)
+				OPMasterTable.Options["MoveObject"] = true
+				RelativeToPlayer:Enable()
+			end
+	</Binding>
+	<Binding name="Toggle Move Relative to Player">
+			if RelativeToPlayer:GetChecked() == true then
+				RelativeToPlayer:SetChecked(false)
+				OPMasterTable.Options["RelativeToPlayer"] = false
+			else
+				RelativeToPlayer:SetChecked(true)
+				OPMasterTable.Options["RelativeToPlayer"] = true
 			end
 	</Binding>
 	<Binding name="Bifold">
-			EnableBoxes(Bifold, Halve)
+			EnableBoxes(OPBifoldToggle, OPHalveToggle)
 	</Binding>
 	<Binding name="Halve">
-			EnableBoxes(Halve, Bifold)
+			EnableBoxes(OPHalveToggle, OPBifoldToggle)
 	</Binding>
 </Bindings>
