@@ -8,6 +8,7 @@ BINDING_HEADER_OBJECTMANIP, SLASH_SHOWCLOSE1, SLASH_SHOWCLOSE2 = "Object Mover",
 OPMasterTable = {}
 OPMasterTable.Options = {}
 OPAutoDimObjectDB = {}
+OPMasterTable.Options["SliderStep"] = 0.01
 
 OPDebug = 0 -- // 0 - Off, 1 - On (Verbose)
 OPFramesAreLoaded = false
@@ -27,7 +28,6 @@ end
 local OPloginhandle = CreateFrame("frame","OPloginhandle");
 OPloginhandle:RegisterEvent("PLAYER_LOGIN");
 OPloginhandle:SetScript("OnEvent", function()
-    OPInitializeObjectDB();
 	OPMiniMapLoadIt()
 end);
 
