@@ -1,2 +1,9 @@
 - "Update Rotation on Gob Sel / Spawn" / "Auto Update Rotation (With Helptext)"
 	- New: Auto Update Rotation button - When enabled, will automatically update the sliders to the objects current rotation when you .go sel an object, or when you .go spawn an object.
+	
+- Add new Keybindings
+	- Inc/Dec Rotations --Done
+
+	- Make it so you can turn on Move Relative w/o Move Object on and it auto-turns on Move Object
+	
+- Make it so "Move Object" and "Spawn on Move" can work together using Go Copy instead to leave one in place.
