@@ -1,0 +1,1738 @@
+<Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd" xmlns="http://www.blizzard.com/wow/ui/">
+	<Frame name="OPMainFrame" hidden="true" enableMouse="true" movable="true" clampedToScreen="true">
+		<Size x="355" y="300" />
+		<Anchors>
+			<Anchor point="TOP" relativeTo="UIParent" />
+		</Anchors>
+		<TitleRegion setAllPoints="true" />
+		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+			<BackgroundInsets>
+				<AbsInset left="11" right="12" top="12" bottom="11" />
+			</BackgroundInsets>
+			<TileSize>
+				<AbsValue val="32" />
+			</TileSize>
+			<EdgeSize>
+				<AbsValue val="32" />
+			</EdgeSize>
+		</Backdrop>
+		<Frames>
+			<Frame name="OPPanel1">
+				<Size x="180" y="90" />
+				<Anchors>
+					<Anchor point="TOPRIGHT">
+						<Offset x="-10" y="-10" />
+					</Anchor>
+				</Anchors>
+				<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+					<BackgroundInsets>
+						<AbsInset left="5" right="5" top="5" bottom="5" />
+					</BackgroundInsets>
+					<TileSize>
+						<AbsValue val="16" />
+					</TileSize>
+					<EdgeSize>
+						<AbsValue val="16" />
+					</EdgeSize>
+					<Color r="0.5" g="0.5" b="0.5" a="0"/>
+					<BorderColor r="0.75" g="0.75" b="0.75"/>
+				</Backdrop>
+				<Frames>
+					<Button name="OPSpawnButton" text="Spawn">
+						<Size x="56" y="16" />
+						<Anchors>
+							<Anchor point="CENTER">
+								<Offset y="20" />
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								OPSpawn()
+							</OnClick>
+						</Scripts>
+						<NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
+							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+						</NormalTexture>
+						<PushedTexture file="Interface\Buttons\UI-Panel-Button-Down">
+							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+						</PushedTexture>
+						<DisabledTexture file="Interface\Buttons\UI-Panel-Button-Disabled">
+							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+						</DisabledTexture>
+						<HighlightTexture file="Interface\Buttons\UI-Panel-Button-Highlight" alphaMode="ADD">
+							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+						</HighlightTexture>
+						<ButtonText name="$parentText">
+							<FontHeight val="10" />
+						</ButtonText>
+						<NormalFont style="GameFontNormalSmall" />
+						<HighlightFont style="GameFontHighlightSmall" />
+						<DisabledFont style="GameFontDisableSmall" />
+					</Button>
+					<Button name="OPBackwardButton" text="Backward">
+						<Size x="56" y="16" />
+						<Anchors>
+							<Anchor point="CENTER">
+								<Offset y="-12" />
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								CheckIfValid(OPLengthBox, true, OPBackward)
+							</OnClick>
+						</Scripts>
+						<NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
+							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+						</NormalTexture>
+						<PushedTexture file="Interface\Buttons\UI-Panel-Button-Down">
+							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+						</PushedTexture>
+						<DisabledTexture file="Interface\Buttons\UI-Panel-Button-Disabled">
+							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+						</DisabledTexture>
+						<HighlightTexture file="Interface\Buttons\UI-Panel-Button-Highlight" alphaMode="ADD">
+							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+						</HighlightTexture>
+						<ButtonText name="$parentText">
+							<FontHeight val="10" />
+						</ButtonText>
+						<NormalFont style="GameFontNormalSmall" />
+						<HighlightFont style="GameFontHighlightSmall" />
+						<DisabledFont style="GameFontDisableSmall" />
+					</Button>
+					<Button name="OPForwardButton" text="Forward">
+						<Size x="56" y="16" />
+						<Anchors>
+							<Anchor point="CENTER">
+								<Offset y="4" />
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								CheckIfValid(OPLengthBox, true, OPForward)
+							</OnClick>
+						</Scripts>
+						<NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
+							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+						</NormalTexture>
+						<PushedTexture file="Interface\Buttons\UI-Panel-Button-Down">
+							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+						</PushedTexture>
+						<DisabledTexture file="Interface\Buttons\UI-Panel-Button-Disabled">
+							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+						</DisabledTexture>
+						<HighlightTexture file="Interface\Buttons\UI-Panel-Button-Highlight" alphaMode="ADD">
+							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+						</HighlightTexture>
+						<ButtonText name="$parentText">
+							<FontHeight val="10" />
+						</ButtonText>
+						<NormalFont style="GameFontNormalSmall" />
+						<HighlightFont style="GameFontHighlightSmall" />
+						<DisabledFont style="GameFontDisableSmall" />
+						<PushedTextOffset />
+					</Button>
+					<Button name="OPLeftButton" text="Left">
+						<Size x="56" y="16" />
+						<Anchors>
+							<Anchor point="CENTER">
+								<Offset x="-56" y="-12" />
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								CheckIfValid(OPWidthBox, true, OPLeft)
+							</OnClick>
+						</Scripts>
+						<NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
+							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+						</NormalTexture>
+						<PushedTexture file="Interface\Buttons\UI-Panel-Button-Down">
+							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+						</PushedTexture>
+						<DisabledTexture file="Interface\Buttons\UI-Panel-Button-Disabled">
+							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+						</DisabledTexture>
+						<HighlightTexture file="Interface\Buttons\UI-Panel-Button-Highlight" alphaMode="ADD">
+							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+						</HighlightTexture>
+						<ButtonText name="$parentText">
+							<FontHeight val="10" />
+						</ButtonText>
+						<NormalFont style="GameFontNormalSmall" />
+						<HighlightFont style="GameFontHighlightSmall" />
+						<DisabledFont style="GameFontDisableSmall" />
+						<PushedTextOffset />
+					</Button>
+					<Frame name="OPPanel1Title">
+						<Size>
+							<AbsDimension x="150" y="12" />
+						</Size>
+						<Anchors>
+							<Anchor point="TOP">
+								<Offset y="-5" />
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer>
+								<FontString name="OPPanel1TitleText" font="Fonts\FRIZQT__.TTF" text="Movement">
+									<Anchors>
+										<Anchor point="TOPLEFT" />
+										<Anchor point="BOTTOMRIGHT" />
+									</Anchors>
+									<FontHeight val="12" />
+									<Color r="1" g="0.8196079" b="0" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
+					</Frame>
+					<Button name="OPUpButton" text="Up">
+						<Size x="56" y="16" />
+						<Anchors>
+							<Anchor point="CENTER">
+								<Offset x="-56" y="4" />
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								CheckIfValid(OPHeightBox, true, OPUp)
+							</OnClick>
+						</Scripts>
+						<NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
+							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+						</NormalTexture>
+						<PushedTexture file="Interface\Buttons\UI-Panel-Button-Down">
+							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+						</PushedTexture>
+						<DisabledTexture file="Interface\Buttons\UI-Panel-Button-Disabled">
+							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+						</DisabledTexture>
+						<HighlightTexture file="Interface\Buttons\UI-Panel-Button-Highlight" alphaMode="ADD">
+							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+						</HighlightTexture>
+						<ButtonText name="$parentText" />
+						<NormalFont style="GameFontNormalSmall" />
+						<HighlightFont style="GameFontHighlightSmall" />
+						<DisabledFont style="GameFontDisableSmall" />
+					</Button>
+					<Button name="OPTeleporttoObjectButton" text="Teleport to Object">
+						<Size>
+							<AbsDimension x="100" y="20" />
+						</Size>
+						<Anchors>
+							<Anchor point="BOTTOM">
+								<Offset y="5" />
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								OPTeletoObject()
+							</OnClick>
+						</Scripts>
+						<NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
+							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+						</NormalTexture>
+						<PushedTexture file="Interface\Buttons\UI-Panel-Button-Down">
+							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+						</PushedTexture>
+						<DisabledTexture file="Interface\Buttons\UI-Panel-Button-Disabled">
+							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+						</DisabledTexture>
+						<HighlightTexture file="Interface\Buttons\UI-Panel-Button-Highlight" alphaMode="ADD">
+							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+						</HighlightTexture>
+						<ButtonText name="$parentText">
+							<FontHeight val="10" />
+						</ButtonText>
+						<NormalFont style="GameFontNormalSmall" />
+						<HighlightFont style="GameFontHighlightSmall" />
+						<DisabledFont style="GameFontDisableSmall" />
+					</Button>
+					<Button name="OPRightButton" text="Right">
+						<Size x="56" y="16" />
+						<Anchors>
+							<Anchor point="CENTER">
+								<Offset x="56" y="-12" />
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								CheckIfValid(OPWidthBox, true, OPRight)
+							</OnClick>
+						</Scripts>
+						<NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
+							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+						</NormalTexture>
+						<PushedTexture file="Interface\Buttons\UI-Panel-Button-Down">
+							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+						</PushedTexture>
+						<DisabledTexture file="Interface\Buttons\UI-Panel-Button-Disabled">
+							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+						</DisabledTexture>
+						<HighlightTexture file="Interface\Buttons\UI-Panel-Button-Highlight" alphaMode="ADD">
+							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+						</HighlightTexture>
+						<ButtonText name="$parentText">
+							<FontHeight val="10" />
+						</ButtonText>
+						<NormalFont style="GameFontNormalSmall" />
+						<HighlightFont style="GameFontHighlightSmall" />
+						<DisabledFont style="GameFontDisableSmall" />
+						<PushedTextOffset />
+					</Button>
+					<Button name="OPDownButton" text="Down">
+						<Size x="56" y="16" />
+						<Anchors>
+							<Anchor point="CENTER">
+								<Offset x="56" y="4" />
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								CheckIfValid(OPHeightBox, true, OPDown)
+							</OnClick>
+						</Scripts>
+						<NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
+							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+						</NormalTexture>
+						<PushedTexture file="Interface\Buttons\UI-Panel-Button-Down">
+							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+						</PushedTexture>
+						<DisabledTexture file="Interface\Buttons\UI-Panel-Button-Disabled">
+							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+						</DisabledTexture>
+						<HighlightTexture file="Interface\Buttons\UI-Panel-Button-Highlight" alphaMode="ADD">
+							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+						</HighlightTexture>
+						<ButtonText name="$parentText">
+							<FontHeight val="10" />
+						</ButtonText>
+						<NormalFont style="GameFontNormalSmall" />
+						<HighlightFont style="GameFontHighlightSmall" />
+						<DisabledFont style="GameFontDisableSmall" />
+					</Button>
+				</Frames>
+			</Frame>
+			<Frame name="OPPanel2">
+				<Size>
+					<AbsDimension x="155" y="178" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="10" y="-10" />
+					</Anchor>
+				</Anchors>
+				<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+					<BackgroundInsets>
+						<AbsInset left="5" right="5" top="5" bottom="5" />
+					</BackgroundInsets>
+					<TileSize>
+						<AbsValue val="16" />
+					</TileSize>
+					<EdgeSize>
+						<AbsValue val="16" />
+					</EdgeSize>
+					<Color r="0.5" g="0.5" b="0.5" a="0"/>
+					<BorderColor r="0.75" g="0.75" b="0.75"/>
+				</Backdrop>
+				<Frames>
+					<Frame name="OPPanel2Title">
+						<Size x="145" y="12" />
+						<Anchors>
+							<Anchor point="TOP">
+								<Offset y="-5" />
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer>
+								<FontString name="OPPanel2TitleText" font="Fonts\FRIZQT__.TTF" text="Object Parameters">
+									<Anchors>
+										<Anchor point="TOPLEFT" />
+										<Anchor point="BOTTOMRIGHT" />
+									</Anchors>
+									<FontHeight val="12" />
+									<Color r="1" g="0.8196079" b="0" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
+					</Frame>
+					<Frame name="OPObjectIDTitle">
+						<Size x="70" y="12" />
+						<Anchors>
+							<Anchor point="CENTER">
+								<Offset x="-30" y="55" />
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer>
+								<FontString name="OPObjectIDTitleText" font="Fonts\FRIZQT__.TTF" text="    Object ID:">
+									<Anchors>
+										<Anchor point="TOPLEFT" />
+										<Anchor point="BOTTOMRIGHT" />
+									</Anchors>
+									<FontHeight val="10" />
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
+					</Frame>
+					<EditBox name="OPWidthBox" autoFocus="false">
+						<HighlightColor r="0.5" g="0.5" b="0.5" a="0.75"/>
+						<TextInsets>
+							<AbsInset left="5" right="0" top="0" bottom="0" />
+						</TextInsets>
+						<Size x="64" y="23" />
+						<Anchors>
+							<Anchor point="CENTER">
+								<Offset x="40" y="5" />
+							</Anchor>
+						</Anchors>
+						<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+							<BackgroundInsets>
+								<AbsInset left="5" right="5" top="5" bottom="5" />
+							</BackgroundInsets>
+							<TileSize>
+								<AbsValue val="16" />
+							</TileSize>
+							<EdgeSize>
+								<AbsValue val="16" />
+							</EdgeSize>
+							<Color r="0.1" g="0.1" b="0.1" a="0.75"/>
+							<BorderColor r="0.5" g="0.5" b="0.5"/>
+						</Backdrop>
+						<Scripts>
+							<OnEscapePressed>
+								self:ClearFocus()
+							</OnEscapePressed>
+							<OnEnterPressed>
+								self:ClearFocus()
+							</OnEnterPressed>
+							<OnTextChanged>
+								if self:GetText() == self:GetText():match("%d+") or self:GetText() == self:GetText():match("%d+%.%d+") or self:GetText() == self:GetText():match("%.%d+") then
+									self:SetTextColor(255,255,255,1)
+									OPOptionsWidth = self:GetText()
+								elseif self:GetText() == "" then
+									self:SetTextColor(255,255,255,1)
+								elseif self:GetText():find("%a") then
+									self:SetText(self:GetText():gsub("%a", ""))
+								else
+									self:SetTextColor(1,0,0,1)
+								end
+							</OnTextChanged>
+							<OnShow>if OPOptionsWidth ~= nil then self:SetText(OPOptionsWidth) end</OnShow>
+						</Scripts>
+						<FontString font="Fonts\ARIALN.TTF" indented="true">
+							<FontHeight val="10" />
+							<Color r="1" g="1" b="1" />
+							<Shadow>
+								<Offset>
+									<AbsDimension x="1" y="-1" />
+								</Offset>
+								<Color r="0" g="0" b="0" />
+							</Shadow>
+						</FontString>
+					</EditBox>
+					<EditBox name="OPObjectIDBox" autoFocus="false">
+						<HighlightColor r="0.5" g="0.5" b="0.5" a="0.75"/>
+						<TextInsets>
+							<AbsInset left="5" right="0" top="0" bottom="0" />
+						</TextInsets>
+						<Size x="64" y="23" />
+						<Anchors>
+							<Anchor point="CENTER">
+								<Offset x="40" y="55" />
+							</Anchor>
+						</Anchors>
+						<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+							<BackgroundInsets>
+								<AbsInset left="5" right="5" top="5" bottom="5" />
+							</BackgroundInsets>
+							<TileSize>
+								<AbsValue val="16" />
+							</TileSize>
+							<EdgeSize>
+								<AbsValue val="16" />
+							</EdgeSize>
+							<Color r="0.1" g="0.1" b="0.1" a="0.75"/>
+							<BorderColor r="0.5" g="0.5" b="0.5"/>
+						</Backdrop>
+						<Scripts>
+							<OnEscapePressed>
+								self:ClearFocus()
+							</OnEscapePressed>
+							<OnEnterPressed>
+								self:ClearFocus()
+							</OnEnterPressed>
+							<OnTextChanged>
+								if self:GetText() == self:GetText():match("%d+") or self:GetText() == self:GetText():match("%d+%.%d+") or self:GetText() == self:GetText():match("%.%d+") then
+									self:SetTextColor(255,255,255,1)
+									OPOptionsObjectID = self:GetText()
+								elseif self:GetText() == "" then
+									self:SetTextColor(255,255,255,1)
+								elseif self:GetText():find("%a") then
+									self:SetText(self:GetText():gsub("%a", ""))
+								else
+									self:SetTextColor(1,0,0,1)
+								end
+							</OnTextChanged>
+							<OnShow>if OPOptionsObjectID ~= nil then self:SetText(OPOptionsObjectID) end</OnShow>
+						</Scripts>
+						<FontString font="Fonts\ARIALN.TTF" text="" indented="true">
+							<FontHeight val="10" />
+							<Color r="1" g="1" b="1" />
+							<Shadow>
+								<Offset>
+									<AbsDimension x="1" y="-1" />
+								</Offset>
+								<Color r="0" g="0" b="0" />
+							</Shadow>
+						</FontString>
+					</EditBox>
+					<Frame name="OPHeightTitle">
+						<Size x="55" y="12" />
+						<Anchors>
+							<Anchor point="CENTER">
+								<Offset x="-25" y="-20" />
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer>
+								<FontString name="OPHeightTitleText" font="Fonts\FRIZQT__.TTF" text="     Height:">
+									<Anchors>
+										<Anchor point="TOPLEFT" />
+										<Anchor point="BOTTOMRIGHT" />
+									</Anchors>
+									<FontHeight val="10" />
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
+					</Frame>
+					<Frame name="OPLengthTitle">
+						<Size x="55" y="12" />
+						<Anchors>
+							<Anchor point="CENTER">
+								<Offset x="-25" y="30" />
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer>
+								<FontString name="OPLengthTitleText" font="Fonts\FRIZQT__.TTF" text="     Length:">
+									<Anchors>
+										<Anchor point="TOPLEFT" />
+										<Anchor point="BOTTOMRIGHT" />
+									</Anchors>
+									<FontHeight val="10" />
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
+					</Frame>
+					<Frame name="OPWidthTitle">
+						<Size x="55" y="12" />
+						<Anchors>
+							<Anchor point="CENTER">
+								<Offset x="-25" y="5" />
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer>
+								<FontString name="OPWidthTitleText" font="Fonts\FRIZQT__.TTF" text="      Width:">
+									<Anchors>
+										<Anchor point="TOPLEFT" />
+										<Anchor point="BOTTOMRIGHT" />
+									</Anchors>
+									<FontHeight val="10" />
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
+					</Frame>
+					<EditBox name="OPHeightBox" autoFocus="false">
+						<HighlightColor r="0.5" g="0.5" b="0.5" a="0.75"/>
+						<TextInsets>
+							<AbsInset left="5" right="0" top="0" bottom="0" />
+						</TextInsets>
+						<Size x="64" y="23" />
+						<Anchors>
+							<Anchor point="CENTER">
+								<Offset x="40" y="-20" />
+							</Anchor>
+						</Anchors>
+						<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+							<BackgroundInsets>
+								<AbsInset left="5" right="5" top="5" bottom="5" />
+							</BackgroundInsets>
+							<TileSize val="16" />
+							<EdgeSize val="16" />
+							<Color r="0.1" g="0.1" b="0.1" a="0.75"/>
+							<BorderColor r="0.5" g="0.5" b="0.5"/>
+						</Backdrop>
+						<Scripts>
+							<OnEscapePressed>
+								self:ClearFocus()
+							</OnEscapePressed>
+							<OnEnterPressed>
+								self:ClearFocus()
+							</OnEnterPressed>
+							<OnTextChanged>
+								if self:GetText() == self:GetText():match("%d+") or self:GetText() == self:GetText():match("%d+%.%d+") or self:GetText() == self:GetText():match("%.%d+") then
+									self:SetTextColor(255,255,255,1)
+									OPOptionsHeight = self:GetText()
+								elseif self:GetText() == "" then
+									self:SetTextColor(255,255,255,1)
+								elseif self:GetText():find("%a") then
+									self:SetText(self:GetText():gsub("%a", ""))
+								else
+									self:SetTextColor(1,0,0,1)
+								end
+							</OnTextChanged>
+							<OnShow>if OPOptionsHeight ~= nil then self:SetText(OPOptionsHeight) end</OnShow>
+						</Scripts>
+						<FontString font="Fonts\ARIALN.TTF" indented="true">
+							<FontHeight val="10" />
+							<Color r="1" g="1" b="1" />
+							<Shadow>
+								<Offset>
+									<AbsDimension x="1" y="-1" />
+								</Offset>
+								<Color r="0" g="0" b="0" />
+							</Shadow>
+						</FontString>
+					</EditBox>
+					<EditBox name="OPScaleBox" autoFocus="false">
+						<HighlightColor r="0.5" g="0.5" b="0.5" a="0.75" />
+						<TextInsets>
+              <AbsInset left="5" right="0" top="0" bottom="0" />
+            </TextInsets>
+						<Size x="64" y="23" />
+						<Anchors>
+							<Anchor point="CENTER">
+								<Offset x="40" y="-45" />
+							</Anchor>
+						</Anchors>
+						<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+							<BackgroundInsets>
+								<AbsInset left="5" right="5" top="5" bottom="5" />
+							</BackgroundInsets>
+							<TileSize>
+								<AbsValue val="16" />
+							</TileSize>
+							<EdgeSize>
+								<AbsValue val="16" />
+							</EdgeSize>
+							<Color r="0.1" g="0.1" b="0.1" a="0.75"/>
+							<BorderColor r="0.5" g="0.5" b="0.5"/>
+						</Backdrop>
+						<Scripts>
+							<OnEnterPressed>
+								self:ClearFocus()
+							</OnEnterPressed>
+							<OnEscapePressed>
+								self:ClearFocus()
+							</OnEscapePressed>
+							<OnTextChanged>
+								if self:GetText() == self:GetText():match("%d+") or self:GetText() == self:GetText():match("%d+%.%d+") or self:GetText() == self:GetText():match("%.%d+") then
+									ScaleObject:Enable()
+									self:SetTextColor(255,255,255,1)
+									OPOptionsScale = self:GetText()
+								elseif self:GetText() == "" then
+									self:SetTextColor(255,255,255,1)
+									ScaleObject:Disable()
+								elseif self:GetText():find("%a") then
+									self:SetText(self:GetText():gsub("%a", ""))
+								else
+									self:SetTextColor(1,0,0,1)
+									ScaleObject:Disable()
+									ScaleObject:SetChecked(false)
+								end
+							</OnTextChanged>
+							<OnShow>if OPOptionsScale ~= nil then self:SetText(OPOptionsScale) end</OnShow>
+						</Scripts>
+						<FontString font="Fonts\ARIALN.TTF" indented="true">
+							<FontHeight val="10" />
+							<Color r="1" g="1" b="1" />
+							<Shadow>
+								<Offset>
+									<AbsDimension x="1" y="-1" />
+								</Offset>
+								<Color r="0" g="0" b="0" />
+							</Shadow>
+						</FontString>
+					</EditBox>
+					<Frame name="OPScaleTitle">
+						<Size x="55" y="12" />
+						<Anchors>
+							<Anchor point="CENTER">
+								<Offset x="-25" y="-45" />
+							</Anchor>
+						</Anchors>
+						<Backdrop bgFile="" edgeFile="" />
+						<Layers>
+							<Layer>
+								<FontString name="OPScaleTitleText" font="Fonts\FRIZQT__.TTF" text="       Scale:">
+									<Anchors>
+										<Anchor point="TOPLEFT" />
+										<Anchor point="BOTTOMRIGHT" />
+									</Anchors>
+									<FontHeight val="10" />
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
+					</Frame>
+					<CheckButton name="ScaleObject">
+						<Size x="24" y="24" />
+						<Anchors>
+							<Anchor point="CENTER">
+								<Offset x="-45" y="-45" />
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnEscapePressed>
+								              ObjectPlayForm1:Hide();
+							</OnEscapePressed>
+							<OnClick>
+								if self:GetChecked() == true then
+									OPOptionsScaleTog = true
+								else
+									OPOptionsScaleTog = false
+								end
+							</OnClick>
+							<OnShow>if OPOptionsScaleTog == true then self:SetChecked(true) end</OnShow>
+						</Scripts>
+						<NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
+						<PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
+						<HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD" />
+						<CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
+						<DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled" />
+					</CheckButton>
+					<EditBox name="OPLengthBox" autoFocus="false">
+						<HighlightColor r="0.5" g="0.5" b="0.5" a="0.75" />
+						<TextInsets>
+							<AbsInset left="5" right="0" top="0" bottom="0" />
+						</TextInsets>
+						<Size x="64" y="23" />
+						<Anchors>
+							<Anchor point="CENTER">
+								<Offset x="40" y="30" />
+							</Anchor>
+						</Anchors>
+						<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+							<BackgroundInsets>
+								<AbsInset left="5" right="5" top="5" bottom="5" />
+							</BackgroundInsets>
+							<TileSize>
+								<AbsValue val="16" />
+							</TileSize>
+							<EdgeSize>
+								<AbsValue val="16" />
+							</EdgeSize>
+							<Color r="0.1" g="0.1" b="0.1" a="0.75"/>
+							<BorderColor r="0.5" g="0.5" b="0.5"/>
+						</Backdrop>
+						<Scripts>
+							<OnEscapePressed>
+								self:ClearFocus()
+							</OnEscapePressed>
+							<OnEnterPressed>
+								self:ClearFocus()
+							</OnEnterPressed>
+							<OnTextChanged>
+								if self:GetText() == self:GetText():match("%d+") or self:GetText() == self:GetText():match("%d+%.%d+") or self:GetText() == self:GetText():match("%.%d+") then
+									self:SetTextColor(255,255,255,1)
+									OPOptionsLength = self:GetText()
+								elseif self:GetText() == "" then
+									self:SetTextColor(255,255,255,1)
+								elseif self:GetText():find("%a") then
+									self:SetText(self:GetText():gsub("%a", ""))
+								else
+									self:SetTextColor(1,0,0,1)
+								end
+							</OnTextChanged>
+							<OnShow>if OPOptionsLength ~= nil then self:SetText(OPOptionsLength) end</OnShow>
+						</Scripts>
+						<FontString font="Fonts\ARIALN.TTF" indented="true">
+							<FontHeight val="10" />
+							<Color r="1" g="1" b="1" />
+							<Shadow>
+								<Offset>
+									<AbsDimension x="1" y="-1" />
+								</Offset>
+								<Color r="0" g="0" b="0" />
+							</Shadow>
+						</FontString>
+					</EditBox>
+					<Button name="OPGetObjectButton" text="Get Object ID">
+						<Size x="110" y="20" />
+						<Anchors>
+							<Anchor point="BOTTOM">
+								<Offset y="10" />
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								OPGetObject()
+							</OnClick>
+						</Scripts>
+						<NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
+							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+						</NormalTexture>
+						<PushedTexture file="Interface\Buttons\UI-Panel-Button-Down">
+							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+						</PushedTexture>
+						<DisabledTexture file="Interface\Buttons\UI-Panel-Button-Disabled">
+							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+						</DisabledTexture>
+						<HighlightTexture file="Interface\Buttons\UI-Panel-Button-Highlight" alphaMode="ADD">
+							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+						</HighlightTexture>
+						<ButtonText name="$parentText">
+							<FontHeight val="12" />
+						</ButtonText>
+						<NormalFont style="GameFontNormal" />
+						<HighlightFont style="GameFontHighlight" />
+						<DisabledFont style="GameFontDisable" />
+					</Button>
+				</Frames>
+			</Frame>
+			<Frame name="OPPanel3">
+				<Size x="180" y="88" />
+				<Anchors>
+					<Anchor point="TOPRIGHT">
+						<Offset x="-10" y="-100" />
+					</Anchor>
+				</Anchors>
+				<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+					<BackgroundInsets>
+						<AbsInset left="5" right="5" top="5" bottom="5" />
+					</BackgroundInsets>
+					<TileSize>
+						<AbsValue val="16" />
+					</TileSize>
+					<EdgeSize>
+						<AbsValue val="16" />
+					</EdgeSize>
+					<Color r="0.5" g="0.5" b="0.5" a="0"/>
+					<BorderColor r="0.75" g="0.75" b="0.75"/>
+				</Backdrop>
+				<Frames>
+					<CheckButton name="SpawnonMove">
+						<Size>
+							<AbsDimension x="24" y="24" />
+						</Size>
+						<Anchors>
+							<Anchor point="RIGHT">
+								<Offset x="-5" y="20" />
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer>
+								<FontString name="$parentText" font="Fonts\FRIZQT__.TTF" text="Spawn on Move">
+									<Anchors>
+										<Anchor point="LEFT">
+											<Offset x="-79" />
+										</Anchor>
+									</Anchors>
+									<FontHeight val="9" />
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Scripts>
+							<OnEscapePressed>
+								              ObjectPlayForm1:Hide();
+							</OnEscapePressed>
+							<OnClick>
+								if self:GetChecked() == true then
+									OPOptionsSpawnOnMove = true
+								else
+									OPOptionsSpawnOnMove = false
+								end
+							</OnClick>
+							<OnShow>if OPOptionsSpawnOnMove == true then self:SetChecked(true) end</OnShow>
+						</Scripts>
+						<NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
+						<PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
+						<HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD" />
+						<CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
+						<DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled" />
+					</CheckButton>
+					<CheckButton name="AutoDimensions">
+						<Size x="24" y="24" />
+						<Anchors>
+							<Anchor point="RIGHT">
+								<Offset x="-5" y="-5" />
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer>
+								<FontString name="$parentText" font="Fonts\FRIZQT__.TTF" text="Auto Dimensions">
+									<Anchors>
+										<Anchor point="right">
+											<Offset x="-25" />
+										</Anchor>
+									</Anchors>
+									<FontHeight val="9" />
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Scripts>
+							<OnEscapePressed>
+								              ObjectPlayForm1:Hide();
+							</OnEscapePressed>
+							<OnLoad>self:Disable()</OnLoad>
+						</Scripts>
+						<NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
+						<PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
+						<HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD" />
+						<CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
+						<DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled" />
+					</CheckButton>
+					<CheckButton name="Halve">
+						<Size x="24" y="24" />
+						<Anchors>
+							<Anchor point="LEFT">
+								<Offset x="5" y="-5" />
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer>
+								<FontString name="$parentText" font="Fonts\FRIZQT__.TTF" text="Halve">
+									<Anchors>
+										<Anchor point="LEFT">
+											<Offset x="25" />
+										</Anchor>
+									</Anchors>
+									<FontHeight val="9" />
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Scripts>
+							<OnEscapePressed>
+								              ObjectPlayForm1:Hide();
+							</OnEscapePressed>
+							<OnMouseUp>
+								if Bifold:GetChecked() == true then
+									Bifold:SetChecked(false)
+								end
+							</OnMouseUp>
+						</Scripts>
+						<NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
+						<PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
+						<HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD" />
+						<CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
+						<DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled" />
+					</CheckButton>
+					<CheckButton name="Bifold">
+						<Size x="24" y="24" />
+						<Anchors>
+							<Anchor point="LEFT">
+								<Offset x="5" y="20" />
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer>
+								<FontString name="$parentText" font="Fonts\FRIZQT__.TTF" text="Double">
+									<Anchors>
+										<Anchor point="LEFT">
+											<Offset x="25" />
+										</Anchor>
+									</Anchors>
+									<FontHeight val="9" />
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Scripts>
+							<OnEscapePressed>
+								              ObjectPlayForm1:Hide();
+							</OnEscapePressed>
+							<OnMouseUp>
+								if Halve:GetChecked() == true then
+									Halve:SetChecked(false)
+								end
+							</OnMouseUp>
+						</Scripts>
+						<NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
+						<PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
+						<HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD" />
+						<CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
+						<DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled" />
+					</CheckButton>
+					<CheckButton name="OPMoveObjectInstead">
+						<Size x="24" y="24" />
+						<Anchors>
+							<Anchor point="LEFT">
+								<Offset x="5" y="-30" />
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer>
+								<FontString name="$parentText" font="Fonts\FRIZQT__.TTF" text="Move Object">
+									<Anchors>
+										<Anchor point="LEFT">
+											<Offset x="25" />
+										</Anchor>
+									</Anchors>
+									<FontHeight val="9" />
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Scripts>
+							<OnEscapePressed>
+								              ObjectPlayForm1:Hide();
+							</OnEscapePressed>
+							<OnClick>
+								if self:GetChecked() == true then
+									OPOptionsMoveObject = true
+								else
+									OPOptionsMoveObject = false
+								end
+							</OnClick>
+							<OnShow>if OPOptionsMoveObject == true then self:SetChecked(true) end</OnShow>
+						</Scripts>
+						<NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
+						<PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
+						<HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD" />
+						<CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
+						<DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled" />
+					</CheckButton>
+					<CheckButton name="Messages">
+						<Size x="24" y="24" />
+						<Anchors>
+							<Anchor point="RIGHT">
+								<Offset x="-5" y="-30" />
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer>
+								<FontString name="ShowMessagesText" font="Fonts\FRIZQT__.TTF" text="Messages">
+									<Anchors>
+										<Anchor point="LEFT">
+											<Offset x="-50" />
+										</Anchor>
+									</Anchors>
+									<FontHeight val="9" />
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Scripts>
+							<OnEscapePressed>
+								              ObjectPlayForm1:Hide();
+							</OnEscapePressed>
+						</Scripts>
+						<NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
+						<PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
+						<HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD" />
+						<CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
+						<DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled" />
+					</CheckButton>
+					<Frame name="OPPanel3Title">
+						<Size>
+							<AbsDimension x="150" y="12" />
+						</Size>
+						<Anchors>
+							<Anchor point="TOP">
+								<Offset y="-5" />
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer>
+								<FontString name="OPPanel3TitleText" font="Fonts\FRIZQT__.TTF" text="Options">
+									<Anchors>
+										<Anchor point="TOPLEFT" />
+										<Anchor point="BOTTOMRIGHT" />
+									</Anchors>
+									<FontHeight val="12" />
+									<Color r="1" g="0.8196079" b="0" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
+					</Frame>
+				</Frames>
+			</Frame>
+			<Frame name="OPPanel4">
+				<Size x="335" y="102" />
+				<Anchors>
+					<Anchor point="BOTTOMLEFT">
+						<Offset x="10" y="10" />
+					</Anchor>
+				</Anchors>
+				<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+					<BackgroundInsets>
+						<AbsInset left="5" right="5" top="5" bottom="5" />
+					</BackgroundInsets>
+					<TileSize>
+						<AbsValue val="16" />
+					</TileSize>
+					<EdgeSize>
+						<AbsValue val="16" />
+					</EdgeSize>
+					<Color r="0.5" g="0.5" b="0.5" a="0"/>
+					<BorderColor r="0.75" g="0.75" b="0.75"/>
+				</Backdrop>
+				<Frames>
+					<Frame name="OPPanel4Title">
+						<Size>
+							<AbsDimension x="150" y="12" />
+						</Size>
+						<Anchors>
+							<Anchor point="TOP">
+								<Offset y="-5" />
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer>
+								<FontString name="OPPanel4TitleText" font="Fonts\FRIZQT__.TTF" text="Rotation">
+									<Anchors>
+										<Anchor point="TOPLEFT" />
+										<Anchor point="BOTTOMRIGHT" />
+									</Anchors>
+									<FontHeight val="12" />
+									<Color r="1" g="0.8196079" b="0" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
+					</Frame>
+					<EditBox name="OPRotationEditBoxX" autoFocus="false">
+						<HighlightColor r="0.5" g="0.5" b="0.5" a="0.75"/>
+						<TextInsets>
+							<AbsInset left="5" right="0" top="0" bottom="0" />
+						</TextInsets>
+						<Size x="64" y="23" />
+						<Anchors>
+							<Anchor point="TOPRIGHT">
+								<Offset x="-7" y="-15" />
+							</Anchor>
+						</Anchors>
+						<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+							<BackgroundInsets>
+								<AbsInset left="5" right="5" top="5" bottom="5" />
+							</BackgroundInsets>
+							<TileSize>
+								<AbsValue val="16" />
+							</TileSize>
+							<EdgeSize>
+								<AbsValue val="16" />
+							</EdgeSize>
+							<Color r="0.1" g="0.1" b="0.1" a="0.75"/>
+							<BorderColor r="0.5" g="0.5" b="0.5"/>
+						</Backdrop>
+						<Scripts>
+							<OnEscapePressed>
+								self:ClearFocus()
+							</OnEscapePressed>
+							<OnEnterPressed>
+								self:ClearFocus()
+							</OnEnterPressed>
+							<OnTextChanged>
+								if self:GetText() == self:GetText():match("%d+") or self:GetText() == self:GetText():match("%d+%.%d+") or self:GetText() == self:GetText():match("%.%d+") then
+									self:SetTextColor(255,255,255,1)
+								elseif self:GetText() == "" then
+									self:SetTextColor(255,255,255,1)
+								elseif self:GetText():find("%a") then
+									self:SetText(self:GetText():gsub("%a", ""))
+								else
+									self:SetTextColor(1,0,0,1)
+								end
+							</OnTextChanged>
+							<OnEditFocusLost>
+								if self:GetText() == self:GetText():match("%d+") or self:GetText() == self:GetText():match("%d+%.%d+") or self:GetText() == self:GetText():match("%.%d+") then
+									local OPRotXEditVal = self:GetText()
+									OPRotationSliderX:SetValue(OPRotXEditVal)
+								end
+							</OnEditFocusLost>
+						</Scripts>
+						<FontString font="Fonts\ARIALN.TTF" indented="true">
+							<FontHeight val="10" />
+							<Color r="1" g="1" b="1" />
+							<Shadow>
+								<Offset>
+									<AbsDimension x="1" y="-1" />
+								</Offset>
+								<Color r="0" g="0" b="0" />
+							</Shadow>
+						</FontString>
+					</EditBox>
+					<Slider name="OPRotationSliderX" orientation="HORIZONTAL" enableMouse="true" defaultValue="0" minValue="0" maxValue="360" valueStep="0.01" ObeyStepOnDrag="true">
+						<Size>
+							<AbsDimension x="250" y="14" />
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset>
+									<AbsDimension x="10" y="-20" />
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Backdrop bgFile="Interface\Buttons\UI-SliderBar-Background" edgeFile="Interface\Buttons\UI-SliderBar-Border" tile="true">
+							<BackgroundInsets>
+								<AbsInset left="3" right="3" top="6" bottom="6" />
+							</BackgroundInsets>
+							<TileSize>
+								<AbsValue val="8" />
+							</TileSize>
+							<EdgeSize>
+								<AbsValue val="8" />
+							</EdgeSize>
+						</Backdrop>
+						<Layers>
+							<Layer>
+								<FontString name="$parentTitle" font="Fonts\FRIZQT__.TTF" text="Roll">
+									<Anchors>
+										<Anchor point="TOPLEFT">
+											<Offset x="10" y="10" />
+										</Anchor>
+									</Anchors>
+									<FontHeight>
+										<AbsValue val="10" />
+									</FontHeight>
+									<Color r="1" g="0.8196079" b="0" />
+									<Shadow>
+										<Color r="0" g="0" b="0" />
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+									</Shadow>
+								</FontString>
+								<FontString name="$parentLow" font="Fonts\FRIZQT__.TTF" text="0">
+									<Anchors>
+										<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" />
+									</Anchors>
+									<FontHeight>
+										<AbsValue val="10" />
+									</FontHeight>
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Color r="0" g="0" b="0" />
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+									</Shadow>
+								</FontString>
+								<FontString name="$parentHigh" font="Fonts\FRIZQT__.TTF" text="360">
+									<Anchors>
+										<Anchor point="TOPRIGHT" relativePoint="BOTTOMRIGHT" />
+									</Anchors>
+									<FontHeight>
+										<AbsValue val="10" />
+									</FontHeight>
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Color r="0" g="0" b="0" />
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
+						<ThumbTexture name="$parentThumb" file="Interface\Buttons\UI-SliderBar-Button-Horizontal">
+							<Size>
+								<AbsDimension x="24" y="24" />
+							</Size>
+						</ThumbTexture>
+						<Scripts>
+							<OnValueChanged>
+								if OPFramesAreLoaded then
+									local OPRotSliderValX = self:GetValue()
+									local OPRotSliderValX = roundToNthDecimal(OPRotSliderValX,3)
+									OPRotationEditBoxX:SetText(OPRotSliderValX)
+									OPRotateObject();
+								end
+							</OnValueChanged>
+							<OnMouseDown>OPIMFUCKINGROTATINGDONTSPAMME = true</OnMouseDown>
+							<OnMouseUp>OPClearRotateChatFilter()</OnMouseUp>
+							<OnLoad>OPInitializeLoading();</OnLoad>
+						</Scripts>
+					</Slider>
+					<EditBox name="OPRotationEditBoxY" autoFocus="false">
+						<HighlightColor r="0.5" g="0.5" b="0.5" a="0.75"/>
+						<TextInsets>
+							<AbsInset left="5" right="0" top="0" bottom="0" />
+						</TextInsets>
+						<Size x="64" y="23" />
+						<Anchors>
+							<Anchor point="TOPRIGHT">
+								<Offset x="-7" y="-42" />
+							</Anchor>
+						</Anchors>
+						<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+							<BackgroundInsets>
+								<AbsInset left="5" right="5" top="5" bottom="5" />
+							</BackgroundInsets>
+							<TileSize>
+								<AbsValue val="16" />
+							</TileSize>
+							<EdgeSize>
+								<AbsValue val="16" />
+							</EdgeSize>
+							<Color r="0.1" g="0.1" b="0.1" a="0.75"/>
+							<BorderColor r="0.5" g="0.5" b="0.5"/>
+						</Backdrop>
+						<Scripts>
+							<OnEscapePressed>
+								self:ClearFocus()
+							</OnEscapePressed>
+							<OnEnterPressed>
+								self:ClearFocus()
+							</OnEnterPressed>
+							<OnTextChanged>
+								if self:GetText() == self:GetText():match("%d+") or self:GetText() == self:GetText():match("%d+%.%d+") or self:GetText() == self:GetText():match("%.%d+") then
+									self:SetTextColor(255,255,255,1)
+								elseif self:GetText() == "" then
+									self:SetTextColor(255,255,255,1)
+								elseif self:GetText():find("%a") then
+									self:SetText(self:GetText():gsub("%a", ""))
+								else
+									self:SetTextColor(1,0,0,1)
+								end
+							</OnTextChanged>
+							<OnEditFocusLost>
+								if self:GetText() == self:GetText():match("%d+") or self:GetText() == self:GetText():match("%d+%.%d+") or self:GetText() == self:GetText():match("%.%d+") then
+									local OPRotYEditVal = self:GetText()
+									OPRotationSliderY:SetValue(OPRotYEditVal)
+								end
+							</OnEditFocusLost>
+						</Scripts>
+						<FontString font="Fonts\ARIALN.TTF" indented="true">
+							<FontHeight val="10" />
+							<Color r="1" g="1" b="1" />
+							<Shadow>
+								<Offset>
+									<AbsDimension x="1" y="-1" />
+								</Offset>
+								<Color r="0" g="0" b="0" />
+							</Shadow>
+						</FontString>
+					</EditBox>
+					<Slider name="OPRotationSliderY" orientation="HORIZONTAL" enableMouse="true" defaultValue="0" minValue="0" maxValue="360" valueStep="0.01" ObeyStepOnDrag="true">
+						<Size>
+							<AbsDimension x="250" y="14" />
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset>
+									<AbsDimension x="10" y="-47" />
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Backdrop bgFile="Interface\Buttons\UI-SliderBar-Background" edgeFile="Interface\Buttons\UI-SliderBar-Border" tile="true">
+							<BackgroundInsets>
+								<AbsInset left="3" right="3" top="6" bottom="6" />
+							</BackgroundInsets>
+							<TileSize>
+								<AbsValue val="8" />
+							</TileSize>
+							<EdgeSize>
+								<AbsValue val="8" />
+							</EdgeSize>
+						</Backdrop>
+						<Layers>
+							<Layer>
+								<FontString name="$parentTitle" font="Fonts\FRIZQT__.TTF" text="Pitch">
+									<Anchors>
+										<Anchor point="TOPLEFT">
+											<Offset x="10" y="10" />
+										</Anchor>
+									</Anchors>
+									<FontHeight>
+										<AbsValue val="10" />
+									</FontHeight>
+									<Color r="1" g="0.8196079" b="0" />
+									<Shadow>
+										<Color r="0" g="0" b="0" />
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+									</Shadow>
+								</FontString>
+								<FontString name="$parentLow" font="Fonts\FRIZQT__.TTF" text="0">
+									<Anchors>
+										<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" />
+									</Anchors>
+									<FontHeight>
+										<AbsValue val="10" />
+									</FontHeight>
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Color r="0" g="0" b="0" />
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+									</Shadow>
+								</FontString>
+								<FontString name="$parentHigh" font="Fonts\FRIZQT__.TTF" text="360">
+									<Anchors>
+										<Anchor point="TOPRIGHT" relativePoint="BOTTOMRIGHT" />
+									</Anchors>
+									<FontHeight>
+										<AbsValue val="10" />
+									</FontHeight>
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Color r="0" g="0" b="0" />
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
+						<ThumbTexture name="$parentThumb" file="Interface\Buttons\UI-SliderBar-Button-Horizontal">
+							<Size>
+								<AbsDimension x="24" y="24" />
+							</Size>
+						</ThumbTexture>
+						<Scripts>
+							<OnValueChanged> 
+								if OPFramesAreLoaded then
+									local OPRotSliderValY = self:GetValue()
+									local OPRotSliderValY = roundToNthDecimal(OPRotSliderValY,3)
+									OPRotationEditBoxY:SetText(OPRotSliderValY)
+									OPRotateObject();
+								end
+							</OnValueChanged>
+							<OnMouseDown>OPIMFUCKINGROTATINGDONTSPAMME = true</OnMouseDown>
+							<OnMouseUp>OPClearRotateChatFilter()</OnMouseUp>
+							<OnLoad>OPInitializeLoading();</OnLoad>
+						</Scripts>
+					</Slider>
+					<EditBox name="OPRotationEditBoxZ" autoFocus="false">
+						<HighlightColor r="0.5" g="0.5" b="0.5" a="0.75"/>
+						<TextInsets>
+							<AbsInset left="5" right="0" top="0" bottom="0" />
+						</TextInsets>
+						<Size x="64" y="23" />
+						<Anchors>
+							<Anchor point="TOPRIGHT">
+								<Offset x="-7" y="-69" />
+							</Anchor>
+						</Anchors>
+						<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+							<BackgroundInsets>
+								<AbsInset left="5" right="5" top="5" bottom="5" />
+							</BackgroundInsets>
+							<TileSize>
+								<AbsValue val="16" />
+							</TileSize>
+							<EdgeSize>
+								<AbsValue val="16" />
+							</EdgeSize>
+							<Color r="0.1" g="0.1" b="0.1" a="0.75"/>
+							<BorderColor r="0.5" g="0.5" b="0.5"/>
+						</Backdrop>
+						<Scripts>
+							<OnEscapePressed>
+								self:ClearFocus()
+							</OnEscapePressed>
+							<OnEnterPressed>
+								self:ClearFocus()
+							</OnEnterPressed>
+							<OnTextChanged>
+								if self:GetText() == self:GetText():match("%d+") or self:GetText() == self:GetText():match("%d+%.%d+") or self:GetText() == self:GetText():match("%.%d+") then
+									self:SetTextColor(255,255,255,1)
+								elseif self:GetText() == "" then
+									self:SetTextColor(255,255,255,1)
+								elseif self:GetText():find("%a") then
+									self:SetText(self:GetText():gsub("%a", ""))
+								else
+									self:SetTextColor(1,0,0,1)
+								end
+							</OnTextChanged>
+							<OnEditFocusLost>
+								if self:GetText() == self:GetText():match("%d+") or self:GetText() == self:GetText():match("%d+%.%d+") or self:GetText() == self:GetText():match("%.%d+") then
+									local OPRotZEditVal = self:GetText()
+									OPRotationSliderZ:SetValue(OPRotZEditVal)
+								end
+							</OnEditFocusLost>
+						</Scripts>
+						<FontString font="Fonts\ARIALN.TTF" indented="true">
+							<FontHeight val="10" />
+							<Color r="1" g="1" b="1" />
+							<Shadow>
+								<Offset>
+									<AbsDimension x="1" y="-1" />
+								</Offset>
+								<Color r="0" g="0" b="0" />
+							</Shadow>
+						</FontString>
+					</EditBox>
+					<Slider name="OPRotationSliderZ" orientation="HORIZONTAL" enableMouse="true" defaultValue="0" minValue="0" maxValue="360" valueStep="0.01" ObeyStepOnDrag="true">
+						<Size>
+							<AbsDimension x="250" y="14" />
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset>
+									<AbsDimension x="10" y="-74" />
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Backdrop bgFile="Interface\Buttons\UI-SliderBar-Background" edgeFile="Interface\Buttons\UI-SliderBar-Border" tile="true">
+							<BackgroundInsets>
+								<AbsInset left="3" right="3" top="6" bottom="6" />
+							</BackgroundInsets>
+							<TileSize>
+								<AbsValue val="8" />
+							</TileSize>
+							<EdgeSize>
+								<AbsValue val="8" />
+							</EdgeSize>
+						</Backdrop>
+						<Layers>
+							<Layer>
+								<FontString name="$parentTitle" font="Fonts\FRIZQT__.TTF" text="Turn">
+									<Anchors>
+										<Anchor point="TOPLEFT">
+											<Offset x="10" y="10" />
+										</Anchor>
+									</Anchors>
+									<FontHeight>
+										<AbsValue val="10" />
+									</FontHeight>
+									<Color r="1" g="0.8196079" b="0" />
+									<Shadow>
+										<Color r="0" g="0" b="0" />
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+									</Shadow>
+								</FontString>
+								<FontString name="$parentLow" font="Fonts\FRIZQT__.TTF" text="0">
+									<Anchors>
+										<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" />
+									</Anchors>
+									<FontHeight>
+										<AbsValue val="10" />
+									</FontHeight>
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Color r="0" g="0" b="0" />
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+									</Shadow>
+								</FontString>
+								<FontString name="$parentHigh" font="Fonts\FRIZQT__.TTF" text="360">
+									<Anchors>
+										<Anchor point="TOPRIGHT" relativePoint="BOTTOMRIGHT" />
+									</Anchors>
+									<FontHeight>
+										<AbsValue val="10" />
+									</FontHeight>
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Color r="0" g="0" b="0" />
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
+						<ThumbTexture name="$parentThumb" file="Interface\Buttons\UI-SliderBar-Button-Horizontal">
+							<Size>
+								<AbsDimension x="24" y="24" />
+							</Size>
+						</ThumbTexture>
+						<Scripts>
+							<OnValueChanged> 
+								if OPFramesAreLoaded then
+									local OPRotSliderValZ = self:GetValue()
+									local OPRotSliderValZ = roundToNthDecimal(OPRotSliderValZ,3)
+									OPRotationEditBoxZ:SetText(OPRotSliderValZ)
+									OPRotateObject();
+								end
+							</OnValueChanged>
+							<OnMouseDown>OPIMFUCKINGROTATINGDONTSPAMME = true</OnMouseDown>
+							<OnMouseUp>OPClearRotateChatFilter()</OnMouseUp>
+							<OnLoad>OPInitializeLoading();</OnLoad>
+						</Scripts>
+					</Slider>
+				</Frames>
+			</Frame>
+			<Button name="Close" inherits="UIPanelCloseButton" text="Button1">
+				<Size x="25" y="25" />
+				<Anchors>
+					<Anchor point="TOPRIGHT">
+						<Offset x="2" y="2" />
+					</Anchor>
+				</Anchors>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnLoad>self:RegisterForDrag("LeftButton");</OnLoad>
+			<OnDragStart>self:StartMoving();</OnDragStart>
+			<OnDragStop>self:StopMovingOrSizing();</OnDragStop>
+		</Scripts>
+	</Frame>
+	<Button name="ObjectManipulator_MinimapButton" parent="Minimap" movable="true" enableMouse="true">
+		<Size>
+			<AbsDimension x="33" y="33" />
+		</Size>
+		<Anchors>
+			<Anchor point="TOPLEFT" />
+		</Anchors>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="ObjectManipulator_MinimapButton_Icon" file="Interface/ICONS/INV_Misc_Gear_01">
+					<Size>
+						<AbsDimension x="21" y="21" />
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="7" y="-6" />
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="OVERLAY">
+				<Texture file="Interface\Minimap\MiniMap-TrackingBorder">
+					<Size>
+						<AbsDimension x="56" y="56" />
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" />
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame name="ObjectManipulator_MinimapButton_DraggingFrame" hidden="true">
+				<Scripts>
+					<OnUpdate>
+						local xpos, ypos = GetCursorPosition()
+						local xmin, ymin = Minimap:GetLeft(), Minimap:GetBottom()
+						xpos, ypos = xmin-xpos/UIParent:GetScale()+70, ypos/UIParent:GetScale()-ymin-70
+						MinimapPos = math.deg(math.atan2(ypos,xpos))
+						ObjectManipulator_MinimapButton:SetPoint("TOPLEFT", "Minimap", "TOPLEFT", 52-(80*cos(MinimapPos)), (80*sin(MinimapPos))-52)
+					</OnUpdate>
+				</Scripts>
+			</Frame>
+		</Frames>
+		<Scripts>
+			<OnLoad>
+				self:RegisterForClicks("LeftButtonUp","RightButtonUp")
+				self:RegisterForDrag("LeftButton","RightButton")
+			</OnLoad>
+			<OnEnter>
+				GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+				GameTooltip:SetText("Object Mover")
+			</OnEnter>
+			<OnLeave>
+				GameTooltip:Hide()
+			</OnLeave>
+			<OnDragStart>
+				self:LockHighlight()
+				ObjectManipulator_MinimapButton_DraggingFrame:Show()
+			</OnDragStart>
+			<OnDragStop>
+				self:UnlockHighlight()
+				ObjectManipulator_MinimapButton_DraggingFrame:Hide()
+				OPMiniMapSaveIt()
+			</OnDragStop>
+			<OnClick>
+				SlashCmdList.SHOWCLOSE()
+			</OnClick>
+		</Scripts>
+		<HighlightTexture file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight" alphaMode="ADD" />
+	</Button>
+</Ui>

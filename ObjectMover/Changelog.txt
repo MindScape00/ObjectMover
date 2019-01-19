@@ -1,0 +1,20 @@
+v4.0.0 (Aug. 5, 2017)
+	- Remade all movement functions to utilize ".gps <dir> <unit>".
+	- Remade Chat Clarifiers to filter and gather data from chat messages.
+	- Removed old deprecated functions and options (i.e., Save on Spawn)
+	- Remade entire double, half, and scale modifiers for movement.
+	- Expanded to include "Move Object" instead
+	- Expanded to include new GObject Rotation sliders.
+	- Saved Variables to recall what options and settings you had from last login.
+	- Redid UI Color / Transparency / Lightness
+	- Made UI Moveable.
+	- Made Minimap Button Save position
+	- Attempted to start Auto Dimensions System, TBD Later if it'll come to fruition.
+	- Changed Keybindings to utilize data validation on object parameters.
+	
+----------------------------------------
+
+v1.0-3.99
+	- All Credits to Dkcaptain for the original addon.
+	
+----------------------------------------

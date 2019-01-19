@@ -1,0 +1,42 @@
+<Bindings>
+	<Binding name="Forward" header="OBJECTMANIP">
+			CheckIfValid(OPWidthBox, true, OPForward)
+	</Binding>
+	<Binding name="Backward">
+			CheckIfValid(OPWidthBox, true, OPBackward)
+	</Binding>
+	<Binding name="Left">
+			CheckIfValid(OPWidthBox, true, OPLeft)
+	</Binding>
+	<Binding name="Right">
+			CheckIfValid(OPWidthBox, true, OPRight)
+	</Binding>
+	<Binding name="Up">
+			CheckIfValid(OPWidthBox, true, OPUp)
+	</Binding>
+	<Binding name="Down">
+			CheckIfValid(OPWidthBox, true, OPDown)
+	</Binding>
+	<Binding name="Get Object ID">
+			CheckIfValid(OPWidthBox, true, OPGetObject)
+	</Binding>
+	<Binding name="Teleport to Object">
+			OPTeletoObject()
+	</Binding>
+	<Binding name="Spawn Object">
+			OPSpawn()
+	</Binding>
+	<Binding name="Toggle Spawn on Move">
+			if SpawnonMove:GetChecked() == true then
+				SpawnonMove:SetChecked(false)
+			else
+				SpawnonMove:SetChecked(true)
+			end
+	</Binding>
+	<Binding name="Bifold">
+			EnableBoxes(Bifold, Halve)
+	</Binding>
+	<Binding name="Halve">
+			EnableBoxes(Halve, Bifold)
+	</Binding>
+</Bindings>
