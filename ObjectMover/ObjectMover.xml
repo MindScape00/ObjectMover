@@ -980,7 +980,7 @@
 								OPGetObject()
 							</OnClick>
 							<OnLoad>
-							self:SetText("Get\nID")
+								self:SetText("Get\nID")
 							</OnLoad>
 						</Scripts>
 						<ButtonText name="$parentText">
@@ -1521,7 +1521,7 @@
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
 								self.Timer = C_Timer.NewTimer(0.7,function()
-									GameTooltip:SetText("Moves the Object relative to direction you are facing.\n\rOnly works in 'Move Object' mode.", nil, nil, nil, nil, true)
+									GameTooltip:SetText("Moves the Object relative to the direction you are facing instead of where the object is facing.\n\rExample: If the object is facing East, but you are facing North, moving forward will move the object North, not East.\n\rOnly works in 'Move Object' mode.", nil, nil, nil, nil, true)
 									GameTooltip:Show()
 								end)
 							</OnEnter>
@@ -2558,7 +2558,7 @@
 					<OnEnter>
 						GameTooltip:SetOwner(self, "ANCHOR_LEFT")
 						self.Timer = C_Timer.NewTimer(0.7,function()
-							GameTooltip:SetText("Locks the UI from being moved.\n\r+ = Movable\n - = Not Movable", nil, nil, nil, nil, true)
+							GameTooltip:SetText("Locks the UI from being moved.", nil, nil, nil, nil, true)
 							GameTooltip:Show()
 						end)
 					</OnEnter>

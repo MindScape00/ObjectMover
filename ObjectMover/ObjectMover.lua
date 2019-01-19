@@ -652,18 +652,34 @@ function RunChecks(Message)
 	end
 
 -- GObject Spawn Message Filter
-	if SpawnClarifier and Message:gsub("|.........",""):find("Spawned") then
-		SpawnClarifier = false
-		if OPMasterTable.Options["debug"] then
-			print("OPDEBUG: SpawnClarifier Caught Message")
+	if SpawnClarifier then
+		local clearmsg = gsub(Message,"|cff%x%x%x%x%x%x","");
+		if clearmsg:find("Spawned") then
+			SpawnClarifier = false
+			if OPMasterTable.Options["debug"] then
+				print("OPDEBUG: SpawnClarifier Caught Message")
+			end
+		elseif clearmsg:find("Syntax") or clearmsg:find("was not found") or clearmsg:find("You do not have") then
+			SpawnClarifier = false
+			if OPMasterTable.Options["debug"] then
+				print("OPDEBUG: SpawnClarifier Caught Syntax or Failure, Disabled.")
+			end
 		end
 	end
 
 -- GObject Scale Message Filter
-	if ScaleClarifier and Message:gsub("|.........",""):find("scale") then
-		ScaleClarifier = false
-		if OPMasterTable.Options["debug"] then
-			print("OPDEBUG: ScaleClarifier Caught Message")
+	if ScaleClarifier then
+		local clearmsg = gsub(Message,"|cff%x%x%x%x%x%x","");
+		if clearmsg:find("Syntax") or clearmsg:find("was not found") or clearmsg:find("You do not have") or clearmsg:find("Incorrect") then
+			ScaleClarifier = false
+			if OPMasterTable.Options["debug"] then
+				print("OPDEBUG: ScaleClarifier Caught Syntax or Failure, Disabled.")
+			end
+		elseif clearmsg:find("scale") then 
+			ScaleClarifier = false
+			if OPMasterTable.Options["debug"] then
+				print("OPDEBUG: ScaleClarifier Caught Message")
+			end
 		end
 	end
 	
@@ -674,9 +690,9 @@ function RunChecks(Message)
 	if ObjectClarifier then
 		local clearmsg = gsub(Message,"|cff%x%x%x%x%x%x","");
 		if clearmsg:find("Nothing found!") then
+			ObjectClarifier = false
 			if OPMasterTable.Options["debug"] then
 				print("OPDEBUG: No GObject nearby to set the ID :( Disabling the clarifier.")
-				ObjectClarifier = false
 			end
 		elseif clearmsg:find("Selected gameobject") or clearmsg:find("SpawnTime") or clearmsg:find("Built by:") then -- Make sure it's actually a reply to our gameobject select.
 			MessageCount = MessageCount+1

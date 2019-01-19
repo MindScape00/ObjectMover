@@ -8,6 +8,7 @@ v5.0.0 (September 21, 2017)
 	- Added: Ability to set Key Bindings for toggling Move Object and Move Relative Options
 	- Added: Lock Frame button besides the close button - When enabled, the frame cannot be moved.
 	- Changed: Default 'Step' for Sliders is now in Whole Numbers (Use SHIFT or ALT modifiers to get decimal points), text-entry will auto-round to 4 decimal places.
+	- Changed / Fixed: Scale will now wait 0.5 seconds before setting to avoid a server bug with scales set at same time as spawn not saving.
 	- Fixed: Bindings for Halve / Bifold toggle.
 	- Fixed: Options set via Binding not saving.
 	- Fixed: Scale CheckButton un-checking if you are entering a new scale (now only disables the box when an invalid scale is present, re-enables when valid)
