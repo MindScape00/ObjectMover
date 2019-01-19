@@ -2475,8 +2475,8 @@
 							</OnLeave>
 							<OnClick>
 								if self:GetChecked() == true then
-									--OPMasterTable.Options["autoUpdateRot"] = true
-									self:SetChecked(false)
+									OPMasterTable.Options["autoUpdateRot"] = true
+									--self:SetChecked(false)
 								else
 									--OPMasterTable.Options["autoUpdateRot"] = false
 								end
@@ -2774,7 +2774,7 @@
 			</OnLoad>
 			<OnEnter>
 				GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-				GameTooltip:SetText("Object Mover")
+				GameTooltip:SetText("Object Mover\n\r|cffFFFFFFClick to Open\n\r/om - Toggle Shown Panel\n/omdelparam - Delete Paramaters Preset\n/omdelrot - Delete Rotation Preset\n\r/omdebug - Enable Debug Messages")
 			</OnEnter>
 			<OnLeave>
 				GameTooltip:Hide()

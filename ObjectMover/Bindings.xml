@@ -61,4 +61,22 @@
 	<Binding name="Halve">
 			EnableBoxes(OPHalveToggle, OPBifoldToggle)
 	</Binding>
+	<Binding name="Increase X Rotation">
+			OPupdateRotation("x",1)
+	</Binding>
+	<Binding name="Decrease X Rotation">
+			OPupdateRotation("x",-1)
+	</Binding>
+	<Binding name="Increase Y Rotation">
+			OPupdateRotation("y",1)
+	</Binding>
+	<Binding name="Decrease Y Rotation">
+			OPupdateRotation("y",-1)
+	</Binding>
+	<Binding name="Increase Z Rotation">
+			OPupdateRotation("z",1)
+	</Binding>
+	<Binding name="Decrease Z Rotation">
+			OPupdateRotation("z",-1)
+	</Binding>
 </Bindings>

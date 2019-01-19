@@ -1,3 +1,11 @@
+v5.1.0 WIP (January 2019)
+	- Changed: Minimap Icon Text to be more helpful for some commands.
+	- Fixed: Get ID button getting stuck listening for Object ID's after already finding it.
+	- Updated: Debug Messages now use a more efficient and descriptive system.
+	- Added: Move GameObject message filter when moving the object with addon. (How did I forget to add this before?)
+
+----------------------------------------
+
 v5.0.0 (September 21, 2017)
 	- New: Move Relative option - When on, moves the object relative to your current orientation, not the objects. (I.e., object is facing east, you're facing north - 'forward' will move the object north, not east). Credits to shadowbunny88 for the initial idea and code.
 	- New: Save / Load Preset Systems for Object Parameters and Rotations.
