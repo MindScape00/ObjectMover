@@ -2,6 +2,13 @@
 -- Initialize Variables
 -------------------------------------------------------------------------------
 
+local utils = Epsilon.utils
+local messages = utils.messages
+local server = utils.server
+local tabs = utils.tabs
+
+local main = Epsilon.main
+
 local OPmoveLength, OPmoveWidth, OPmoveHeight, OPmoveModifier, MessageCount, ObjectClarifier, SpawnClarifier, ScaleClarifier, RotateClarifier = 0, 0, 0, 1, 0, false, false, false, false
 BINDING_HEADER_OBJECTMANIP, SLASH_SHOWCLOSE1, SLASH_SHOWCLOSE2 = "Object Mover", "/obj", "/om"
 
@@ -50,13 +57,17 @@ FrameLoadingPoints = 0
 OPSaveType = nil
 ObjectSelectLineCount = 3
 
+function ClientShowRotate(guid,roll,pitch,yaw)
+	C_Epsilon.RotateObject(guid,roll,pitch,yaw)
+end
+
 function OPInitializeLoading()
 	FrameLoadingPoints = FrameLoadingPoints+1
 	if FrameLoadingPoints >= 3 then
 		OPFramesAreLoaded = true
 		FrameLoadingPoints = 0
 		if OPMasterTable.Options["debug"] then
-			print("OPDEBUG: Frames Loaded: Rotation Enabled.")
+			dprint("Frames Loaded: Rotation Enabled.")
 		end
 	end
 end
@@ -75,11 +86,6 @@ OPAddonDetect:SetScript("OnEvent", function(self,event,name)
 		--Quickly Show / Hide the Frame on Start-Up to initialize everything for key bindings
 		OPMainFrame:Show()
 		OPMainFrame:Hide()
-	end
-	if name == "WIM" then
-		print("ObjectMover detected WIM and is now attempting to make it's chat filters compatible. Please note that Relative Move may (Correction: WILL!) break if you are using WIM.")
-		ObjectSelectLineCount = 5
-		--OPAddonDetect:UnregisterEvent("ADDON_LOADED")
 	end
 end);
 
@@ -103,6 +109,26 @@ local function cmd(text)
   SendChatMessage("."..text, "GUILD");
 end
 
+local function eprint(text)
+	local line = strmatch(debugstack(2),":(%d+):")
+	if line then
+		print("|cffFFD700 ObjectMover Error @ "..line..": "..text.."|r")
+	else
+		print("|cffFFD700 ObjectMover @ ERROR: "..text.."|r")
+		print(debugstack(2))
+	end
+end
+
+local function dprint(text)
+	local line = strmatch(debugstack(2),":(%d+):")
+	if line then
+		print("|cffFFD700 ObjectMover DEBUG "..line..": "..text.."|r")
+	else
+		print("|cffFFD700 ObjectMover DEBUG: "..text.."|r")
+		print(debugstack(2))
+	end
+end
+
 -------------------------------------------------------------------------------
 -- Main Functions
 -------------------------------------------------------------------------------
@@ -122,10 +148,8 @@ end
 
 --Get Object ID Function
 function OPGetObject()
-	if ObjectClarifier == false then
-		ObjectClarifier = true
-		cmd("go select")
-	end
+	OPObjectIDBox:SetText(tonumber(lastSelectedObjectID))
+	if OPMasterTable.Options["debug"] then dprint("Obejct ID Box updated to: "..tonumber(lastSelectedObjectID)) end;
 end
 
 --Update Internal Dimensions for movement when used, factoring in scale, double and halve options
@@ -144,37 +168,13 @@ function updateDimensions(val)
 	end
 end
 
--- Relative Movement - Idea and initial coding by shadowbunny88
-function OPMoveRelative(val)
-	local myOrientation = GetPlayerFacing()
-	if val == "forward" then
-		distance = OPmoveLength
-		direction = 1.57
-	elseif val == "back" then
-		distance = OPmoveLength
-		direction = -1.57
-	elseif val == "left" then
-		distance = OPmoveWidth
-		direction = 0
-	elseif val == "right" then
-		distance = OPmoveWidth
-		direction = -3.141
-	end
-	
-	direction =  OPMasterTable.Options["GobOri"] - myOrientation + direction --1.57
-	directionx, directiony, directionz  = math.cos(direction), math.sin(direction), 0
-	
-	x, y, z = (directionx * distance), (directiony * distance), (directionz * distance)
-	SendChatMessage(".gob move l "..x, "GUILD")
-	SendChatMessage(".gob move f "..y, "GUILD")
-end
-
 function OPForward()
 	updateDimensions("length")
 	if OPmoveLength and OPmoveLength ~= "" and OPmoveLength ~= 0 and OPmoveLength ~= nil then
 		if OPMoveObjectInstead:GetChecked() then
 			if RelativeToPlayer:GetChecked() then
-				OPMoveRelative("forward")
+				--OPMoveRelative("forward")
+				cmd("go relative forward "..OPmoveLength)
 			else
 				cmd("go move for "..OPmoveLength)
 			end
@@ -185,7 +185,7 @@ function OPForward()
 			OPSpawn()
 		end
 		if OPMasterTable.Options["debug"] then
-			print("OPDEBUG: Moving "..OPmoveLength.." units forward.")
+			dprint("Moving "..OPmoveLength.." units forward.")
 		end
 	else
 		print("ObjectMover | Invalid Move Length, please check your Object Parameters.")
@@ -197,7 +197,8 @@ function OPBackward()
 	if OPmoveLength and OPmoveLength ~= "" and OPmoveLength ~= 0 and OPmoveLength ~= nil then
 		if OPMoveObjectInstead:GetChecked() == true then
 			if RelativeToPlayer:GetChecked() then
-				OPMoveRelative("back")
+				--OPMoveRelative("back")
+				cmd("go relative back "..OPmoveLength)
 			else
 				cmd("go move back "..OPmoveLength)
 			end
@@ -208,7 +209,7 @@ function OPBackward()
 			OPSpawn()
 		end
 		if OPMasterTable.Options["debug"] then
-			print("OPDEBUG: Moving "..OPmoveLength.." units backwards.")
+			dprint("Moving "..OPmoveLength.." units backwards.")
 		end
 	else
 		print("ObjectMover | Invalid Move Length, please check your Object Parameters.")
@@ -220,7 +221,8 @@ function OPLeft()
 	if OPmoveWidth and OPmoveWidth ~= "" and OPmoveWidth ~= 0 and OPmoveWidth ~= nil then
 		if OPMoveObjectInstead:GetChecked() == true then
 			if RelativeToPlayer:GetChecked() then
-				OPMoveRelative("left")
+				--OPMoveRelative("left")
+				cmd("go relative left "..OPmoveWidth)
 			else
 				cmd("go move left "..OPmoveWidth)
 			end
@@ -231,7 +233,7 @@ function OPLeft()
 			OPSpawn()
 		end
 		if OPMasterTable.Options["debug"] then
-			print("OPDEBUG: Moving "..OPmoveWidth.." units left.")
+			dprint("Moving "..OPmoveWidth.." units left.")
 		end
 	else
 		print("ObjectMover | Invalid Move Width, please check your Object Parameters.")
@@ -243,7 +245,8 @@ function OPRight()
 	if OPmoveWidth and OPmoveWidth ~= "" and OPmoveWidth ~= 0 and OPmoveWidth ~= nil then
 		if OPMoveObjectInstead:GetChecked() == true then
 			if RelativeToPlayer:GetChecked() then
-				OPMoveRelative("right")
+				--OPMoveRelative("right")
+				cmd("go relative right "..OPmoveWidth)
 			else
 				cmd("go move right "..OPmoveWidth)
 			end
@@ -254,7 +257,7 @@ function OPRight()
 			OPSpawn()
 		end
 		if OPMasterTable.Options["debug"] then
-			print("OPDEBUG: Moving "..OPmoveWidth.." units right.")
+			dprint("Moving "..OPmoveWidth.." units right.")
 		end
 	else
 		print("ObjectMover | Invalid Move Width, please check your Object Parameters.")
@@ -273,7 +276,7 @@ function OPUp()
 			OPSpawn()
 		end
 		if OPMasterTable.Options["debug"] then
-			print("OPDEBUG: Moving "..OPmoveHeight.." units up.")
+			dprint("Moving "..OPmoveHeight.." units up.")
 		end
 	else
 		print("ObjectMover | Invalid Move Height, please check your Object Parameters.")
@@ -292,27 +295,22 @@ function OPDown()
 			OPSpawn()
 		end
 		if OPMasterTable.Options["debug"] then
-			print("OPDEBUG: Moving "..OPmoveHeight.." units down.")
+			dprint("Moving "..OPmoveHeight.." units down.")
 		end
 	else
-		print("ObjectMover | Invalid Move Height, please check your Object Parameters.")
+		cprint("Invalid Move Height, please check your Object Parameters.")
 	end
 end
 
 function OPSpawn()
 	if CheckIfValid(OPObjectIDBox) then
-		if SpawnClarifier == false then
-			SpawnClarifier = true
-		end
+		SpawnClarifier = true
 		--Check if we have an object ID in the object ID box, if we do, spawn it
 		SendChatMessage(".go spawn "..OPObjectIDBox:GetText())
 	end
 	if ScaleObject:GetChecked() == true and ScaleObject:IsEnabled() then
 		--Do we want to scale it?
-		--SendChatMessage(".go select") --Auto Selected on Spawn now, no need to select, as it can cause problems if it selects the wrong one anyways.
-		if ScaleClarifier == false then
-			ScaleClarifier = true
-		end
+		ScaleClarifier = true
 		C_Timer.After(0.5, function() SendChatMessage(".go scale "..OPScaleBox:GetText()) end) -- Delay the scale because scaling immediately after spawn doesn't save on server restart
 	end
 end
@@ -395,25 +393,15 @@ function OPSaveMenuParamSave(name)
 					message("The name specified conflicts with an already saved Parameter Pre-set name. Hit save again to confirm that you wish to overwrite the previous save.")
 					confirmPSaveOverwrite = true
 					confirmPSaveOverwriteName = name
-					--savePOverwriteTimer = C_Timer.NewTimer(15, function()
-						--confirmPSaveOverwrite = false
-						--if OPMasterTable.Options["debug"] then
-							--print("OPDEBUG: Exceeded 15 Second Timer for Confirm Save (Param).")
-						--end
-					--end)
 					return
 				elseif confirmPSaveOverwrite then
 					if name == confirmPSaveOverwriteName then
-						--savePOverwriteTimer:Cancel() -- Cancel our last timer so that it doesn't bleed into a future save if they go to save again within the 15 seconds.
-						confirmPSaveOverwrite = false -- Set the overwrite check to false since we cancelled the timer to do it
+						confirmPSaveOverwrite = false 
 						OPSaveMenuParamSaveForReal(name,false)
 					else
 						message("The name specified conflicts with an already saved Parameter Pre-set name. Hit save again to confirm that you wish to overwrite the previous save.")
 						confirmPSaveOverwrite = true
 						confirmPSaveOverwriteName = name
-						--savePOverwriteTimer = C_Timer.NewTimer(15, function()
-							--confirmPSaveOverwrite = false
-						--end)
 					end
 					return
 				else
@@ -427,10 +415,10 @@ function OPSaveMenuParamSave(name)
 	end
 end
 
-function OPSaveMenuParamSaveForReal(name,saveKey)
-	if saveKey then
+function OPSaveMenuParamSaveForReal(name,newKey)
+	if newKey then
 		table.insert(OPMasterTable.ParamPresetKeys, name)
-		saveKey = false
+		newKey = false
 	end
 	OPMasterTable.ParamPresetContent[name] = {}
 	OPMasterTable.ParamPresetContent[name].ObjectID = OPObjectIDBox:GetText()
@@ -446,31 +434,21 @@ end
 
 function OPSaveMenuRotSave(name)
 	if OPMasterTable.RotPresetKeys then
-		for k,v in ipairs(OPMasterTable.RotPresetKeys) do
-			if v == name then
-				if not confirmRSaveOverwrite then
-					message("The name specified conflicts with an already saved Rotation Pre-set name. Hit save again confirm that you wish to overwrite the previous save.")
-					confirmRSaveOverwrite = true
-					confirmRSaveOverwriteName = name
-					--saveROverwriteTimer = C_Timer.NewTimer(15, function()
-						--confirmRSaveOverwrite = false
-						--if OPMasterTable.Options["debug"] then
-							--print("OPDEBUG: Exceeded 15 Second Timer for Confirm Save (Rot).")
-						--end
-					--end)
+		for k,v in ipairs(OPMasterTable.RotPresetKeys) do -- Scan all our current saved rotation preset and confirm if we're overwriting one
+			if v == name then -- if already saved name == new save name
+				if not confirmRSaveOverwrite then -- If this is the first time, we'll do this, otherwise go to the second step
+					message("The name specified conflicts with an already saved Rotation Pre-set name. Hit save again confirm that you wish to overwrite the previous save.") -- Warn the user about overwriting a current preset
+					confirmRSaveOverwrite = true -- save that we've already warned them
+					confirmRSaveOverwriteName = name -- keep the name in memory, so that if they close the menu and then save as a new name, we know to recheck again
 					return
-				elseif confirmRSaveOverwrite then
-					if name == confirmRSaveOverwriteName then
-						--saveROverwriteTimer:Cancel() -- Cancel our last timer so that it doesn't bleed into a future save if they go to save again within the 15 seconds.
-						confirmRSaveOverwrite = false -- Set the overwrite check to false since we cancelled the timer to do it
-						OPSaveMenuRotSaveForReal(name,false)
-					else
+				elseif confirmRSaveOverwrite then -- if we're in the confirmation state
+					if name == confirmRSaveOverwriteName then -- if the name matches the last warned overwrite name
+						confirmRSaveOverwrite = false -- reset the check so we're back to normal
+						OPSaveMenuRotSaveForReal(name,false) -- Save the actual preset yay!
+					else -- if the name they're trying to save no longer matches the last warned name, we need to re-warn them that this name is also still taken!!
 						message("The name specified conflicts with an already saved Rotation Pre-set name. Hit save again to confirm that you wish to overwrite the previous save.")
-						confirmRSaveOverwrite = true
-						confirmRSaveOverwriteName = name
-						--saveROverwriteTimer = C_Timer.NewTimer(15, function()
-							--confirmRSaveOverwrite = false
-						--end)
+						confirmRSaveOverwrite = true -- Set the check to true again to make sure
+						confirmRSaveOverwriteName = name -- and keep the new name in memory again, just incase they change it again
 					end
 					return
 				else
@@ -484,10 +462,10 @@ function OPSaveMenuRotSave(name)
 	end
 end
 
-function OPSaveMenuRotSaveForReal(name,saveKey)
-	if saveKey then
+function OPSaveMenuRotSaveForReal(name,newKey)
+	if newKey then
 		table.insert(OPMasterTable.RotPresetKeys, name)
-		saveKey = false
+		newKey = false
 	end
 	OPMasterTable.RotPresetContent[name] = {}
 	OPMasterTable.RotPresetContent[name].RotX = OPRotationSliderX:GetValue()
@@ -536,7 +514,7 @@ function OPCreateLoadDropDownMenus()
 				OPScaleBox:SetText(OPMasterTable.ParamPresetContent[self.value].Scale)
 			end
 			if OPMasterTable.Options["debug"] then
-				print("OPDEBUG: Tried to load Param Pre-set: "..self.value)
+				dprint("Tried to load Param Pre-set: "..self.value)
 			end
 		end
 	end
@@ -590,15 +568,15 @@ function OPCreateLoadDropDownMenus()
 				OPRotationSliderZ:SetValue(tonumber(OPMasterTable.RotPresetContent[self.value].RotZ))
 			end
 			if OPMasterTable.Options["debug"] then
-				print("OPDEBUG: Tried to load Rot Pre-set: "..self.value)
-				print(origx.." | "..origy.." | "..origz)
+				dprint("Tried to load Rot Pre-set: "..self.value)
+				dprint(origx.." | "..origy.." | "..origz)
 			end
 			if origx == OPRotationSliderX:GetValue() and origy == OPRotationSliderY:GetValue() and origz == OPRotationSliderZ:GetValue() then
 				OPRotateObject();
 				OPIMFUCKINGROTATINGDONTSPAMME = true
 				OPClearRotateChatFilter()
 				if OPMasterTable.Options["debug"] then
-					print("OPDEBUG: Loaded the same as whatever it is currently, so we're gonna apply the rotation anyways!")
+					dprint("Loaded the same as whatever it is currently, so we're gonna apply the rotation anyways!")
 				end
 			end
 		end
@@ -626,6 +604,7 @@ function OPCreateLoadDropDownMenus()
 	--rotPresetDropSelect:SetHeight(24)
 end
 
+
 -------------------------------------------------------------------------------
 -- Message Filters
 -------------------------------------------------------------------------------
@@ -644,104 +623,136 @@ function OPClearRotateChatFilterDontSpamIfStillRotating()
 end
 
 function RunChecks(Message)
+	
+	local clearmsg = gsub(Message,"|cff%x%x%x%x%x%x","");
+
 -- GObject Rotate Message Filter
 	if RotateClarifier and Message:gsub("|.........",""):find("rotated") then
 		if OPMasterTable.Options["debug"] then
-			print("OPDEBUG: RotateClarifier Caught Message")
+			dprint("RotateClarifier Caught Message")
 		end
-	end
+		return true
 
 -- GObject Spawn Message Filter
-	if SpawnClarifier then
-		local clearmsg = gsub(Message,"|cff%x%x%x%x%x%x","");
-		if clearmsg:find("Spawned") then
-			SpawnClarifier = false
+	elseif SpawnClarifier and clearmsg:find("[Spawned gameobject|Map:|Syntax|was not found|You do not have]") then
+		if clearmsg:find("Spawned gameobject") then
 			if OPMasterTable.Options["debug"] then
-				print("OPDEBUG: SpawnClarifier Caught Message")
+				dprint("SpawnClarifier Caught SPAWNED Message")
 			end
-		elseif clearmsg:find("Syntax") or clearmsg:find("was not found") or clearmsg:find("You do not have") then
+			return true
+		elseif clearmsg:find("Map:") then
 			SpawnClarifier = false
 			if OPMasterTable.Options["debug"] then
-				print("OPDEBUG: SpawnClarifier Caught Syntax or Failure, Disabled.")
+				dprint("SpawnClarifier Caught MAP Message")
+			end
+			return true
+		elseif clearmsg:find("[Syntax|was not found|You do not have]") then
+			SpawnClarifier = false
+			if OPMasterTable.Options["debug"] then
+				dprint("SpawnClarifier Caught Syntax or Failure, Disabled.")
 			end
 		end
-	end
 
 -- GObject Scale Message Filter
-	if ScaleClarifier then
-		local clearmsg = gsub(Message,"|cff%x%x%x%x%x%x","");
+	elseif ScaleClarifier and clearmsg:find("[Syntax|was not found|You do not have|Incorrect|GameObject .* has been set to scale]") then
 		if clearmsg:find("Syntax") or clearmsg:find("was not found") or clearmsg:find("You do not have") or clearmsg:find("Incorrect") then
 			ScaleClarifier = false
 			if OPMasterTable.Options["debug"] then
-				print("OPDEBUG: ScaleClarifier Caught Syntax or Failure, Disabled.")
+				dprint("ScaleClarifier Caught Syntax or Failure, Disabled.")
 			end
-		elseif clearmsg:find("scale") then 
+			return false
+		elseif clearmsg:find("GameObject .* has been set to scale") then 
 			ScaleClarifier = false
 			if OPMasterTable.Options["debug"] then
-				print("OPDEBUG: ScaleClarifier Caught Message")
+				dprint("ScaleClarifier Caught SCALE Message")
 			end
+			return true
 		end
-	end
-	
--- Get Object ID Message Filter
-	if ObjectClarifier and Message:gsub("|.........",""):find("%-%s%d+") then
-		OPObjectIDBox:SetText(gsub(Message:gsub("(|.........)", ""):match("- %d+"), "- ", ""))
-	end
-	if ObjectClarifier then
-		local clearmsg = gsub(Message,"|cff%x%x%x%x%x%x","");
-		if clearmsg:find("Nothing found!") then
-			ObjectClarifier = false
-			if OPMasterTable.Options["debug"] then
-				print("OPDEBUG: No GObject nearby to set the ID :( Disabling the clarifier.")
-			end
-		elseif clearmsg:find("Selected gameobject") or clearmsg:find("SpawnTime") or clearmsg:find("Built by:") then -- Make sure it's actually a reply to our gameobject select.
-			MessageCount = MessageCount+1
-			if MessageCount >= ObjectSelectLineCount then -- We must check it's greater than a certain amount that changes if WIM is on (because WIM doubles the messages seen, for some reason, but only shows the one it copied - it's weird..)
-				ObjectClarifier = false
-				MessageCount = 0
-				if OPMasterTable.Options["debug"] then
-					print("OPDEBUG: ObjectClarifier disabled (Object Found and ID inserted: "..OPObjectIDBox:GetText()..")")
-				end
-			end
+	else
+		if OPMasterTable.Options["debug"] then
+			dprint("No Clarifier Caught this, so lets let it pass")
 		end
+		return false
 	end
 end
 
 function Filter(Self,Event,Message)
+	
 	local clearmsg = gsub(Message,"|cff%x%x%x%x%x%x","");
-	if clearmsg:find("with orientation:") then
-		OPMasterTable.Options["GobOri"] = tonumber(clearmsg:match("orientation: (%-?%d+%.%d+)"))
-		--print(OPMasterTable.Options["GobOri"])
-
-	elseif clearmsg:find("You have rotated") then
-		if clearmsg:find("X: ") then
-			if clearmsg:find("Z: %-?") then 
-				--print("X Found.."..clearmsg:match("Z: (%-?%d*%.%d*)"))
-				OPMasterTable.Options["GobOri"] = math.rad(tonumber(clearmsg:match("Z: (%-?%d*%.%d*)")))
-			end
-			--print(OPMasterTable.Options["GobOri"])
-		elseif OPMasterTable.Options["GobOri"] then
-			if clearmsg:find("Z: %-?") then
-				--print("Ori Change.."..clearmsg:match("Z: (%-?%d+%.%d+)"))
-				OPMasterTable.Options["GobOri"] = OPMasterTable.Options["GobOri"] + math.rad(tonumber(clearmsg:match("Z: (%-?%d+%.%d+)")))
-			end
-			--print(OPMasterTable.Options["GobOri"])
-		else
-			print("ObjectMover Error: We could not find your current object's orientation. Please use '.go sel' on it again to collect this information. If you continue to see this message (after using .go sel), please report it as a bug.")
+	
+	if clearmsg:find("[Selected|Spawned] gameobject") then
+		lastSelectedObjectID = clearmsg:match("[Selected|Spawned] gameobject .* - (.*)%]")
+		if OPMasterTable.Options["debug"] then 
+			dprint("Last Selected|Spawned Object = "..tostring(lastSelectedObjectID))
 		end
 	end
-
+	
+		
+	---------- Auto Update Rotation CAPTURES ----------
+	
+	if OPRotAutoUpdate:GetChecked()==true and not RotateClarifier then -- Is the AutoUpdate Rot enabled? (Check if RotateClarifier is enabled - if it is, we don't do anything as to not impact the sliders functioning normally)
+		if clearmsg:find("You have rotated .* [%X%Y%Z]+") then -- Did we get a rotated object message?
+			dontFuckingRotate = true -- Stop the sliders from actually causing a rotation
+			if clearmsg:find("X:") then
+				OPRotationSliderX:SetValueStep(0.0001)
+				OPRotationSliderX:SetValue(clearmsg:match("X: (%-?%d*%.%d*)"))
+				if OPMasterTable.Options["debug"] then 
+					dprint("Set Slider X to "..clearmsg:match("X: (%-?%d*%.%d*)"))
+				end
+			end
+			if clearmsg:find("Y:") then
+				OPRotationSliderY:SetValueStep(0.0001)
+				OPRotationSliderY:SetValue(clearmsg:match("Y: (%-?%d*%.%d*)"))
+				if OPMasterTable.Options["debug"] then 
+					dprint("Set Slider Y to "..clearmsg:match("Y: (%-?%d*%.%d*)"))
+				end
+			end
+			if clearmsg:find("Z:") then
+				OPRotationSliderZ:SetValueStep(0.0001)
+				OPRotationSliderZ:SetValue(clearmsg:match("Z: (%-?%d*%.%d*)"))
+				if OPMasterTable.Options["debug"] then 
+					dprint("Set Slider Z to "..clearmsg:match("Z: (%-?%d*%.%d*)"))
+				end
+			end
+			dontFuckingRotate = false -- Allow sliders to cause rotation again
+		end
+		
+		if clearmsg:find("Pitch: %-?%d*%.%d*|r, Roll: %-?%d*%.%d*|r, Yaw/Turn: %-?%d*%.%d*|r") then
+			local pitch = clearmsg:match("Pitch: (%-?%d*%.%d*)|r, Roll: %-?%d*%.%d*|r, Yaw/Turn: %-?%d*%.%d*|r")
+			local roll = clearmsg:match("Pitch: %-?%d*%.%d*|r, Roll: (%-?%d*%.%d*)|r, Yaw/Turn: %-?%d*%.%d*|r")
+			local yaw = clearmsg:match("Pitch: %-?%d*%.%d*|r, Roll: %-?%d*%.%d*|r, Yaw/Turn: (%-?%d*%.%d*)|r")
+			
+			dontFuckingRotate = true
+			OPRotationSliderX:SetValueStep(0.0001)
+			OPRotationSliderY:SetValueStep(0.0001)
+			OPRotationSliderZ:SetValueStep(0.0001)
+			OPRotationSliderX:SetValue(roll)
+			OPRotationSliderY:SetValue(pitch)
+			OPRotationSliderZ:SetValue(yaw)
+			dontFuckingRotate = false
+			
+			if OPMasterTable.Options["debug"] then 
+				dprint("Roll: "..roll.." | Pitch: "..pitch.." | Turn: "..yaw)
+			end
+		end
+	end
+	------------------------------------------------
+	
+	
+	---- Handling Hiding Messages to avoid Spam ----
+	
 	if ObjectClarifier or SpawnClarifier or ScaleClarifier or RotateClarifier then
 		--Check to see if we sent a request and we don't want to see messages
 		if OPShowMessages:GetChecked() ~= true then
-			--If so, run the checks and delete the message
-			RunChecks(Message)
-			return true
+			if (RunChecks(Message)) then
+				return true
+			end
 		else
-			--If we do want to see messages, keep the message and run the checks any ways since we sent a request
 			RunChecks(Message)
 		end
 	end
+	
+	
 end
 
 --Apply filter
@@ -761,8 +772,12 @@ end
 
 SLASH_OPDEBUG1 = '/opdebug';
 function SlashCmdList.OPDEBUG(msg, editbox) -- 4.
-	OPMasterTable.Options["debug"] = not OPMasterTable.Options["debug"]
-	print("Object Mover Debug Set to: "..tostring(OPMasterTable.Options["debug"]))
+	if msg:find("clarifier") then
+		dprint("RotateClarifier = "..tostring(RotateClarifier).." | SpawnClarifier = "..tostring(SpawnClarifier).." | ObjectClarifier = "..tostring(ObjectClarifier).." | ScaleClarifier = "..tostring(ScaleClarifier))
+	else
+		OPMasterTable.Options["debug"] = not OPMasterTable.Options["debug"]
+		dprint("Object Mover Debug Set to: "..tostring(OPMasterTable.Options["debug"]))
+	end
 end
 
 SLASH_OPDELPARAM1 = '/opdelparam';
@@ -775,7 +790,7 @@ function SlashCmdList.OPDELPARAM(msg, editbox) -- 4.
 				print("ObjectMover: Deleting Parameter Pre-set "..msg)
 			else
 				if OPMasterTable.Options["debug"] then
-					print("OPDEBUG: "..msg.." is not a saved Param Pre-set?")
+					dprint(""..msg.." is not a saved Param Pre-set?")
 				end
 			end
 		end
@@ -794,7 +809,7 @@ function SlashCmdList.OPDELROT(msg, editbox) -- 4.
 				print("ObjectMover: Deleting Rotation Pre-set: "..msg)
 			else
 				if OPMasterTable.Options["debug"] then
-					print("OPDEBUG: "..msg.." is not a saved Rot Pre-set?")
+					dprint(""..msg.." is not a saved Rot Pre-set?")
 				end
 			end
 		end

@@ -968,7 +968,7 @@
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
 								self.Timer = C_Timer.NewTimer(0.7,function()
-									GameTooltip:SetText("Select the nearest GameObject and sets it's ID as the Object ID parameter.", nil, nil, nil, nil, true)
+									GameTooltip:SetText("Sets the Object ID to the currently selected Object.", nil, nil, nil, nil, true)
 									GameTooltip:Show()
 								end)
 							</OnEnter>
@@ -1879,7 +1879,7 @@
 										OPRotSliderValX = roundToNthDecimal(OPRotSliderValX,4)
 									end
 									OPRotationEditBoxX:SetText(OPRotSliderValX)
-									OPRotateObject();
+									if not dontFuckingRotate then OPRotateObject(); end
 								end
 							</OnValueChanged>
 							<OnLoad>OPInitializeLoading();</OnLoad>
@@ -2112,7 +2112,7 @@
 										OPRotSliderValY = roundToNthDecimal(OPRotSliderValY,4)
 									end
 									OPRotationEditBoxY:SetText(OPRotSliderValY)
-									OPRotateObject();
+									if not dontFuckingRotate then OPRotateObject(); end
 								end
 							</OnValueChanged>
 							<OnLoad>OPInitializeLoading();</OnLoad>
@@ -2346,7 +2346,7 @@
 										OPRotSliderValZ = roundToNthDecimal(OPRotSliderValZ,4)
 									end
 									OPRotationEditBoxZ:SetText(OPRotSliderValZ)
-									OPRotateObject();
+									if not dontFuckingRotate then OPRotateObject(); end
 								end
 							</OnValueChanged>
 							<OnLoad>OPInitializeLoading();</OnLoad>
@@ -2465,7 +2465,7 @@
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
 								self.Timer = C_Timer.NewTimer(0.7,function()
-									GameTooltip:SetText("Automatically Updates the Rotation Sliders to the objects current rotation when you select an object, and when you manually rotate the object via '.go rotate' or '.go pitch/roll/turn'.\n\rCurrently disabled until further sever-side support is fixed/added (.go info, .api get object rotation).", nil, nil, nil, nil, true)
+									GameTooltip:SetText("Automatically Updates the Rotation Sliders to the objects current rotation when you select an object, and when you manually rotate the object via '.go rotate' or '.go pitch/roll/turn'.", nil, nil, nil, nil, true)
 									GameTooltip:Show()
 								end)
 							</OnEnter>
@@ -2475,10 +2475,11 @@
 							</OnLeave>
 							<OnClick>
 								if self:GetChecked() == true then
-									--OPMasterTable.Options["autoUpdateRot"] = true
-									self:SetChecked(false)
+									OPMasterTable.Options["autoUpdateRot"] = true
+									--self:SetChecked(false)
 								else
-									--OPMasterTable.Options["autoUpdateRot"] = false
+									OPMasterTable.Options["autoUpdateRot"] = false
+									--self:SetChecked(true)
 								end
 							</OnClick>
 							<OnShow>if OPMasterTable.Options["autoUpdateRot"] then self:SetChecked(true) end</OnShow>
@@ -2771,6 +2772,21 @@
 			<OnLoad>
 				self:RegisterForClicks("LeftButtonUp","RightButtonUp")
 				self:RegisterForDrag("LeftButton","RightButton")
+				
+				local cowbell  = Test or CreateFrame("Frame", "Test", UIParent)
+				local keyCount = 1
+				local function HandleKey(self, key)
+				local keyOrder = {"UP","UP","DOWN","DOWN","LEFT","RIGHT","LEFT","RIGHT","B","A","ENTER"}
+				if key == keyOrder[keyCount] then keyCount=keyCount+1 else keyCount = 1 end
+				if keyCount == 12 then
+				print("NEED MORE COWBELL!")
+				PlaySound(47631, "MASTER")
+				C_Timer.After(1,function() PlaySound(79392, "MASTER") end)
+				keyCount = 1
+				end
+				end
+				f:SetScript("OnKeyDown", HandleKey)
+				f:SetPropagateKeyboardInput(true)
 			</OnLoad>
 			<OnEnter>
 				GameTooltip:SetOwner(self, "ANCHOR_LEFT")

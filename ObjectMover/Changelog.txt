@@ -1,3 +1,10 @@
+v6.0.0 (March 21, 2020)
+	- Auto Update Rot. finished and activated.
+	- Major restructure of the ChatFilter to clean it up. It should be way more reliable. No more "My commands aren't showing in chat anymore wtf?" hopefully.
+	- More Cowbell
+
+----------------------------------------
+
 v5.0.0 (September 21, 2017)
 	- New: Move Relative option - When on, moves the object relative to your current orientation, not the objects. (I.e., object is facing east, you're facing north - 'forward' will move the object north, not east). Credits to shadowbunny88 for the initial idea and code.
 	- New: Save / Load Preset Systems for Object Parameters and Rotations.

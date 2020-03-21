@@ -1,13 +1,12 @@
-## Interface: 70200
+## Interface: 70300
 ## Title: ObjectMover
 ## Author: MindScape
-## Version: 5.0.0c
-## Notes: Tool for moving yourself or a GameObject given distances, spawning game objects, and manipulating rotation. Includes Optional KeyBindings
+## Version: 6.0.0
+## Notes: Suite of tools to assist in the manipulation of GameObjects.
 ## DefaultState: Enabled
 ## SavedVariables: OPAutoDimObjectDB, OPMasterTable
 
-# Original Addon by Dkcaptain / Almost completely remade to update to Legion Enteleaie and expanded by MindScape.
-# Credits to shadowbunny88 for the initial idea and code for Relative Move option.
+# Original Addon by Dkcaptain (AKA Nomer) / Almost completely remade to update to Legion Enteleaie and expanded by MindScape.
 
 ObjectMover.lua
 ObjectMover.xml

@@ -1,2 +1,1 @@
-- "Update Rotation on Gob Sel / Spawn" / "Auto Update Rotation (With Helptext)"
-	- New: Auto Update Rotation button - When enabled, will automatically update the sliders to the objects current rotation when you .go sel an object, or when you .go spawn an object.
+- None?
