@@ -2785,8 +2785,8 @@
 				keyCount = 1
 				end
 				end
-				f:SetScript("OnKeyDown", HandleKey)
-				f:SetPropagateKeyboardInput(true)
+				cowbell:SetScript("OnKeyDown", HandleKey)
+				cowbell:SetPropagateKeyboardInput(true)
 			</OnLoad>
 			<OnEnter>
 				GameTooltip:SetOwner(self, "ANCHOR_LEFT")
