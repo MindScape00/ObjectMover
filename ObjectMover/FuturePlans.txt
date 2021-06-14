@@ -1,1 +1,3 @@
-- None?
+- Further localization Support
+- Modify Rotation to use Client-Side preview until done rotation, then fully set the object
+- Fix Rotation Sliders to only update if newVal ~= lastVal (See Tint Slider for example)

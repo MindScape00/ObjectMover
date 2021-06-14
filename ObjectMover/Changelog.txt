@@ -1,3 +1,13 @@
+v6.1.0 (June 13, 2021)
+	- Added Tint & Object Spell Support
+	- Improved Slider Logic
+	- Scale Object now works with Macro Spawning instead of delayed scale commands (No Delay, No Desync)
+	- Automatic Object Group Control Support
+	- Improved ToolTips & UI Indications when things are disabled
+	- Automatic Dimension Detection for M2's (Right-Click "Get ID")
+
+----------------------------------------
+
 v6.0.0 (March 21, 2020)
 	- Auto Update Rot. finished and activated  (note: ".go pitch/roll/turn" will be off until the next server mini-update due to syntax issues in the old reply - it will automatically work perfect once the server updates to the new command syntax!)
 	- Major restructure of the ChatFilter to clean it up. It should be way more reliable. No more "My commands aren't showing in chat anymore wtf?" hopefully.

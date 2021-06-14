@@ -1,13 +1,13 @@
 ## Interface: 80300
 ## Title: ObjectMover
 ## Author: MindScape
-## Version: 6.0.0
+## Version: 6.1.0
 ## Notes: Suite of tools to assist in the manipulation of GameObjects.
 ## DefaultState: Enabled
 ## SavedVariables: OPAutoDimObjectDB, OPMasterTable
-## X-Changes: TOC Bump to 830
+## X-Changes: Tint & Object Spell Support
 
-# Original Addon by Dkcaptain (AKA Nomer) / Almost completely remade to update to Legion Enteleaie and expanded by MindScape.
+# Original Addon by Dkcaptain (AKA Nomer) / Almost completely remade to update to Epsilon and expanded by MindScape.
 
 ObjectMover.lua
 ObjectMover.xml

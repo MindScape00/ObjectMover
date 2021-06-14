@@ -2,15 +2,57 @@
 -- Initialize Variables
 -------------------------------------------------------------------------------
 
-local utils = Epsilon.utils
-local messages = utils.messages
-local server = utils.server
-local tabs = utils.tabs
+-- local utils = Epsilon.utils
+-- local messages = utils.messages
+-- local server = utils.server
+-- local tabs = utils.tabs
 
-local main = Epsilon.main
+-- local main = Epsilon.main
 
-local OPmoveLength, OPmoveWidth, OPmoveHeight, OPmoveModifier, MessageCount, ObjectClarifier, SpawnClarifier, ScaleClarifier, RotateClarifier = 0, 0, 0, 1, 0, false, false, false, false
+local addonPrefix = "EPISLON_OBJ_INFO"
+
+local OPmoveLength, OPmoveWidth, OPmoveHeight, OPmoveModifier, MessageCount, ObjectClarifier, SpawnClarifier, ScaleClarifier, RotateClarifier, OPObjectSpell, cmdPref, isGroupSelected, m = 0, 0, 0, 1, 0, false, false, false, false, nil, "go", nil, nil
 BINDING_HEADER_OBJECTMANIP, SLASH_SHOWCLOSE1, SLASH_SHOWCLOSE2 = "Object Mover", "/obj", "/om"
+
+-------------------------------------------------------------------------------
+-- Simple Chat Functions
+-------------------------------------------------------------------------------
+
+local function cmd(text)
+  SendChatMessage("."..text, "GUILD");
+end
+
+local function eprint(text,...)
+	local rest = ...
+	local line = strmatch(debugstack(2),":(%d+):")
+	if line then
+		print("|cffFFD700 ObjectMover Error @ "..line..": "..text.." | "..rest.." |r")
+	else
+		print("|cffFFD700 ObjectMover @ ERROR: "..text.." | "..rest.." |r")
+		print(debugstack(2))
+	end
+end
+
+local function dprint(text, force, ...)
+	if force and force ~= true then 
+		rest = force,...
+	else
+		rest = ... or ""
+	end
+	if force == true or OPMasterTable.Options["debug"] then
+		local line = strmatch(debugstack(2),":(%d+):")
+		if line then
+			print("|cffFFD700 ObjectMover DEBUG "..line..": "..text.." | "..rest.." |r")
+		else
+			print("|cffFFD700 ObjectMover DEBUG: "..text.." | "..rest.." |r")
+			print(debugstack(2))
+		end
+	end
+end
+
+-------------------------------------------------------------------------------
+-- Loading Sequence
+-------------------------------------------------------------------------------
 
 function loadMasterTable()
 	if not OPMasterTable then OPMasterTable = {} end
@@ -66,9 +108,7 @@ function OPInitializeLoading()
 	if FrameLoadingPoints >= 3 then
 		OPFramesAreLoaded = true
 		FrameLoadingPoints = 0
-		if OPMasterTable.Options["debug"] then
-			dprint("Frames Loaded: Rotation Enabled.")
-		end
+		dprint("Frames Loaded: Rotation Enabled.")
 	end
 end
 
@@ -86,6 +126,55 @@ OPAddonDetect:SetScript("OnEvent", function(self,event,name)
 		--Quickly Show / Hide the Frame on Start-Up to initialize everything for key bindings
 		OPMainFrame:Show()
 		OPMainFrame:Hide()
+		
+		-- Fix Tint ValueChanged Handlers
+		OPTintSliderR:SetScript("OnValueChanged", function(self,value,byUser)
+			if byUser then
+				if value ~= tonumber(_G[self:GetName().."Text"]:GetText()) then
+					OPTintObject();
+				end
+			end
+			_G[self:GetName().."Text"]:SetText(OPTintSliderR:GetValue())
+		end)
+		OPTintSliderG:SetScript("OnValueChanged", function(self,value,byUser)
+			if byUser then
+				if value ~= tonumber(_G[self:GetName().."Text"]:GetText()) then
+					OPTintObject();
+				end
+			end
+			_G[self:GetName().."Text"]:SetText(OPTintSliderG:GetValue())
+		end)
+		OPTintSliderB:SetScript("OnValueChanged", function(self,value,byUser)
+			if byUser then
+				if value ~= tonumber(_G[self:GetName().."Text"]:GetText()) then
+					OPTintObject();
+				end
+			end
+			_G[self:GetName().."Text"]:SetText(OPTintSliderB:GetValue())
+		end)
+		OPTintSliderT:SetScript("OnValueChanged", function(self,value,byUser)
+			if byUser then
+				if value ~= tonumber(_G[self:GetName().."Text"]:GetText()) then
+					OPTintObject();
+				end
+			end
+			_G[self:GetName().."Text"]:SetText(OPTintSliderT:GetValue())
+		end)
+		
+		m = CreateFrame("ModelScene")
+		Mixin(m, ModelSceneMixin)
+		m.o = m:CreateActor(nil, "ObjectMoverActorTemplate")
+		m.o.OnModelLoaded = function()
+			dprint("Model Loaded - Getting boundingbox")
+			local mX1, mY1, mZ1, mX2, mY2, mZ2 = m.o:GetActiveBoundingBox()
+			local mX = mX1-mX2; local mY = mY1-mY2; local mZ = mZ1-mZ2
+			OPLengthBox:SetText(roundToNthDecimal(abs(mX),7))
+			OPWidthBox:SetText(roundToNthDecimal(abs(mY),7))
+			OPHeightBox:SetText(roundToNthDecimal(abs(mZ),7))
+			dprint("AUTODIM: X: "..mX.." ("..mX1.." | "..mX2.."), Y: "..mY.." ("..mY1.." | "..mY2.."), Z: "..mZ.." ("..mZ1.." | "..mZ2..")")
+			m.o:ClearModel()
+		end
+		
 	end
 end);
 
@@ -98,34 +187,6 @@ function OPMiniMapLoadIt()
 	if OPMasterTable.Options["MinimapButtonSavePoint"] ~= nil and OPMasterTable.Options["MinimapButtonSavePoint"] ~= "" then
 		local point, relativeTo, relativePoint, xOffset, yOffset = strsplit(" ", OPMasterTable.Options["MinimapButtonSavePoint"])
 		ObjectManipulator_MinimapButton:SetPoint(point, "Minimap", relativePoint, xOffset, yOffset)
-	end
-end
-
--------------------------------------------------------------------------------
--- Simple Chat Functions
--------------------------------------------------------------------------------
-
-local function cmd(text)
-  SendChatMessage("."..text, "GUILD");
-end
-
-local function eprint(text)
-	local line = strmatch(debugstack(2),":(%d+):")
-	if line then
-		print("|cffFFD700 ObjectMover Error @ "..line..": "..text.."|r")
-	else
-		print("|cffFFD700 ObjectMover @ ERROR: "..text.."|r")
-		print(debugstack(2))
-	end
-end
-
-local function dprint(text)
-	local line = strmatch(debugstack(2),":(%d+):")
-	if line then
-		print("|cffFFD700 ObjectMover DEBUG "..line..": "..text.."|r")
-	else
-		print("|cffFFD700 ObjectMover DEBUG: "..text.."|r")
-		print(debugstack(2))
 	end
 end
 
@@ -147,9 +208,18 @@ function CheckIfValid(Box, IsNotObjectID, Function)
 end
 
 --Get Object ID Function
-function OPGetObject()
+function OPGetObject(button)
 	OPObjectIDBox:SetText(tonumber(lastSelectedObjectID))
-	if OPMasterTable.Options["debug"] then dprint("Obejct ID Box updated to: "..tonumber(lastSelectedObjectID)) end;
+	dprint("Obejct ID Box updated to: "..tonumber(lastSelectedObjectID))
+	if button == "RightButton" then
+		if OPLastSelectedObjectData[4] then
+			m.o:SetModelByFileID(OPLastSelectedObjectData[4])
+			dprint("Generating ModelFrame to get Bounding Box (file ID "..OPLastSelectedObjectData[4]..")")
+			if OPLastSelectedObjectData[18] then
+				OPScaleBox:SetText(OPLastSelectedObjectData[18])
+			end
+		end
+	end
 end
 
 --Update Internal Dimensions for movement when used, factoring in scale, double and halve options
@@ -172,23 +242,21 @@ function OPForward()
 	updateDimensions("length")
 	if OPmoveLength and OPmoveLength ~= "" and OPmoveLength ~= 0 and OPmoveLength ~= nil then
 		if OPMoveObjectInstead:GetChecked() then
-			if RelativeToPlayer:GetChecked() then
-				--OPMoveRelative("forward")
-				cmd("go relative forward "..OPmoveLength)
+			if isGroupSelected then cmdPref = "go group" else cmdPref = "go" end
+			if RelativeToPlayerToggle:GetChecked() then
+				cmd(cmdPref.." relative forward "..OPmoveLength)
 			else
-				cmd("go move for "..OPmoveLength)
+				cmd(cmdPref.." move for "..OPmoveLength)
 			end
 		else
 			cmd("gps for "..OPmoveLength)
 		end
-		if SpawnonMove:GetChecked() == true then
+		if SpawnonMoveButton:GetChecked() == true and not OPMoveObjectInstead:GetChecked() then
 			OPSpawn()
 		end
-		if OPMasterTable.Options["debug"] then
-			dprint("Moving "..OPmoveLength.." units forward.")
-		end
+		dprint("Moving "..OPmoveLength.." units forward.")
 	else
-		print("ObjectMover | Invalid Move Length, please check your Object Parameters.")
+		eprint("Invalid Move Length, please check your Object Parameters.")
 	end
 end
 
@@ -196,23 +264,21 @@ function OPBackward()
 	updateDimensions("length")
 	if OPmoveLength and OPmoveLength ~= "" and OPmoveLength ~= 0 and OPmoveLength ~= nil then
 		if OPMoveObjectInstead:GetChecked() == true then
-			if RelativeToPlayer:GetChecked() then
-				--OPMoveRelative("back")
-				cmd("go relative back "..OPmoveLength)
+			if isGroupSelected then cmdPref = "go group" else cmdPref = "go" end
+			if RelativeToPlayerToggle:GetChecked() then
+				cmd(cmdPref.." relative back "..OPmoveLength)
 			else
-				cmd("go move back "..OPmoveLength)
+				cmd(cmdPref.." move back "..OPmoveLength)
 			end
 		else
 			cmd("gps back "..OPmoveLength)
 		end
-		if SpawnonMove:GetChecked() == true then
+		if SpawnonMoveButton:GetChecked() == true and not OPMoveObjectInstead:GetChecked() then
 			OPSpawn()
 		end
-		if OPMasterTable.Options["debug"] then
-			dprint("Moving "..OPmoveLength.." units backwards.")
-		end
+		dprint("Moving "..OPmoveLength.." units backwards.")
 	else
-		print("ObjectMover | Invalid Move Length, please check your Object Parameters.")
+		eprint("Invalid Move Length, please check your Object Parameters.")
 	end
 end
 
@@ -220,23 +286,21 @@ function OPLeft()
 	updateDimensions("width")
 	if OPmoveWidth and OPmoveWidth ~= "" and OPmoveWidth ~= 0 and OPmoveWidth ~= nil then
 		if OPMoveObjectInstead:GetChecked() == true then
-			if RelativeToPlayer:GetChecked() then
-				--OPMoveRelative("left")
-				cmd("go relative left "..OPmoveWidth)
+			if isGroupSelected then cmdPref = "go group" else cmdPref = "go" end
+			if RelativeToPlayerToggle:GetChecked() then
+				cmd(cmdPref.." relative left "..OPmoveWidth)
 			else
-				cmd("go move left "..OPmoveWidth)
+				cmd(cmdPref.." move left "..OPmoveWidth)
 			end
 		else
 			cmd("gps left "..OPmoveWidth)
 		end
-		if SpawnonMove:GetChecked() == true then
+		if SpawnonMoveButton:GetChecked() == true and not OPMoveObjectInstead:GetChecked() then
 			OPSpawn()
 		end
-		if OPMasterTable.Options["debug"] then
-			dprint("Moving "..OPmoveWidth.." units left.")
-		end
+		dprint("Moving "..OPmoveWidth.." units left.")
 	else
-		print("ObjectMover | Invalid Move Width, please check your Object Parameters.")
+		eprint("Invalid Move Width, please check your Object Parameters.")
 	end
 end
 
@@ -244,23 +308,21 @@ function OPRight()
 	updateDimensions("width")
 	if OPmoveWidth and OPmoveWidth ~= "" and OPmoveWidth ~= 0 and OPmoveWidth ~= nil then
 		if OPMoveObjectInstead:GetChecked() == true then
-			if RelativeToPlayer:GetChecked() then
-				--OPMoveRelative("right")
-				cmd("go relative right "..OPmoveWidth)
+			if isGroupSelected then cmdPref = "go group" else cmdPref = "go" end
+			if RelativeToPlayerToggle:GetChecked() then
+				cmd(cmdPref.." relative right "..OPmoveWidth)
 			else
-				cmd("go move right "..OPmoveWidth)
+				cmd(cmdPref.." move right "..OPmoveWidth)
 			end
 		else
 			cmd("gps right "..OPmoveWidth)
 		end
-		if SpawnonMove:GetChecked() == true then
+		if SpawnonMoveButton:GetChecked() == true and not OPMoveObjectInstead:GetChecked() then
 			OPSpawn()
 		end
-		if OPMasterTable.Options["debug"] then
-			dprint("Moving "..OPmoveWidth.." units right.")
-		end
+		dprint("Moving "..OPmoveWidth.." units right.")
 	else
-		print("ObjectMover | Invalid Move Width, please check your Object Parameters.")
+		eprint("Invalid Move Width, please check your Object Parameters.")
 	end
 end
 
@@ -268,18 +330,17 @@ function OPUp()
 	updateDimensions("height")
 	if OPmoveHeight and OPmoveHeight ~= "" and OPmoveHeight ~= 0 and OPmoveHeight ~= nil then
 		if OPMoveObjectInstead:GetChecked() == true then
-			cmd("go move up "..OPmoveHeight)
+			if isGroupSelected then cmdPref = "go group" else cmdPref = "go" end
+			cmd(cmdPref.." move up "..OPmoveHeight)
 		else
 			cmd("gps up "..OPmoveHeight)
 		end
-		if SpawnonMove:GetChecked() == true then
+		if SpawnonMoveButton:GetChecked() == true and not OPMoveObjectInstead:GetChecked() then
 			OPSpawn()
 		end
-		if OPMasterTable.Options["debug"] then
-			dprint("Moving "..OPmoveHeight.." units up.")
-		end
+		dprint("Moving "..OPmoveHeight.." units up.")
 	else
-		print("ObjectMover | Invalid Move Height, please check your Object Parameters.")
+		eprint("Invalid Move Height, please check your Object Parameters.")
 	end
 end
 
@@ -287,18 +348,17 @@ function OPDown()
 	updateDimensions("height")
 	if OPmoveHeight and OPmoveHeight ~= "" and OPmoveHeight ~= 0 and OPmoveHeight ~= nil then
 		if OPMoveObjectInstead:GetChecked() == true then
-			cmd("go move down "..OPmoveHeight)
+			if isGroupSelected then cmdPref = "go group" else cmdPref = "go" end
+			cmd(cmdPref.." move down "..OPmoveHeight)
 		else
-			cmd("gps down "..OPmoveHeight)
+			cmd(cmdPref.." down "..OPmoveHeight)
 		end
-		if SpawnonMove:GetChecked() == true then
+		if SpawnonMoveButton:GetChecked() == true and not OPMoveObjectInstead:GetChecked() then
 			OPSpawn()
 		end
-		if OPMasterTable.Options["debug"] then
-			dprint("Moving "..OPmoveHeight.." units down.")
-		end
+		dprint("Moving "..OPmoveHeight.." units down.")
 	else
-		cprint("Invalid Move Height, please check your Object Parameters.")
+		eprint("Invalid Move Height, please check your Object Parameters.")
 	end
 end
 
@@ -306,12 +366,11 @@ function OPSpawn()
 	if CheckIfValid(OPObjectIDBox) then
 		SpawnClarifier = true
 		--Check if we have an object ID in the object ID box, if we do, spawn it
-		SendChatMessage(".go spawn "..OPObjectIDBox:GetText())
-	end
-	if ScaleObject:GetChecked() == true and ScaleObject:IsEnabled() then
-		--Do we want to scale it?
-		ScaleClarifier = true
-		C_Timer.After(0.5, function() SendChatMessage(".go scale "..OPScaleBox:GetText()) end) -- Delay the scale because scaling immediately after spawn doesn't save on server restart
+		if ScaleObject:GetChecked() == true and ScaleObject:IsEnabled() then
+			SendChatMessage(".go spawn "..OPObjectIDBox:GetText().." scale "..OPScaleBox:GetText())
+		else
+			SendChatMessage(".go spawn "..OPObjectIDBox:GetText())
+		end
 	end
 end
 
@@ -331,6 +390,66 @@ function EnableBoxes(Box1, Box2)
 	end
 end
 
+function OPTintObject()
+	if OPFramesAreLoaded then
+		local r = OPTintSliderR:GetValue()
+		local g = OPTintSliderG:GetValue()
+		local b = OPTintSliderB:GetValue()
+		local t = OPTintSliderT:GetValue()
+		--addFilter("Removed GameObject .*\'s tint.")
+		if isGroupSelected then cmdPref = "go group" else cmdPref = "go" end
+		cmd(cmdPref.." tint "..r.." "..g.." "..b.." "..t)
+	end
+end
+
+function OPUpdateTints(restore)
+	if restore and restore ~= "APPLY" then
+		local r,g,b,a = unpack(restore)
+		OPTintSliderR:SetValue(r*100)
+		OPTintSliderG:SetValue(g*100)
+		OPTintSliderB:SetValue(b*100)
+		OPTintSliderT:SetValue(a*100)
+		OPTintIsControllingColorPicker = false
+	else
+		local r,g,b = ColorPickerFrame:GetColorRGB()
+		OPTintSliderR:SetValue(r*100)
+		OPTintSliderG:SetValue(g*100)
+		OPTintSliderB:SetValue(b*100)
+	end
+	if restore == "APPLY" then
+		OPTintObject()
+	end
+end
+
+function OPUpdateTintsApply()
+	if OPTintIsControllingColorPicker then
+		OPUpdateTints("APPLY")
+		OPTintIsControllingColorPicker = false
+	end
+end
+
+function OPResetTint(applyAfter)
+	OPTintSliderR:SetValue(100)
+	OPTintSliderG:SetValue(100)
+	OPTintSliderB:SetValue(100)
+	OPTintSliderT:SetValue(0)
+	if applyAfter then
+		OPTintObject();
+	end
+end
+
+local function updateSpellButton()
+	if OPObjectSpell and OPObjectSpell ~= "" and tonumber(OPObjectSpell) ~= 0 then
+		--OPTintSpellButton.Text:SetTextHeight(9)
+		OPTintSpellButton.Text:SetFont("Fonts\\FRIZQT__.TTF", 8)
+		OPTintSpellButton.Text:SetText("Spell\n("..OPObjectSpell..")")
+	else
+		--OPTintSpellButton.Text:SetTextHeight(10)
+		OPTintSpellButton.Text:SetFont("Fonts\\FRIZQT__.TTF", 10)
+		OPTintSpellButton.Text:SetText("Spell")
+	end
+end
+
 function OPRotateObject()
 	--if RotateClarifier == false then
 		RotateClarifier = true
@@ -338,9 +457,9 @@ function OPRotateObject()
 	local RotationX = OPRotationSliderX:GetValue()
 	local RotationY = OPRotationSliderY:GetValue()
 	local RotationZ = OPRotationSliderZ:GetValue()
-	if RotationX < 0 then RotationX = 0; if OPMasterTable.Options["debug"] then print("RotX < 0, Made 0") end; end
-	if RotationY < 0 then RotationY = 0; if OPMasterTable.Options["debug"] then print("RotY < 0, Made 0") end; end
-	if RotationZ < 0 then RotationZ = 0; if OPMasterTable.Options["debug"] then print("RotZ < 0, Made 0") end; end
+	if RotationX < 0 then RotationX = 0; dprint("RotX < 0, Made 0"); end
+	if RotationY < 0 then RotationY = 0; dprint("RotY < 0, Made 0"); end
+	if RotationZ < 0 then RotationZ = 0; dprint("RotZ < 0, Made 0"); end
 	cmd("go rot "..RotationX.." "..RotationY.." "..RotationZ)
 end
 
@@ -348,6 +467,63 @@ function roundToNthDecimal(num, n)
   local mult = 10^(n or 0)
   return math.floor(num * mult+0.5) / mult
 end
+
+function OPSpellButtonFunc(button)
+	if button == "LeftButton" then
+		StaticPopup_Show("OP_TINTS_SPELL")
+	elseif button == "RightButton" then
+		if isGroupSelected then cmdPref = "go group" else cmdPref = "go" end
+		cmd(cmdPref.." spell 0")
+	end
+end
+
+StaticPopupDialogs["OP_TINTS_SPELL"] = {
+	text = STAT_CATEGORY_SPELL,
+	button1 = APPLY,
+	button2 = CANCEL,
+	OnAccept = function( self )
+		local spell = self.editBox:GetText()
+		if isGroupSelected then cmdPref = "go group" else cmdPref = "go" end
+		if tonumber(spell) ~= nil then
+			if tonumber(spell) > 0 then
+				cmd(cmdPref.." spell "..self.editBox:GetText())
+			else
+				cmd(cmdPref.." spell 0")
+			end
+		else
+			cmd(cmdPref.." spell 0")
+		end
+	end,
+	EditBoxOnTextChanged = function(self)
+		if self:GetText() ~= "" then
+			self:GetParent().button1:SetText(APPLY)
+		else
+			self:GetParent().button1:SetText(REMOVE)
+		end
+	end,
+	EditBoxOnEnterPressed = function(self)
+		self:GetParent().button1:Click("LeftButton")
+	end,
+	EditBoxOnEscapePressed = function(self)
+		self:GetParent().button2:Click("LeftButton")
+	end,
+	OnShow = function(self)
+		if OPObjectSpell and OPObjectSpell ~= "" and OPObjectSpell ~= nil then
+			self.editBox:SetText(OPObjectSpell)
+		else 
+			self.editBox:SetText("")
+		end
+		self.editBox:SetNumeric(true)
+	end,
+	OnHide = function(self)
+		self.editBox:SetText("")
+	end,
+	enterClicksFirstButton = true,
+	timeout = 0,
+	whileDead = true,
+	hideOnEscape = true,
+	hasEditBox = true,
+}
 
 -------------------------------------------------------------------------------
 -- Save / Load Pre-set System
@@ -379,7 +555,7 @@ function OPSaveMenuActualSave()
 	elseif not opsavename then
 		message("Please enter a valid name!\n\rNames must contain at least one non-space character.")
 	else
-		print("ObjectMover: There was an error saving your pre-set. Please use '/reload' and try again. If this persists, please report it as a bug.")
+		eprint("There was an error saving your pre-set. Please use '/reload' and try again. If this persists, please report it as a bug.")
 	end
 end
 
@@ -405,7 +581,7 @@ function OPSaveMenuParamSave(name)
 					end
 					return
 				else
-					print("Error: You tried to save with the same name as another Parameter Pre-set save, and an error occurred internally. Please remember how you did this and report it as a bug. Thanks you.")
+					eprint("You tried to save with the same name as another Parameter Pre-set save, and an error occurred internally. Please remember how you did this and report it as a bug. Thanks you.")
 					return
 				end
 				return
@@ -452,7 +628,7 @@ function OPSaveMenuRotSave(name)
 					end
 					return
 				else
-					print("Error: You tried to save with the same name as another Rotation Save, and an error occurred internally. Please remember how you did this and report it as a bug. Thanks you.")
+					eprint("You tried to save with the same name as another Rotation Save, and an error occurred internally. Please remember how you did this and report it as a bug. Thanks you.")
 					return
 				end
 				return
@@ -485,7 +661,8 @@ function OPCreateLoadDropDownMenus()
 	paramPresetDropSelect:SetScript("OnEnter",function()
 		GameTooltip:SetOwner(paramPresetDropSelect, "ANCHOR_LEFT")
 		paramPresetDropSelect.Timer = C_Timer.NewTimer(0.7,function()
-			GameTooltip:SetText("Select a previously saved parameter pre-set to load.\n\rYou can use '/opdelparam Name' in chat (where Name is the pre-set name, case sensitive) to delete any of these pre-sets including the default ones.", nil, nil, nil, nil, true)
+			GameTooltip:SetText("Select a previously saved parameter pre-set to load.\r\n", nil, nil, nil, nil, true)
+			GameTooltip:AddLine("You can use '/opdelparam Name' in chat (where Name is the pre-set name, case sensitive) to delete any of these pre-sets including the default ones.",1,1,1,true)
 			GameTooltip:Show()
 			end)
 	end)
@@ -513,9 +690,7 @@ function OPCreateLoadDropDownMenus()
 			if _OPMTPPC.Scale and tostring(_OPMTPPC.Scale) ~= "" and tostring(_OPMTPPC.Scale) ~= "0" then
 				OPScaleBox:SetText(OPMasterTable.ParamPresetContent[self.value].Scale)
 			end
-			if OPMasterTable.Options["debug"] then
-				dprint("Tried to load Param Pre-set: "..self.value)
-			end
+			dprint("Tried to load Param Pre-set: "..self.value)
 		end
 	end
 	local function paramPresetInitialize(self,level)
@@ -539,12 +714,13 @@ function OPCreateLoadDropDownMenus()
 	paramPresetDropDownMenuText:SetFont(fontName, 6)
 	
 	-- Rot Loading
-	local rotPresetDropSelect = CreateFrame("Frame", "rotPresetDropDownMenu", OPPanel4, "UIDropDownMenuTemplate")
+	local rotPresetDropSelect = CreateFrame("Frame", "rotPresetDropDownMenu", OPPanel4Rotation, "UIDropDownMenuTemplate")
 	rotPresetDropSelect:SetPoint("LEFT", OPRotSaveButton, "RIGHT", -15, -1)
 	rotPresetDropSelect:SetScript("OnEnter",function()
 		GameTooltip:SetOwner(rotPresetDropSelect, "ANCHOR_LEFT")
 		rotPresetDropSelect.Timer = C_Timer.NewTimer(0.7,function()
-			GameTooltip:SetText("Select a previously saved rotation pre-set to load.\n\rYou can use '/opdelrot Name' in chat (where Name is the pre-set name, case sensitive) to delete any of these pre-sets including the default ones.", nil, nil, nil, nil, true)
+			GameTooltip:SetText("Select a previously saved rotation pre-set to load.\r\n", nil, nil, nil, nil, true)
+			GameTooltip:AddLine("You can use '/opdelrot Name' in chat (where Name is the pre-set name, case sensitive) to delete any of these pre-sets including the default ones.",1,1,1,true)
 			GameTooltip:Show()
 			end)
 	end)
@@ -567,17 +743,13 @@ function OPCreateLoadDropDownMenus()
 			if _OPMTRPC.RotZ and tostring(_OPMTRPC.RotZ) ~= "" and tonumber(_OPMTRPC.RotZ) >= 0 then
 				OPRotationSliderZ:SetValue(tonumber(OPMasterTable.RotPresetContent[self.value].RotZ))
 			end
-			if OPMasterTable.Options["debug"] then
-				dprint("Tried to load Rot Pre-set: "..self.value)
-				dprint(origx.." | "..origy.." | "..origz)
-			end
+			dprint("Tried to load Rot Pre-set: "..self.value)
+			dprint(origx.." | "..origy.." | "..origz)
 			if origx == OPRotationSliderX:GetValue() and origy == OPRotationSliderY:GetValue() and origz == OPRotationSliderZ:GetValue() then
 				OPRotateObject();
 				OPIMFUCKINGROTATINGDONTSPAMME = true
 				OPClearRotateChatFilter()
-				if OPMasterTable.Options["debug"] then
-					dprint("Loaded the same as whatever it is currently, so we're gonna apply the rotation anyways!")
-				end
+				dprint("Loaded the same as whatever it is currently, so we're gonna apply the rotation anyways!")
 			end
 		end
 	end
@@ -625,53 +797,40 @@ end
 function RunChecks(Message)
 	
 	local clearmsg = gsub(Message,"|cff%x%x%x%x%x%x","");
+	local clearmsg = clearmsg:gsub("|r","")
 
 -- GObject Rotate Message Filter
 	if RotateClarifier and Message:gsub("|.........",""):find("rotated") then
-		if OPMasterTable.Options["debug"] then
-			dprint("RotateClarifier Caught Message")
-		end
+		dprint("RotateClarifier Caught Message")
 		return true
 
 -- GObject Spawn Message Filter
 	elseif SpawnClarifier and clearmsg:find("[Spawned gameobject|Map:|Syntax|was not found|You do not have]") then
 		if clearmsg:find("Spawned gameobject") then
-			if OPMasterTable.Options["debug"] then
-				dprint("SpawnClarifier Caught SPAWNED Message")
-			end
+			dprint("SpawnClarifier Caught SPAWNED Message")
 			return true
 		elseif clearmsg:find("Map:") then
 			SpawnClarifier = false
-			if OPMasterTable.Options["debug"] then
-				dprint("SpawnClarifier Caught MAP Message")
-			end
+			dprint("SpawnClarifier Caught MAP Message")
 			return true
 		elseif clearmsg:find("[Syntax|was not found|You do not have]") then
 			SpawnClarifier = false
-			if OPMasterTable.Options["debug"] then
-				dprint("SpawnClarifier Caught Syntax or Failure, Disabled.")
-			end
+			dprint("SpawnClarifier Caught Syntax or Failure, Disabled.")
 		end
 
 -- GObject Scale Message Filter
 	elseif ScaleClarifier and clearmsg:find("[Syntax|was not found|You do not have|Incorrect|GameObject .* has been set to scale]") then
 		if clearmsg:find("Syntax") or clearmsg:find("was not found") or clearmsg:find("You do not have") or clearmsg:find("Incorrect") then
 			ScaleClarifier = false
-			if OPMasterTable.Options["debug"] then
-				dprint("ScaleClarifier Caught Syntax or Failure, Disabled.")
-			end
+			dprint("ScaleClarifier Caught Syntax or Failure, Disabled.")
 			return false
 		elseif clearmsg:find("GameObject .* has been set to scale") then 
 			ScaleClarifier = false
-			if OPMasterTable.Options["debug"] then
-				dprint("ScaleClarifier Caught SCALE Message")
-			end
+			dprint("ScaleClarifier Caught SCALE Message")
 			return true
 		end
 	else
-		if OPMasterTable.Options["debug"] then
-			dprint("No Clarifier Caught this, so lets let it pass")
-		end
+		dprint("No Clarifier Caught this, so lets let it pass")
 		return false
 	end
 end
@@ -679,14 +838,20 @@ end
 function Filter(Self,Event,Message)
 	
 	local clearmsg = gsub(Message,"|cff%x%x%x%x%x%x","");
+	local clearmsg = clearmsg:gsub("|r","");
 	
-	if clearmsg:find("[Selected|Spawned] gameobject") then
+	if clearmsg:find("[Selected|Spawned] gameobject [^group]") then
 		lastSelectedObjectID = clearmsg:match("[Selected|Spawned] gameobject .* - (.*)%]")
-		if OPMasterTable.Options["debug"] then 
-			dprint("Last Selected|Spawned Object = "..tostring(lastSelectedObjectID))
-		end
+		dprint("Last Selected|Spawned Object = "..tostring(lastSelectedObjectID))
+		isGroupSelected = false
+		dprint("isGroupSelected false")
+	elseif clearmsg:find("[Selected|Spawned] gameobject group") then
+		isGroupSelected = true
+		dprint("isGroupSelected true")
+	elseif clearmsg:find("Spawned blueprint") or clearmsg:find("added %d+ objects to gameobject group") then
+		isGroupSelected = true
+		dprint("isGroupSelected true")
 	end
-	
 		
 	---------- Auto Update Rotation CAPTURES ----------
 	
@@ -694,33 +859,56 @@ function Filter(Self,Event,Message)
 		if clearmsg:find("You have rotated .* [%X%Y%Z]+") then -- Did we get a rotated object message?
 			dontFuckingRotate = true -- Stop the sliders from actually causing a rotation
 			if clearmsg:find("X:") then
-				OPRotationSliderX:SetValueStep(0.0001)
-				OPRotationSliderX:SetValue(clearmsg:match("X: (%-?%d*%.%d*)"))
-				if OPMasterTable.Options["debug"] then 
-					dprint("Set Slider X to "..clearmsg:match("X: (%-?%d*%.%d*)"))
+				local x
+				if clearmsg:find("from X.*to X") then
+					x = tonumber(clearmsg:match("to X: (%-?%d*%.%d*)"))
+					dprint("Relative Rotation Caught")
+				else
+					x = tonumber(clearmsg:match("X: (%-?%d*%.%d*)"))
 				end
+				if x < 0 then x = x+360 elseif x > 360 then x = x-360 end
+				OPRotationSliderX:SetValueStep(0.0001)
+				OPRotationSliderX:SetValue(x)
+				dprint("Set Slider X to "..x)
 			end
 			if clearmsg:find("Y:") then
-				OPRotationSliderY:SetValueStep(0.0001)
-				OPRotationSliderY:SetValue(clearmsg:match("Y: (%-?%d*%.%d*)"))
-				if OPMasterTable.Options["debug"] then 
-					dprint("Set Slider Y to "..clearmsg:match("Y: (%-?%d*%.%d*)"))
+				local y
+				if clearmsg:find("from Y.*to Y") then
+					y = tonumber(clearmsg:match("to Y: (%-?%d*%.%d*)"))
+					dprint("Relative Rotation Caught")
+				else
+					y = tonumber(clearmsg:match("Y: (%-?%d*%.%d*)"))
 				end
+				if y < 0 then y = y+360 elseif y > 360 then y = y-360 end
+				OPRotationSliderY:SetValueStep(0.0001)
+				OPRotationSliderY:SetValue(y)
+				dprint("Set Slider Y to "..y)
 			end
 			if clearmsg:find("Z:") then
-				OPRotationSliderZ:SetValueStep(0.0001)
-				OPRotationSliderZ:SetValue(clearmsg:match("Z: (%-?%d*%.%d*)"))
-				if OPMasterTable.Options["debug"] then 
-					dprint("Set Slider Z to "..clearmsg:match("Z: (%-?%d*%.%d*)"))
+				local z
+				if clearmsg:find("from Z.*to Z") then
+					z = tonumber(clearmsg:match("to Z: (%-?%d*%.%d*)"))
+					dprint("Relative Rotation Caught")
+				else
+					z = tonumber(clearmsg:match("Z: (%-?%d*%.%d*)"))
 				end
+				if z < 0 then z = z+360 elseif z > 360 then z = z-360 end
+				OPRotationSliderZ:SetValueStep(0.0001)
+				OPRotationSliderZ:SetValue(z)
+				dprint("Set Slider Z to "..z)
 			end
 			dontFuckingRotate = false -- Allow sliders to cause rotation again
 		end
 		
-		if clearmsg:find("Pitch: %-?%d*%.%d*|r, Roll: %-?%d*%.%d*|r, Yaw/Turn: %-?%d*%.%d*|r") then
-			local pitch = clearmsg:match("Pitch: (%-?%d*%.%d*)|r, Roll: %-?%d*%.%d*|r, Yaw/Turn: %-?%d*%.%d*|r")
-			local roll = clearmsg:match("Pitch: %-?%d*%.%d*|r, Roll: (%-?%d*%.%d*)|r, Yaw/Turn: %-?%d*%.%d*|r")
-			local yaw = clearmsg:match("Pitch: %-?%d*%.%d*|r, Roll: %-?%d*%.%d*|r, Yaw/Turn: (%-?%d*%.%d*)|r")
+		--[[
+		if clearmsg:find("Pitch: %-?%d*%.%d*, Roll: %-?%d*%.%d*, Yaw/Turn: %-?%d*%.%d*") then
+			local pitch = tonumber(clearmsg:match("Pitch: (%-?%d*%.%d*), Roll: %-?%d*%.%d*, Yaw/Turn: %-?%d*%.%d*"))
+			if pitch < 0 then pitch = pitch+360 end
+			local roll = tonumber(clearmsg:match("Pitch: %-?%d*%.%d*, Roll: (%-?%d*%.%d*), Yaw/Turn: %-?%d*%.%d*"))
+			if roll < 0 then roll = roll+360 end
+			local yaw = tonumber(clearmsg:match("Pitch: %-?%d*%.%d*, Roll: %-?%d*%.%d*, Yaw/Turn: (%-?%d*%.%d*)"))
+			if yaw < 0 then yaw = yaw+360 end
+			dprint(clearmsg)
 			
 			dontFuckingRotate = true
 			OPRotationSliderX:SetValueStep(0.0001)
@@ -731,11 +919,37 @@ function Filter(Self,Event,Message)
 			OPRotationSliderZ:SetValue(yaw)
 			dontFuckingRotate = false
 			
-			if OPMasterTable.Options["debug"] then 
-				dprint("Roll: "..roll.." | Pitch: "..pitch.." | Turn: "..yaw)
+			dprint("Roll: "..roll.." | Pitch: "..pitch.." | Turn: "..yaw)
+		end
+		--]]
+	end
+	
+	-- Auto Update Tint --
+	if OPTintAutoUpdateButton:GetChecked() then
+		if OPTintDragging ~= true then
+			if clearmsg:find("Removed GameObject.*'s tint") then
+				OPResetTint();
+			elseif clearmsg:find("Set GameObject.* to .* tint .*") or clearmsg:find("GameObject group.*now uses tint") then
+				local r, g, b, a = clearmsg:match("tint (%d+) (%d+) (%d+) %(transparency (%d+)%)")
+				OPTintSliderR:SetValue(r)
+				OPTintSliderG:SetValue(g)
+				OPTintSliderB:SetValue(b)
+				OPTintSliderT:SetValue(a)
+				dprint("R:"..r.." G:"..g.." B:"..b.." T:"..a)
+			elseif clearmsg:find("Set GameObject.* to .* spell effect") or clearmsg:find("GameObject group.*uses spell effect") then
+				OPObjectSpell = clearmsg:match("spell effect (%d+)")
+				updateSpellButton()
+				dprint("OPObjectSpell set: "..OPObjectSpell)
+			end
+		else
+			if clearmsg:find("Removed GameObject.*'s [tint|spell]") or clearmsg:find("Set GameObject.* to .* tint .*") or clearmsg:find("GameObject group.*now uses tint") then
+				if OPShowMessagesToggle:GetChecked() ~= true then
+					return true;
+				end
 			end
 		end
 	end
+	
 	------------------------------------------------
 	
 	
@@ -743,7 +957,7 @@ function Filter(Self,Event,Message)
 	
 	if ObjectClarifier or SpawnClarifier or ScaleClarifier or RotateClarifier then
 		--Check to see if we sent a request and we don't want to see messages
-		if OPShowMessages:GetChecked() ~= true then
+		if OPShowMessagesToggle:GetChecked() ~= true then
 			if (RunChecks(Message)) then
 				return true
 			end
@@ -757,6 +971,79 @@ end
 
 --Apply filter
 ChatFrame_AddMessageEventFilter("CHAT_MSG_SYSTEM", Filter)
+
+
+-------------------------------------------------------------------------------
+-- Recieving GObject Info on Select
+-------------------------------------------------------------------------------
+
+--[[
+guid / entry / name / filedataid / x / y / z / rx / ry / rz / UNKNOWN / HasTint / red / green / blue / alpha / spell / scale
+85308046 829506 7du_karazhanb_globe01.m2 1522793 -147.125 6287.19 315.226 0 5.99998 -0 0 1 20 20 60 0 0 1
+]]
+
+local function Addon_OnEvent(self, event, ...)
+	if event == "CHAT_MSG_ADDON" then
+		local prefix = select(1,...)
+		if prefix == "EPSILON_OBJ_INFO" then
+			local objdetails = select(2,...)
+			local sender = select(4,...)
+			local self = table.concat({UnitFullName("PLAYER")}, "-")
+			if sender == self then
+				local guid, entry, name, filedataid, x, y, z, UNKNOWN, rx, ry, rz, HasTint, red, green, blue, alpha, spell, scale = strsplit(strchar(31),objdetails)
+				OPLastSelectedObjectData = {guid, entry, name, filedataid, x, y, z, UNKNOWN, rx, ry, rz, HasTint, red, green, blue, alpha, spell, scale}
+				if OPMasterTable.Options["debug"] then
+					print("GOBINFO:",guid, entry, name, filedataid, x, y, z, UNKNOWN, rx, ry, rz, HasTint, red, green, blue, alpha, spell, scale)
+				end
+				
+				-- Set Spell Tracker - Not saved so no fancy stuff needed
+				if spell and spell ~= "" and tonumber(spell) > 0 then
+					OPObjectSpell = spell
+					updateSpellButton()
+				else
+					OPObjectSpell = nil
+					updateSpellButton()
+				end
+				
+				-- Update Tints
+				if OPTintAutoUpdateButton:GetChecked() then
+					OPTintSliderR:SetValue(red)
+					OPTintSliderG:SetValue(green)
+					OPTintSliderB:SetValue(blue)
+					OPTintSliderT:SetValue(alpha)
+					dprint("Updating Tint Sliders")
+				end
+				
+				-- Update Rotations
+				if OPRotAutoUpdate:GetChecked() then
+					rx, ry, rz = tonumber(rx),tonumber(ry),tonumber(rz)
+					if rx < 0 then rx = rx+360 elseif rx > 360 then rx = rx-360 end
+					if ry < 0 then ry = ry+360 elseif ry > 360 then ry = ry-360 end
+					if rz < 0 then rz = rz+360 elseif rz > 360 then rz = rz-360 end
+					OPRotationSliderX:SetValueStep(0.0001)
+					OPRotationSliderY:SetValueStep(0.0001)
+					OPRotationSliderZ:SetValueStep(0.0001)
+					OPRotationSliderX:SetValue(rx)
+					OPRotationSliderY:SetValue(ry)
+					OPRotationSliderZ:SetValue(rz)
+				end
+			else
+				eprint("Illegal Sender ("..sender..") | (Expected:"..self..")")
+			end
+			dprint("Caught EPSILON_OBJ_INFO prefix")
+			dprint(event, ...)
+		end
+	elseif event == "PLAYER_LOGIN" then
+		local successfulRequest = C_ChatInfo.RegisterAddonMessagePrefix(addonPrefix)
+		if successfulRequest ~= true then
+			eprint("ObjectMover failed to create AddonMessage listener, automatic Rotation & Tint options disabled.")
+		end
+	end
+end
+local f = CreateFrame("Frame")
+f:SetScript("OnEvent", Addon_OnEvent)
+f:RegisterEvent("CHAT_MSG_ADDON");
+f:RegisterEvent("PLAYER_LOGIN");
 
 -------------------------------------------------------------------------------
 -- Slash Command Handlers
@@ -773,10 +1060,10 @@ end
 SLASH_OPDEBUG1 = '/opdebug';
 function SlashCmdList.OPDEBUG(msg, editbox) -- 4.
 	if msg:find("clarifier") then
-		dprint("RotateClarifier = "..tostring(RotateClarifier).." | SpawnClarifier = "..tostring(SpawnClarifier).." | ObjectClarifier = "..tostring(ObjectClarifier).." | ScaleClarifier = "..tostring(ScaleClarifier))
+		dprint("RotateClarifier = "..tostring(RotateClarifier).." | SpawnClarifier = "..tostring(SpawnClarifier).." | ObjectClarifier = "..tostring(ObjectClarifier).." | ScaleClarifier = "..tostring(ScaleClarifier), true)
 	else
 		OPMasterTable.Options["debug"] = not OPMasterTable.Options["debug"]
-		dprint("Object Mover Debug Set to: "..tostring(OPMasterTable.Options["debug"]))
+		dprint("Object Mover Debug Set to: "..tostring(OPMasterTable.Options["debug"]), true)
 	end
 end
 
@@ -789,9 +1076,7 @@ function SlashCmdList.OPDELPARAM(msg, editbox) -- 4.
 				OPMasterTable.ParamPresetContent[msg] = nil
 				print("ObjectMover: Deleting Parameter Pre-set "..msg)
 			else
-				if OPMasterTable.Options["debug"] then
-					dprint(""..msg.." is not a saved Param Pre-set?")
-				end
+				dprint(""..msg.." is not a saved Param Pre-set?")
 			end
 		end
 	else
@@ -808,9 +1093,7 @@ function SlashCmdList.OPDELROT(msg, editbox) -- 4.
 				OPMasterTable.RotPresetContent[msg] = nil
 				print("ObjectMover: Deleting Rotation Pre-set: "..msg)
 			else
-				if OPMasterTable.Options["debug"] then
-					dprint(""..msg.." is not a saved Rot Pre-set?")
-				end
+				dprint(""..msg.." is not a saved Rot Pre-set?")
 			end
 		end
 	else
