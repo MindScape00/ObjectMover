@@ -3654,7 +3654,12 @@
 			</OnLoad>
 			<OnEnter>
 				GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-				GameTooltip:SetText("Object Mover")
+				GameTooltip:SetText("ObjectMover\r\n")
+				GameTooltip:AddLine("Click to Open",1,1,1,true)
+				GameTooltip:AddLine("/om &amp; /op - Open or Close ObjectMover",1,1,1,true)
+				GameTooltip:AddLine("/omdelparam - Delete Paramaters Preset",1,1,1,true)
+				GameTooltip:AddLine("/omdelrot - Delete Rotation Preset",1,1,1,true)
+				GameTooltip:AddLine("/omdebug - Enable Debug Mode",1,1,1,true)
 			</OnEnter>
 			<OnLeave>
 				GameTooltip:Hide()

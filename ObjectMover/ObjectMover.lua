@@ -12,7 +12,7 @@
 local addonPrefix = "EPISLON_OBJ_INFO"
 
 local OPmoveLength, OPmoveWidth, OPmoveHeight, OPmoveModifier, MessageCount, ObjectClarifier, SpawnClarifier, ScaleClarifier, RotateClarifier, OPObjectSpell, cmdPref, isGroupSelected, m, isWMO = 0, 0, 0, 1, 0, false, false, false, false, nil, "go", nil, nil, nil
-BINDING_HEADER_OBJECTMANIP, SLASH_SHOWCLOSE1, SLASH_SHOWCLOSE2 = "Object Mover", "/obj", "/om"
+BINDING_HEADER_OBJECTMANIP, SLASH_SHOWCLOSE1, SLASH_SHOWCLOSE2, SLASH_SHOWCLOSE3 = "Object Mover", "/obj", "/om", "/op"
 
 -------------------------------------------------------------------------------
 -- Simple Chat Functions
@@ -1068,7 +1068,7 @@ function SlashCmdList.SHOWCLOSE()
 	end
 end
 
-SLASH_OPDEBUG1 = '/opdebug';
+SLASH_OPDEBUG1, SLASH_OPDEBUG2 = '/opdebug', '/omdebug';
 function SlashCmdList.OPDEBUG(msg, editbox) -- 4.
 	if msg:find("clarifier") then
 		dprint("RotateClarifier = "..tostring(RotateClarifier).." | SpawnClarifier = "..tostring(SpawnClarifier).." | ObjectClarifier = "..tostring(ObjectClarifier).." | ScaleClarifier = "..tostring(ScaleClarifier), true)
@@ -1078,7 +1078,7 @@ function SlashCmdList.OPDEBUG(msg, editbox) -- 4.
 	end
 end
 
-SLASH_OPDELPARAM1 = '/opdelparam';
+SLASH_OPDELPARAM1, SLASH_OPDELPARAM2 = '/opdelparam', '/omdelparam';
 function SlashCmdList.OPDELPARAM(msg, editbox) -- 4.
 	if msg then
 		for k,v in ipairs(OPMasterTable.ParamPresetKeys) do
@@ -1091,11 +1091,11 @@ function SlashCmdList.OPDELPARAM(msg, editbox) -- 4.
 			end
 		end
 	else
-		print("ObjectMover SYNTAX: '/opdelparam [name of Parameter Pre-set to delete]'")
+		print("ObjectMover SYNTAX: '/opdelparam [name of Parameter Pre-set to delete, Case Sensitive]'")
 	end
 end
 
-SLASH_OPDELROT1 = '/opdelrot';
+SLASH_OPDELROT1, SLASH_OPDELROT2 = '/opdelrot', '/omdelrot';
 function SlashCmdList.OPDELROT(msg, editbox) -- 4.
 	if msg then
 		for k,v in ipairs(OPMasterTable.RotPresetKeys) do
@@ -1108,6 +1108,6 @@ function SlashCmdList.OPDELROT(msg, editbox) -- 4.
 			end
 		end
 	else
-		print("ObjectMover SYNTAX: '/opdelparam [name of Parameter Pre-set to delete]'")
+		print("ObjectMover SYNTAX: '/opdelparam [name of Parameter Pre-set to delete, Case Sensitive]'")
 	end
 end
