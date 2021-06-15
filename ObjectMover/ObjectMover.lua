@@ -11,7 +11,7 @@
 
 local addonPrefix = "EPISLON_OBJ_INFO"
 
-local OPmoveLength, OPmoveWidth, OPmoveHeight, OPmoveModifier, MessageCount, ObjectClarifier, SpawnClarifier, ScaleClarifier, RotateClarifier, OPObjectSpell, cmdPref, isGroupSelected, m = 0, 0, 0, 1, 0, false, false, false, false, nil, "go", nil, nil
+local OPmoveLength, OPmoveWidth, OPmoveHeight, OPmoveModifier, MessageCount, ObjectClarifier, SpawnClarifier, ScaleClarifier, RotateClarifier, OPObjectSpell, cmdPref, isGroupSelected, m, isWMO = 0, 0, 0, 1, 0, false, false, false, false, nil, "go", nil, nil, nil
 BINDING_HEADER_OBJECTMANIP, SLASH_SHOWCLOSE1, SLASH_SHOWCLOSE2 = "Object Mover", "/obj", "/om"
 
 -------------------------------------------------------------------------------
@@ -212,11 +212,15 @@ function OPGetObject(button)
 	OPObjectIDBox:SetText(tonumber(lastSelectedObjectID))
 	dprint("Obejct ID Box updated to: "..tonumber(lastSelectedObjectID))
 	if button == "RightButton" then
-		if OPLastSelectedObjectData[4] then
-			m.o:SetModelByFileID(OPLastSelectedObjectData[4])
-			dprint("Generating ModelFrame to get Bounding Box (file ID "..OPLastSelectedObjectData[4]..")")
-			if OPLastSelectedObjectData[18] then
-				OPScaleBox:SetText(OPLastSelectedObjectData[18])
+		if isWMO then
+			dprint("Object was WMO")
+		else
+			if OPLastSelectedObjectData[4] then
+				m.o:SetModelByFileID(OPLastSelectedObjectData[4])
+				dprint("Generating ModelFrame to get Bounding Box (file ID "..OPLastSelectedObjectData[4]..")")
+				if OPLastSelectedObjectData[18] then
+					OPScaleBox:SetText(OPLastSelectedObjectData[18])
+				end
 			end
 		end
 	end
@@ -440,11 +444,9 @@ end
 
 local function updateSpellButton()
 	if OPObjectSpell and OPObjectSpell ~= "" and tonumber(OPObjectSpell) ~= 0 then
-		--OPTintSpellButton.Text:SetTextHeight(9)
 		OPTintSpellButton.Text:SetFont("Fonts\\FRIZQT__.TTF", 8)
 		OPTintSpellButton.Text:SetText("Spell\n("..OPObjectSpell..")")
 	else
-		--OPTintSpellButton.Text:SetTextHeight(10)
 		OPTintSpellButton.Text:SetFont("Fonts\\FRIZQT__.TTF", 10)
 		OPTintSpellButton.Text:SetText("Spell")
 	end
@@ -660,7 +662,7 @@ function OPCreateLoadDropDownMenus()
 	paramPresetDropSelect:SetPoint("LEFT", OPParamSaveButton, "RIGHT", -15, -1)
 	paramPresetDropSelect:SetScript("OnEnter",function()
 		GameTooltip:SetOwner(paramPresetDropSelect, "ANCHOR_LEFT")
-		paramPresetDropSelect.Timer = C_Timer.NewTimer(0.7,function()
+		paramPresetDropSelect.Timer = C_Timer.NewTimer(0.5,function()
 			GameTooltip:SetText("Select a previously saved parameter pre-set to load.\r\n", nil, nil, nil, nil, true)
 			GameTooltip:AddLine("You can use '/opdelparam Name' in chat (where Name is the pre-set name, case sensitive) to delete any of these pre-sets including the default ones.",1,1,1,true)
 			GameTooltip:Show()
@@ -718,7 +720,7 @@ function OPCreateLoadDropDownMenus()
 	rotPresetDropSelect:SetPoint("LEFT", OPRotSaveButton, "RIGHT", -15, -1)
 	rotPresetDropSelect:SetScript("OnEnter",function()
 		GameTooltip:SetOwner(rotPresetDropSelect, "ANCHOR_LEFT")
-		rotPresetDropSelect.Timer = C_Timer.NewTimer(0.7,function()
+		rotPresetDropSelect.Timer = C_Timer.NewTimer(0.5,function()
 			GameTooltip:SetText("Select a previously saved rotation pre-set to load.\r\n", nil, nil, nil, nil, true)
 			GameTooltip:AddLine("You can use '/opdelrot Name' in chat (where Name is the pre-set name, case sensitive) to delete any of these pre-sets including the default ones.",1,1,1,true)
 			GameTooltip:Show()
@@ -840,9 +842,12 @@ function Filter(Self,Event,Message)
 	local clearmsg = gsub(Message,"|cff%x%x%x%x%x%x","");
 	local clearmsg = clearmsg:gsub("|r","");
 	
-	if clearmsg:find("[Selected|Spawned] gameobject [^group]") then
+	if clearmsg:find("[Selected|Spawned] gameobject [^group]") and not clearmsg:find("[aA]dd") then
 		lastSelectedObjectID = clearmsg:match("[Selected|Spawned] gameobject .* - (.*)%]")
 		dprint("Last Selected|Spawned Object = "..tostring(lastSelectedObjectID))
+		if OPParamAutoUpdateButton:GetChecked() then
+			OPGetObject("RightButton")
+		end
 		isGroupSelected = false
 		dprint("isGroupSelected false")
 	elseif clearmsg:find("[Selected|Spawned] gameobject group") then
@@ -929,6 +934,9 @@ function Filter(Self,Event,Message)
 		if OPTintDragging ~= true then
 			if clearmsg:find("Removed GameObject.*'s tint") then
 				OPResetTint();
+			elseif clearmsg:find("Removed GameObject.*'s spell") then
+				OPObjectSpell = nil
+				updateSpellButton()
 			elseif clearmsg:find("Set GameObject.* to .* tint .*") or clearmsg:find("GameObject group.*now uses tint") then
 				local r, g, b, a = clearmsg:match("tint (%d+) (%d+) (%d+) %(transparency (%d+)%)")
 				OPTintSliderR:SetValue(r)
@@ -978,7 +986,7 @@ ChatFrame_AddMessageEventFilter("CHAT_MSG_SYSTEM", Filter)
 -------------------------------------------------------------------------------
 
 --[[
-guid / entry / name / filedataid / x / y / z / rx / ry / rz / UNKNOWN / HasTint / red / green / blue / alpha / spell / scale
+1 guid / 2 entry / 3 name / 4 filedataid / 5 x / 6 y / 7 z / 8 rx / 9 ry / 10 rz / 11 UNKNOWN / 12 HasTint / 13 red / 14 green / 15 blue / 16 alpha / 17 spell / 18 scale / 19 isWMO
 85308046 829506 7du_karazhanb_globe01.m2 1522793 -147.125 6287.19 315.226 0 5.99998 -0 0 1 20 20 60 0 0 1
 ]]
 
@@ -997,13 +1005,7 @@ local function Addon_OnEvent(self, event, ...)
 				end
 				
 				-- Set Spell Tracker - Not saved so no fancy stuff needed
-				if spell and spell ~= "" and tonumber(spell) > 0 then
-					OPObjectSpell = spell
-					updateSpellButton()
-				else
-					OPObjectSpell = nil
-					updateSpellButton()
-				end
+
 				
 				-- Update Tints
 				if OPTintAutoUpdateButton:GetChecked() then
@@ -1012,6 +1014,15 @@ local function Addon_OnEvent(self, event, ...)
 					OPTintSliderB:SetValue(blue)
 					OPTintSliderT:SetValue(alpha)
 					dprint("Updating Tint Sliders")
+					
+					
+					if spell and spell ~= "" and tonumber(spell) > 0 then
+						OPObjectSpell = spell
+						updateSpellButton()
+					else
+						OPObjectSpell = nil
+						updateSpellButton()
+					end
 				end
 				
 				-- Update Rotations

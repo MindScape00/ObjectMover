@@ -1,6 +1,6 @@
 <Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd" xmlns="http://www.blizzard.com/wow/ui/">
 	<Frame name="OPMainFrame" hidden="true" enableMouse="true" movable="true" clampedToScreen="true">
-		<Size x="355" y="330" />
+		<Size x="355" y="355" />
 		<Anchors>
 			<Anchor point="TOPRIGHT" relativeTo="UIParent">
 				<Offset y="-280"/>
@@ -53,7 +53,7 @@
 							</OnClick>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Spawns a GameObject using the ID from the Object ID field in Object Parameters.", nil, nil, nil, nil, true)
 									GameTooltip:Show()
 								end)
@@ -95,7 +95,7 @@
 							</OnClick>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Moves you (or the selected object, if you have Move Object enabled in Options) backwards by the amount specified in the Length field in Object Parameters.", nil, nil, nil, nil, true)
 									GameTooltip:Show()
 								end)
@@ -137,7 +137,7 @@
 							</OnClick>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Moves you (or the selected object, if you have Move Object enabled in Options) forwards by the amount specified in the Length field in Object Parameters.", nil, nil, nil, nil, true)
 									GameTooltip:Show()
 								end)
@@ -180,7 +180,7 @@
 							</OnClick>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Moves you (or the selected object, if you have Move Object enabled in Options) left by the amount specified in the Width field in Object Parameters.", nil, nil, nil, nil, true)
 									GameTooltip:Show()
 								end)
@@ -251,7 +251,7 @@
 							</OnClick>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Moves you (or the selected object, if you have Move Object enabled in Options) up by the amount specified in the Height field in Object Parameters.", nil, nil, nil, nil, true)
 									GameTooltip:Show()
 								end)
@@ -293,7 +293,7 @@
 							</OnClick>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Teleports you to the selected GameObject.", nil, nil, nil, nil, true)
 									GameTooltip:Show()
 								end)
@@ -335,7 +335,7 @@
 							</OnClick>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Moves you (or the selected object, if you have Move Object enabled in Options) right by the amount specified in the Width field in Object Parameters.", nil, nil, nil, nil, true)
 									GameTooltip:Show()
 								end)
@@ -378,7 +378,7 @@
 							</OnClick>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Moves you (or the selected object, if you have Move Object enabled in Options) down by the amount specified in the Height field in Object Parameters.", nil, nil, nil, nil, true)
 									GameTooltip:Show()
 								end)
@@ -411,7 +411,7 @@
 			</Frame>
 			<Frame name="OPPanel2">
 				<Size>
-					<AbsDimension x="155" y="178" />
+					<AbsDimension x="155" y="203" />
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
@@ -465,8 +465,8 @@
 						</TextInsets>
 						<Size x="64" y="23" />
 						<Anchors>
-							<Anchor point="CENTER">
-								<Offset x="20" y="55" />
+							<Anchor point="TOP">
+								<Offset x="18" y="-25" />
 							</Anchor>
 						</Anchors>
 						<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
@@ -482,10 +482,29 @@
 							<Color r="0.1" g="0.1" b="0.1" a="0.75"/>
 							<BorderColor r="0.5" g="0.5" b="0.5"/>
 						</Backdrop>
+						<Layers>
+							<Layer>
+								<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="Object ID:">
+									<Anchors>
+										<Anchor point="RIGHT" relativePoint="LEFT">
+											<Offset x="-3" />
+										</Anchor>
+									</Anchors>
+									<FontHeight val="10" />
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
 						<Scripts>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Set the Object ID you wish to spawn (From 'Spawn' button, Spawn on Move, or Hotkey).", nil, nil, nil, nil, true)
 									GameTooltip:Show()
 								end)
@@ -525,32 +544,6 @@
 							</Shadow>
 						</FontString>
 					</EditBox>
-					<Frame name="OPObjectIDTitle">
-						<Size x="65" y="12" />
-						<Anchors>
-							<Anchor point="RIGHT" relativeTo="OPObjectIDBox" relativePoint="LEFT">
-								<Offset x="-3" y="0"/>
-							</Anchor>
-						</Anchors>
-						<Layers>
-							<Layer>
-								<FontString name="OPObjectIDTitleText" font="Fonts\FRIZQT__.TTF" text="    Object ID:">
-									<Anchors>
-										<Anchor point="TOPLEFT" />
-										<Anchor point="BOTTOMRIGHT" />
-									</Anchors>
-									<FontHeight val="10" />
-									<Color r="1" g="1" b="1" />
-									<Shadow>
-										<Offset>
-											<AbsDimension x="1" y="-1" />
-										</Offset>
-										<Color r="0" g="0" b="0" />
-									</Shadow>
-								</FontString>
-							</Layer>
-						</Layers>
-					</Frame>
 					<EditBox name="OPLengthBox" autoFocus="false">
 						<HighlightColor r="0.5" g="0.5" b="0.5" a="0.75" />
 						<TextInsets>
@@ -558,8 +551,8 @@
 						</TextInsets>
 						<Size x="64" y="23" />
 						<Anchors>
-							<Anchor point="CENTER">
-								<Offset x="20" y="30" />
+							<Anchor point="CENTER" relativeTo="OPObjectIDBox">
+								<Offset y="-25" />
 							</Anchor>
 						</Anchors>
 						<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
@@ -575,10 +568,29 @@
 							<Color r="0.1" g="0.1" b="0.1" a="0.75"/>
 							<BorderColor r="0.5" g="0.5" b="0.5"/>
 						</Backdrop>
+						<Layers>
+							<Layer>
+								<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="Length:">
+									<Anchors>
+										<Anchor point="RIGHT" relativePoint="LEFT">
+											<Offset x="-3" />
+										</Anchor>
+									</Anchors>
+									<FontHeight val="10" />
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
 						<Scripts>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Set the number to be used for Forward and Backwards Movements.\r\n", nil, nil, nil, nil, true)
 									GameTooltip:AddLine("May be affected by 'Scale', and the 'Double' or 'Halve' options.",1,1,1,true)
 									GameTooltip:Show()
@@ -619,32 +631,6 @@
 							</Shadow>
 						</FontString>
 					</EditBox>
-					<Frame name="OPLengthTitle">
-						<Size x="55" y="12" />
-						<Anchors>
-							<Anchor point="RIGHT" relativeTo="OPLengthBox" relativePoint="LEFT">
-								<Offset x="-3" y="0"/>
-							</Anchor>
-						</Anchors>
-						<Layers>
-							<Layer>
-								<FontString name="OPLengthTitleText" font="Fonts\FRIZQT__.TTF" text="     Length:">
-									<Anchors>
-										<Anchor point="TOPLEFT" />
-										<Anchor point="BOTTOMRIGHT" />
-									</Anchors>
-									<FontHeight val="10" />
-									<Color r="1" g="1" b="1" />
-									<Shadow>
-										<Offset>
-											<AbsDimension x="1" y="-1" />
-										</Offset>
-										<Color r="0" g="0" b="0" />
-									</Shadow>
-								</FontString>
-							</Layer>
-						</Layers>
-					</Frame>
 					<EditBox name="OPWidthBox" autoFocus="false">
 						<HighlightColor r="0.5" g="0.5" b="0.5" a="0.75"/>
 						<TextInsets>
@@ -652,8 +638,8 @@
 						</TextInsets>
 						<Size x="64" y="23" />
 						<Anchors>
-							<Anchor point="CENTER">
-								<Offset x="20" y="5" />
+							<Anchor point="CENTER" relativeTo="OPLengthBox">
+								<Offset y="-25" />
 							</Anchor>
 						</Anchors>
 						<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
@@ -669,10 +655,29 @@
 							<Color r="0.1" g="0.1" b="0.1" a="0.75"/>
 							<BorderColor r="0.5" g="0.5" b="0.5"/>
 						</Backdrop>
+						<Layers>
+							<Layer>
+								<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="Width:">
+									<Anchors>
+										<Anchor point="RIGHT" relativePoint="LEFT">
+											<Offset x="-3" />
+										</Anchor>
+									</Anchors>
+									<FontHeight val="10" />
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
 						<Scripts>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Set the number to be used for Left and Right Movements.\r\n", nil, nil, nil, nil, true)
 									GameTooltip:AddLine("May be affected by 'Scale', and the 'Double' or 'Halve' options.",1,1,1,true)
 									GameTooltip:Show()
@@ -713,19 +718,33 @@
 							</Shadow>
 						</FontString>
 					</EditBox>
-					<Frame name="OPWidthTitle">
-						<Size x="55" y="12" />
+					<EditBox name="OPHeightBox" autoFocus="false">
+						<HighlightColor r="0.5" g="0.5" b="0.5" a="0.75"/>
+						<TextInsets>
+							<AbsInset left="5" right="0" top="0" bottom="0" />
+						</TextInsets>
+						<Size x="64" y="23" />
 						<Anchors>
-							<Anchor point="RIGHT" relativeTo="OPWidthBox" relativePoint="LEFT">
-								<Offset x="-3" y="0"/>
+							<Anchor point="CENTER" relativeTo="OPWidthBox">
+								<Offset y="-25" />
 							</Anchor>
 						</Anchors>
+						<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+							<BackgroundInsets>
+								<AbsInset left="5" right="5" top="5" bottom="5" />
+							</BackgroundInsets>
+							<TileSize val="16" />
+							<EdgeSize val="16" />
+							<Color r="0.1" g="0.1" b="0.1" a="0.75"/>
+							<BorderColor r="0.5" g="0.5" b="0.5"/>
+						</Backdrop>
 						<Layers>
 							<Layer>
-								<FontString name="OPWidthTitleText" font="Fonts\FRIZQT__.TTF" text="      Width:">
+								<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="Height:">
 									<Anchors>
-										<Anchor point="TOPLEFT" />
-										<Anchor point="BOTTOMRIGHT" />
+										<Anchor point="RIGHT" relativePoint="LEFT">
+											<Offset x="-3" />
+										</Anchor>
 									</Anchors>
 									<FontHeight val="10" />
 									<Color r="1" g="1" b="1" />
@@ -738,31 +757,10 @@
 								</FontString>
 							</Layer>
 						</Layers>
-					</Frame>
-					<EditBox name="OPHeightBox" autoFocus="false">
-						<HighlightColor r="0.5" g="0.5" b="0.5" a="0.75"/>
-						<TextInsets>
-							<AbsInset left="5" right="0" top="0" bottom="0" />
-						</TextInsets>
-						<Size x="64" y="23" />
-						<Anchors>
-							<Anchor point="CENTER">
-								<Offset x="20" y="-20" />
-							</Anchor>
-						</Anchors>
-						<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-							<BackgroundInsets>
-								<AbsInset left="5" right="5" top="5" bottom="5" />
-							</BackgroundInsets>
-							<TileSize val="16" />
-							<EdgeSize val="16" />
-							<Color r="0.1" g="0.1" b="0.1" a="0.75"/>
-							<BorderColor r="0.5" g="0.5" b="0.5"/>
-						</Backdrop>
 						<Scripts>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Set the number to be used for Up and Down Movements.\r\n", nil, nil, nil, nil, true)
 									GameTooltip:AddLine("May be affected by 'Scale', and the 'Double' or 'Halve' options.",1,1,1,true)
 									GameTooltip:Show()
@@ -803,32 +801,6 @@
 							</Shadow>
 						</FontString>
 					</EditBox>
-					<Frame name="OPHeightTitle">
-						<Size x="55" y="12" />
-						<Anchors>
-							<Anchor point="RIGHT" relativeTo="OPHeightBox" relativePoint="LEFT">
-								<Offset x="-3" y="0"/>
-							</Anchor>
-						</Anchors>
-						<Layers>
-							<Layer>
-								<FontString name="OPHeightTitleText" font="Fonts\FRIZQT__.TTF" text="     Height:">
-									<Anchors>
-										<Anchor point="TOPLEFT" />
-										<Anchor point="BOTTOMRIGHT" />
-									</Anchors>
-									<FontHeight val="10" />
-									<Color r="1" g="1" b="1" />
-									<Shadow>
-										<Offset>
-											<AbsDimension x="1" y="-1" />
-										</Offset>
-										<Color r="0" g="0" b="0" />
-									</Shadow>
-								</FontString>
-							</Layer>
-						</Layers>
-					</Frame>
 					<EditBox name="OPScaleBox" autoFocus="false">
 						<HighlightColor r="0.5" g="0.5" b="0.5" a="0.75" />
 						<TextInsets>
@@ -836,8 +808,8 @@
 						</TextInsets>
 						<Size x="64" y="23" />
 						<Anchors>
-							<Anchor point="CENTER">
-								<Offset x="20" y="-45" />
+							<Anchor point="CENTER" relativeTo="OPHeightBox">
+								<Offset y="-25" />
 							</Anchor>
 						</Anchors>
 						<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
@@ -853,10 +825,29 @@
 							<Color r="0.1" g="0.1" b="0.1" a="0.75"/>
 							<BorderColor r="0.5" g="0.5" b="0.5"/>
 						</Backdrop>
+						<Layers>
+							<Layer>
+								<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="Scale:">
+									<Anchors>
+										<Anchor point="RIGHT" relativePoint="LEFT">
+											<Offset x="-3" />
+										</Anchor>
+									</Anchors>
+									<FontHeight val="10" />
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
 						<Scripts>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Set the number to scale the object to when spawned by ObjectMover.\r\n", nil, nil, nil, nil, true)
 									GameTooltip:AddLine("Also modifies the Length, Width, and Height parameters by multiplying them by the scale (checkbox must be enabled for this to do anything).",1,1,1,true)
 									GameTooltip:Show()
@@ -900,44 +891,17 @@
 							</Shadow>
 						</FontString>
 					</EditBox>
-					<Frame name="OPScaleTitle">
-						<Size x="55" y="12" />
-						<Anchors>
-							<Anchor point="RIGHT" relativeTo="OPScaleBox" relativePoint="LEFT">
-								<Offset x="-3" y="0"/>
-							</Anchor>
-						</Anchors>
-						<Backdrop bgFile="" edgeFile="" />
-						<Layers>
-							<Layer>
-								<FontString name="OPScaleTitleText" font="Fonts\FRIZQT__.TTF" text="       Scale:">
-									<Anchors>
-										<Anchor point="TOPLEFT" />
-										<Anchor point="BOTTOMRIGHT" />
-									</Anchors>
-									<FontHeight val="10" />
-									<Color r="1" g="1" b="1" />
-									<Shadow>
-										<Offset>
-											<AbsDimension x="1" y="-1" />
-										</Offset>
-										<Color r="0" g="0" b="0" />
-									</Shadow>
-								</FontString>
-							</Layer>
-						</Layers>
-					</Frame>
 					<CheckButton name="ScaleObject">
 						<Size x="24" y="24" />
 						<Anchors>
-							<Anchor point="RIGHT" relativeTo="OPScaleTitle" relativePoint="LEFT">
-								<Offset x="20" y="0"/>
+							<Anchor point="RIGHT" relativeTo="OPScaleBox" relativePoint="LEFT">
+								<Offset x="-35" y="0"/>
 							</Anchor>
 						</Anchors>
 						<Scripts>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Enable Scale Option\r\n", nil, nil, nil, nil, true)
 									GameTooltip:AddLine("All dimensions (Length, Width, Height) will be multiplied by the defined scale, and objects spawned by ObjectMover will be automatically set to that scale.\r\n",1,1,1,true)
 									GameTooltip:AddLine("May stack with 'Double' and 'Halve' modifiers.\r\n",1,1,1,true)
@@ -964,7 +928,7 @@
 						<CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
 						<DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled" />
 					</CheckButton>
-					<Button name="OPGetObjectIDButton" inherits="UIPanelButtonTemplate" text="Get ID">
+					<Button name="OPGetObjectIDButton" inherits="UIPanelButtonTemplate" text="Get|nID">
 						<Size x="24" y="22" />
 						<Anchors>
 							<Anchor point="left" relativeTo="OPObjectIDBox" relativePoint="right">
@@ -974,11 +938,10 @@
 						<Scripts>
 							<OnLoad>
 							self:RegisterForClicks("LeftButtonUp","RightButtonUp")
-							self:SetText("Get\nID")
 							</OnLoad>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Sets the Object ID to the currently selected Object.\r\n", nil, nil, nil, nil, true)
 									GameTooltip:AddLine("Right Click to Grab Selected Object ID &amp; auto-set the detected dimensions (m2 only).",1,1,1,true)
 									GameTooltip:Show()
@@ -1009,8 +972,8 @@
 						<Scripts>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
-									GameTooltip:SetText("Doubles the current Length value by changing the actual box value.", nil, nil, nil, nil, true)
+								self.Timer = C_Timer.NewTimer(0.5,function()
+									GameTooltip:SetText("Doubles the current Length value", nil, nil, nil, nil, false)
 									GameTooltip:Show()
 								end)
 							</OnEnter>
@@ -1039,8 +1002,8 @@
 						<Scripts>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
-									GameTooltip:SetText("Halves the current Length value.", nil, nil, nil, nil, true)
+								self.Timer = C_Timer.NewTimer(0.5,function()
+									GameTooltip:SetText("Halves the current Length value", nil, nil, nil, nil, false)
 									GameTooltip:Show()
 								end)
 							</OnEnter>
@@ -1069,8 +1032,8 @@
 						<Scripts>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
-									GameTooltip:SetText("Doubles the current Width value by changing the actual box value.", nil, nil, nil, nil, true)
+								self.Timer = C_Timer.NewTimer(0.5,function()
+									GameTooltip:SetText("Doubles the current Width value", nil, nil, nil, nil, false)
 									GameTooltip:Show()
 								end)
 							</OnEnter>
@@ -1099,8 +1062,8 @@
 						<Scripts>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
-									GameTooltip:SetText("Halves the current Width value.", nil, nil, nil, nil, true)
+								self.Timer = C_Timer.NewTimer(0.5,function()
+									GameTooltip:SetText("Halves the current Width value", nil, nil, nil, nil, false)
 									GameTooltip:Show()
 								end)
 							</OnEnter>
@@ -1129,8 +1092,8 @@
 						<Scripts>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
-									GameTooltip:SetText("Doubles the current Height value by changing the actual box value.", nil, nil, nil, nil, true)
+								self.Timer = C_Timer.NewTimer(0.5,function()
+									GameTooltip:SetText("Doubles the current Height value", nil, nil, nil, nil, false)
 									GameTooltip:Show()
 								end)
 							</OnEnter>
@@ -1159,8 +1122,8 @@
 						<Scripts>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
-									GameTooltip:SetText("Halves the current Height value.", nil, nil, nil, nil, true)
+								self.Timer = C_Timer.NewTimer(0.5,function()
+									GameTooltip:SetText("Halves the current Height value", nil, nil, nil, nil, false)
 									GameTooltip:Show()
 								end)
 							</OnEnter>
@@ -1189,8 +1152,8 @@
 						<Scripts>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
-									GameTooltip:SetText("Doubles the current Height value by changing the actual box value.", nil, nil, nil, nil, true)
+								self.Timer = C_Timer.NewTimer(0.5,function()
+									GameTooltip:SetText("Doubles the current Scale value", nil, nil, nil, nil, false)
 									GameTooltip:Show()
 								end)
 							</OnEnter>
@@ -1219,8 +1182,8 @@
 						<Scripts>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
-									GameTooltip:SetText("Halves the current Height value.", nil, nil, nil, nil, true)
+								self.Timer = C_Timer.NewTimer(0.5,function()
+									GameTooltip:SetText("Halves the current Scale value", nil, nil, nil, nil, false)
 									GameTooltip:Show()
 								end)
 							</OnEnter>
@@ -1239,6 +1202,62 @@
 						<HighlightFont style="GameFontWhiteTiny2" />
 						<DisabledFont style="GameFontDisableTiny2" />
 					</Button>
+					<CheckButton name="OPParamAutoUpdateButton">
+						<Size x="24" y="24" />
+						<Anchors>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="OPScaleHalfButton">
+								<Offset x="0" y="0" />
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer>
+								<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="Auto Update">
+									<Anchors>
+										<Anchor point="RIGHT" relativePoint="LEFT">
+											<Offset x="0" />
+										</Anchor>
+									</Anchors>
+									<FontHeight val="9" />
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Scripts>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+								self.Timer = C_Timer.NewTimer(0.5,function()
+									GameTooltip:SetText("Automatically Updates the Object Parametes when Selecting an Object\r\n", nil, nil, nil, nil, true)
+									GameTooltip:AddLine("If the selected object is an M2, we will try and auto-set Length, Width, and Height.",1,1,1,true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
+							<OnClick>
+								if self:GetChecked() == true then
+									OPMasterTable.Options["autoUpdateParams"] = true
+									--self:SetChecked(false)
+								else
+									OPMasterTable.Options["autoUpdateParams"] = false
+									--self:SetChecked(true)
+								end
+							</OnClick>
+							<OnShow>if OPMasterTable.Options["autoUpdateParams"] then self:SetChecked(true) end</OnShow>
+						</Scripts>
+						<NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
+						<PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
+						<HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD" />
+						<CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
+						<DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled" />
+					</CheckButton>
 					<Button name="OPParamSaveButton" inherits="UIPanelButtonTemplate" text="Save">
 						<Size x="56" y="16" />
 						<Anchors>
@@ -1252,7 +1271,7 @@
 							</OnClick>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Opens up a new dialogue to save the current Object Parameters (ID, Length, Width, Height, and Scale) for quickly loading later.\r\n", nil, nil, nil, nil, true)
 									GameTooltip:AddLine("Leaving an option blank, or as '0', will cause it to not load (i.e., leaving the ObjectID blank will cause it to not change your current ObjectID when loaded).",1,1,1,true)
 									GameTooltip:Show()
@@ -1271,7 +1290,7 @@
 				</Frames>
 			</Frame>
 			<Frame name="OPPanel3">
-				<Size x="180" y="88" />
+				<Size x="180" y="113" />
 				<Anchors>
 					<Anchor point="TOPRIGHT">
 						<Offset x="-10" y="-100" />
@@ -1296,16 +1315,16 @@
 							<AbsDimension x="24" y="24" />
 						</Size>
 						<Anchors>
-							<Anchor point="RIGHT">
-								<Offset x="-5" y="20" />
+							<Anchor point="TOPRIGHT">
+								<Offset x="-5" y="-25" />
 							</Anchor>
 						</Anchors>
 						<Layers>
 							<Layer>
-								<FontString name="$parentText" font="Fonts\FRIZQT__.TTF" text="Spawn on Move">
+								<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="Spawn|non Move">
 									<Anchors>
-										<Anchor point="RIGHT">
-											<Offset x="-25" />
+										<Anchor point="CENTER" relativePoint="LEFT">
+											<Offset x="-22" />
 										</Anchor>
 									</Anchors>
 									<FontHeight val="9" />
@@ -1325,7 +1344,7 @@
 							</OnLoad>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Spawn an Object at your location every time you move.\r\n", nil, nil, nil, nil, true)
 									GameTooltip:AddLine("Disabled when using Move Object mode.",1,1,1,true)
 									GameTooltip:Show()
@@ -1351,61 +1370,11 @@
 								end
 							</OnShow>
 							<OnDisable>
-								_G[self:GetName().."Text"]:SetTextColor(0.66,0.66,0.66)
+								self.Text:SetTextColor(0.66,0.66,0.66)
 							</OnDisable>
 							<OnEnable>
-								_G[self:GetName().."Text"]:SetTextColor(1,1,1)
+								self.Text:SetTextColor(1,1,1)
 							</OnEnable>
-						</Scripts>
-						<NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
-						<PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
-						<HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD" />
-						<CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
-						<DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled" />
-					</CheckButton>
-					<CheckButton name="OPHalveToggle">
-						<Size x="24" y="24" />
-						<Anchors>
-							<Anchor point="LEFT">
-								<Offset x="5" y="-5" />
-							</Anchor>
-						</Anchors>
-						<Layers>
-							<Layer>
-								<FontString name="$parentText" font="Fonts\FRIZQT__.TTF" text="Halve">
-									<Anchors>
-										<Anchor point="LEFT">
-											<Offset x="25" />
-										</Anchor>
-									</Anchors>
-									<FontHeight val="9" />
-									<Color r="1" g="1" b="1" />
-									<Shadow>
-										<Offset>
-											<AbsDimension x="1" y="-1" />
-										</Offset>
-										<Color r="0" g="0" b="0" />
-									</Shadow>
-								</FontString>
-							</Layer>
-						</Layers>
-						<Scripts>
-							<OnEnter>
-								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
-									GameTooltip:SetText("Only uses half the value supplied in Length, Width, and Height, when moving.", nil, nil, nil, nil, true)
-									GameTooltip:Show()
-								end)
-							</OnEnter>
-							<OnLeave>
-								GameTooltip_Hide()
-								self.Timer:Cancel()
-							</OnLeave>
-							<OnMouseUp>
-								if OPBifoldToggle:GetChecked() == true then
-									OPBifoldToggle:SetChecked(false)
-								end
-							</OnMouseUp>
 						</Scripts>
 						<NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
 						<PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
@@ -1416,16 +1385,16 @@
 					<CheckButton name="OPBifoldToggle">
 						<Size x="24" y="24" />
 						<Anchors>
-							<Anchor point="LEFT">
-								<Offset x="5" y="20" />
+							<Anchor point="TOPLEFT">
+								<Offset x="5" y="-25" />
 							</Anchor>
 						</Anchors>
 						<Layers>
 							<Layer>
-								<FontString name="$parentText" font="Fonts\FRIZQT__.TTF" text="Double">
+								<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="Double">
 									<Anchors>
-										<Anchor point="LEFT">
-											<Offset x="25" />
+										<Anchor point="CENTER" relativePoint="RIGHT">
+											<Offset x="20" />
 										</Anchor>
 									</Anchors>
 									<FontHeight val="9" />
@@ -1442,7 +1411,7 @@
 						<Scripts>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Uses double the value supplied in Length, Width, and Height, when moving.", nil, nil, nil, nil, true)
 									GameTooltip:Show()
 								end)
@@ -1463,19 +1432,69 @@
 						<CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
 						<DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled" />
 					</CheckButton>
-					<CheckButton name="OPMoveObjectInstead">
+					<CheckButton name="OPHalveToggle">
 						<Size x="24" y="24" />
 						<Anchors>
-							<Anchor point="LEFT">
-								<Offset x="5" y="-30" />
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="OPBifoldToggle">
+								<Offset y="0" />
 							</Anchor>
 						</Anchors>
 						<Layers>
 							<Layer>
-								<FontString name="$parentText" font="Fonts\FRIZQT__.TTF" text="Move Object">
+								<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="Halve">
 									<Anchors>
-										<Anchor point="LEFT">
-											<Offset x="25" />
+										<Anchor point="CENTER" relativePoint="RIGHT">
+											<Offset x="20" />
+										</Anchor>
+									</Anchors>
+									<FontHeight val="9" />
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Scripts>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+								self.Timer = C_Timer.NewTimer(0.5,function()
+									GameTooltip:SetText("Only uses half the value supplied in Length, Width, and Height, when moving.", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
+							<OnMouseUp>
+								if OPBifoldToggle:GetChecked() == true then
+									OPBifoldToggle:SetChecked(false)
+								end
+							</OnMouseUp>
+						</Scripts>
+						<NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
+						<PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
+						<HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD" />
+						<CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
+						<DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled" />
+					</CheckButton>
+					<CheckButton name="OPMoveObjectInstead">
+						<Size x="24" y="24" />
+						<Anchors>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="OPHalveToggle">
+								<Offset y="0" />
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer>
+								<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="Move|nObject">
+									<Anchors>
+										<Anchor point="CENTER" relativePoint="RIGHT">
+											<Offset x="20" />
 										</Anchor>
 									</Anchors>
 									<FontHeight val="9" />
@@ -1493,7 +1512,7 @@
 							<OnLoad>self:SetMotionScriptsWhileDisabled(true)</OnLoad>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Moves your selected object instead of yourself.", nil, nil, nil, nil, true)
 									GameTooltip:Show()
 								end)
@@ -1524,16 +1543,16 @@
 					<CheckButton name="RelativeToPlayerToggle">
 						<Size x="24" y="24" />
 						<Anchors>
-							<Anchor point="RIGHT">
-								<Offset x="-5" y="-5" />
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="SpawnonMoveButton">
+								<Offset y="0" />
 							</Anchor>
 						</Anchors>
 						<Layers>
 							<Layer>
-								<FontString name="$parentText" font="Fonts\FRIZQT__.TTF" text="Move Relative">
+								<FontString name="$parentText" font="Fonts\FRIZQT__.TTF" text="Move|nRelative">
 									<Anchors>
-										<Anchor point="RIGHT">
-											<Offset x="-25" />
+										<Anchor point="CENTER" relativePoint="LEFT">
+											<Offset x="-22" />
 										</Anchor>
 									</Anchors>
 									<FontHeight val="9" />
@@ -1553,7 +1572,7 @@
 							</OnLoad>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Moves the Object relative to the direction you are facing instead of where the object is facing.\r\n", nil, nil, nil, nil, true)
 									GameTooltip:AddLine("Example: If the object is facing East, but you are facing North, moving forward will move the object North, not East.\r\n",1,1,1,true)
 									GameTooltip:AddLine("Only works with 'Move Object' enabled.",1,1,1,true)
@@ -1595,16 +1614,16 @@
 					<CheckButton name="OPShowMessagesToggle">
 						<Size x="24" y="24" />
 						<Anchors>
-							<Anchor point="RIGHT">
-								<Offset x="-5" y="-30" />
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="RelativeToPlayerToggle">
+								<Offset y="0" />
 							</Anchor>
 						</Anchors>
 						<Layers>
 							<Layer>
 								<FontString name="ShowMessagesText" font="Fonts\FRIZQT__.TTF" text="Messages">
 									<Anchors>
-										<Anchor point="RIGHT">
-											<Offset x="-25" />
+										<Anchor point="CENTER" relativePoint="LEFT">
+											<Offset x="-22" />
 										</Anchor>
 									</Anchors>
 									<FontHeight val="9" />
@@ -1621,7 +1640,7 @@
 						<Scripts>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Toggles filtering of server reply messages for 'object rotated', 'object moved', ect.", nil, nil, nil, nil, true)
 									GameTooltip:Show()
 								end)
@@ -1670,7 +1689,7 @@
 							</OnLoad>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Group Control Mode\r\n", nil, nil, nil, nil, true)
 									GameTooltip:AddLine("When in Group Control Mode, all possible commands will be done to the group (Scale, Move, Tint, Spell) if a group is selected.\r\n",1,1,1,true)
 									GameTooltip:AddLine("Rotation is not currently supported on Groups",1,1,1,true)
@@ -1862,7 +1881,7 @@
 								self.sliderDragChange = true
 								self.isMousedOver = true
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Drag to change current Red Tint on an Object", nil, nil, nil, nil, true)
 									GameTooltip:Show()
 								end)
@@ -1978,7 +1997,7 @@
 								self.sliderDragChange = true
 								self.isMousedOver = true
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Drag to change current Green Tint on an Object", nil, nil, nil, nil, true)
 									GameTooltip:Show()
 								end)
@@ -2094,7 +2113,7 @@
 								self.sliderDragChange = true
 								self.isMousedOver = true
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Drag to change current Blue Tint on an Object", nil, nil, nil, nil, true)
 									GameTooltip:Show()
 								end)
@@ -2240,7 +2259,7 @@
 								self.sliderDragChange = true
 								self.isMousedOver = true
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Drag to change current Transparency on an Object", nil, nil, nil, nil, true)
 									GameTooltip:Show()
 								end)
@@ -2280,7 +2299,7 @@
 							</OnClick>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Open the Color Wheel to Select a Color.", nil, nil, nil, nil, true)
 									GameTooltip:Show()
 								end)
@@ -2329,9 +2348,9 @@
 							</OnMouseUp>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Applies the current Tint Settings to the selected object.\r\n", nil, nil, nil, nil, true)
-									GameTooltip:AddLine("Right Click to Reset/Remove the objects tint.",1,1,1,true)
+									GameTooltip:AddLine("Right Click to Reset/Remove the object's tint.",1,1,1,true)
 									GameTooltip:Show()
 								end)
 							</OnEnter>
@@ -2363,7 +2382,7 @@
 							</OnClick>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Opens a Dialogue Box to Apply a Spell to the Selected Object.\r\n", nil, nil, nil, nil, true)
 									GameTooltip:AddLine("Right Click to Remove the Current Spell.",1,1,1,true)
 									GameTooltip:Show()
@@ -2410,7 +2429,7 @@
 						<Scripts>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Automatically Updates the Tint Sliders &amp; Spell to the Selected Object", nil, nil, nil, nil, true)
 									GameTooltip:Show()
 								end)
@@ -2514,7 +2533,7 @@
 							</OnEditFocusLost>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Set the value to Roll (Rotate / Tilt Sideways) the selected GameObject to.\r\n", nil, nil, nil, nil, true)
 									GameTooltip:AddLine("Objects will be set to the current Roll, Pitch, and Turn values all together.\r\n",1,1,1,true)
 									GameTooltip:AddLine("Typed in numbers will automatically round to 4 decimal places.",1,1,1,true)
@@ -2680,7 +2699,7 @@
 									print("Ye' entered the drag frame, you might drag, so lets classify you as dragging for rounding filter")
 								end
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Drag to change current Roll (Rotate / Tilt Sideways). Values less than 0 will default to 0 (-1 is for saving only).\r\n", nil, nil, nil, nil, true)
 									GameTooltip:AddLine("Rotation will automatically apply (including Pitch and Turn) as it changes.\r\n", 1, 1, 1, true)
 									GameTooltip:AddLine("Modifiers (Hold while Dragging):\nDefault - whole numbers (1)\nSHIFT - 1 decimal place (0.1)\nALT - 2 decimal places (0.01)",1, 1, 1, true)
@@ -2755,7 +2774,7 @@
 							</OnEditFocusLost>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Set the value to Pitch (Rotate / Tilt Forward) the selected GameObject to.\r\n", nil, nil, nil, nil, true)
 									GameTooltip:AddLine("Objects will be set to the current Roll, Pitch, and Turn values all together.\r\n",1,1,1,true)
 									GameTooltip:AddLine("Typed in numbers will automatically round to 4 decimal places.",1,1,1,true)
@@ -2920,7 +2939,7 @@
 									print("Ye' entered the drag frame, you might drag, so lets classify you as dragging for rounding filter")
 								end
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Drag to change current Pitch (Rotate / Tilt Forwards). Values less than 0 will default to 0 (-1 is for saving only).\r\n", nil, nil, nil, nil, true)
 									GameTooltip:AddLine("Rotation will automatically apply (including Roll and Turn) as it changes.\r\n", 1, 1, 1, true)
 									GameTooltip:AddLine("Modifiers (Hold while Dragging):\nDefault - whole numbers (1)\nSHIFT - 1 decimal place (0.1)\nALT - 2 decimal places (0.01)",1, 1, 1, true)
@@ -2996,7 +3015,7 @@
 							</OnEditFocusLost>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Set the value to Turn (Rotate Around / Face) the selected GameObject to.\r\n", nil, nil, nil, nil, true)
 									GameTooltip:AddLine("Objects will be set to the current Roll, Pitch, and Turn values all together.\r\n",1,1,1,true)
 									GameTooltip:AddLine("Typed in numbers will automatically round to 4 decimal places.",1,1,1,true)
@@ -3161,7 +3180,7 @@
 									print("Ye' entered the drag frame, you might drag, so lets classify you as dragging for rounding filter")
 								end
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Drag to change current Turn (Rotate Around / Face). Values less than 0 will default to 0 (-1 is for saving only).\r\n", nil, nil, nil, nil, true)
 									GameTooltip:AddLine("Rotation will automatically apply (including Roll and Pitch) as it changes.\r\n", 1, 1, 1, true)
 									GameTooltip:AddLine("Modifiers (Hold while Dragging):\nDefault - whole numbers (1)\nSHIFT - 1 decimal place (0.1)\nALT - 2 decimal places (0.01)",1, 1, 1, true)
@@ -3196,7 +3215,7 @@
 							</OnClick>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Applies the current Roll, Pitch, and Turn to the currently selected object.", nil, nil, nil, nil, true)
 									GameTooltip:Show()
 								end)
@@ -3226,7 +3245,7 @@
 							</OnClick>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Opens up a new dialogue to save the current Object Rotations (Roll, Pitch, and Turn) for quickly loading later.\r\n", nil, nil, nil, nil, true)
 									GameTooltip:AddLine("Leaving a rotation as '-1' will cause it to not load (i.e., setting Roll to '-1' will cause it to leave Roll unchanged when loaded).",1,1,1,true)
 									GameTooltip:Show()
@@ -3245,13 +3264,13 @@
 					<CheckButton name="OPRotAutoUpdate">
 						<Size x="24" y="24" />
 						<Anchors>
-							<Anchor point="LEFT" relativeTo="OPRotSaveButton" relativePoint="RIGHT">
-								<Offset x="85" y="0" />
+							<Anchor point="RIGHT" relativeTo="OPRotateApplyButton" relativePoint="LEFT">
+								<Offset x="-50" y="0" />
 							</Anchor>
 						</Anchors>
 						<Layers>
 							<Layer>
-								<FontString name="$parentText" font="Fonts\FRIZQT__.TTF" text="Auto Update Rot.">
+								<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="Auto|nUpdate">
 									<Anchors>
 										<Anchor point="LEFT">
 											<Offset x="25" />
@@ -3271,7 +3290,7 @@
 						<Scripts>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-								self.Timer = C_Timer.NewTimer(0.7,function()
+								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Automatically Updates the Rotation Sliders to the objects current rotation when you select an object, and when you manually rotate the object via '.go rotate' or '.go pitch/roll/turn'.", nil, nil, nil, nil, true)
 									GameTooltip:Show()
 								end)
@@ -3398,7 +3417,7 @@
 					</OnLoad>
 					<OnEnter>
 						GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-						self.Timer = C_Timer.NewTimer(0.7,function()
+						self.Timer = C_Timer.NewTimer(0.5,function()
 							GameTooltip:SetText("Locks the UI from being moved.", nil, nil, nil, nil, true)
 							GameTooltip:Show()
 						end)
@@ -3416,11 +3435,10 @@
 				OPCreateLoadDropDownMenus()
 				PanelTemplates_SetNumTabs(OPMainFrame, 2);
 				PanelTemplates_SetTab(OPMainFrame, 1);
-			</OnLoad>
-			<OnShow>
-				PanelTemplates_SetTab(OPMainFrame, 1);
 				OPPanel4Rotation:Show()
 				OPPanel4Tint:Hide()
+			</OnLoad>
+			<OnShow>
 			</OnShow>
 			<OnDragStart>
 			if not OPMasterTable.Options["locked"] then
