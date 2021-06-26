@@ -1,9 +1,9 @@
 <Bindings>
 	<Binding name="Forward" header="OBJECTMANIP">
-			CheckIfValid(OPWidthBox, true, OPForward)
+			CheckIfValid(OPLengthBox, true, OPForward)
 	</Binding>
 	<Binding name="Backward">
-			CheckIfValid(OPWidthBox, true, OPBackward)
+			CheckIfValid(OPLengthBox, true, OPBackward)
 	</Binding>
 	<Binding name="Left">
 			CheckIfValid(OPWidthBox, true, OPLeft)
@@ -12,13 +12,13 @@
 			CheckIfValid(OPWidthBox, true, OPRight)
 	</Binding>
 	<Binding name="Up">
-			CheckIfValid(OPWidthBox, true, OPUp)
+			CheckIfValid(OPHeightBox, true, OPUp)
 	</Binding>
 	<Binding name="Down">
-			CheckIfValid(OPWidthBox, true, OPDown)
+			CheckIfValid(OPHeightBox, true, OPDown)
 	</Binding>
 	<Binding name="Get Object ID">
-			CheckIfValid(OPWidthBox, true, OPGetObject)
+			OPGetObject()
 	</Binding>
 	<Binding name="Teleport to Object">
 			OPTeletoObject()
@@ -54,11 +54,5 @@
 				RelativeToPlayerToggle:SetChecked(true)
 				OPMasterTable.Options["RelativeToPlayer"] = true
 			end
-	</Binding>
-	<Binding name="Bifold">
-			EnableBoxes(OPBifoldToggle, OPHalveToggle)
-	</Binding>
-	<Binding name="Halve">
-			EnableBoxes(OPHalveToggle, OPBifoldToggle)
 	</Binding>
 </Bindings>

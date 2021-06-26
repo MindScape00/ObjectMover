@@ -9,10 +9,16 @@
 
 -- local main = Epsilon.main
 
-local addonPrefix = "EPISLON_OBJ_INFO"
+local addonName = "ObjectMover"
+local addonVersion, addonAuthor, addonName = GetAddOnMetadata(addonName, "Version"), GetAddOnMetadata(addonName, "Author"), GetAddOnMetadata(addonName, "Title")
+
+local currentVersion = GetAddOnMetadata("ChatBubble", "Version")
+local author = GetAddOnMetadata("ChatBubble", "Author")
 
 local OPmoveLength, OPmoveWidth, OPmoveHeight, OPmoveModifier, MessageCount, ObjectClarifier, SpawnClarifier, ScaleClarifier, RotateClarifier, OPObjectSpell, cmdPref, isGroupSelected, m = 0, 0, 0, 1, 0, false, false, false, false, nil, "go", nil, nil
 BINDING_HEADER_OBJECTMANIP, SLASH_SHOWCLOSE1, SLASH_SHOWCLOSE2, SLASH_SHOWCLOSE3 = "Object Mover", "/obj", "/om", "/op"
+
+local addonPrefix = "EPISLON_OBJ_INFO"
 
 local isWMO = {[14] = true, [15] = true, [33] = true, [38] = true}
 
@@ -46,16 +52,26 @@ local function dprint(force, text, rest)
 	end
 end
 
+local function cprint(text)
+	print("|cffFFD700ObjectMover: "..(text and text or "ERROR").."|r")
+end
+
 -------------------------------------------------------------------------------
 -- Loading Sequence
 -------------------------------------------------------------------------------
 
+local function isNotDefined(s)
+	return s == nil or s == '';
+end
+
 function loadMasterTable()
 	if not OPMasterTable then OPMasterTable = {} end
 	if not OPMasterTable.Options then OPMasterTable.Options = {} end
-	if not OPMasterTable.Options["debug"] then OPMasterTable.Options["debug"] = false end
-	if not OPMasterTable.Options["SliderStep"] then OPMasterTable.Options["SliderStep"] = 0.01 end
-	if not OPMasterTable.Options["locked"] then OPMasterTable.Options["locked"] = false end
+	if isNotDefined(OPMasterTable.Options["debug"]) then OPMasterTable.Options["debug"] = false end
+	if isNotDefined(OPMasterTable.Options["SliderStep"]) then OPMasterTable.Options["SliderStep"] = 0.01 end
+	if isNotDefined(OPMasterTable.Options["locked"]) then OPMasterTable.Options["locked"] = false end
+	if isNotDefined(OPMasterTable.Options["fadePanel"]) then OPMasterTable.Options["fadePanel"] = true end
+	if isNotDefined(OPMasterTable.Options["autoShow"]) then OPMasterTable.Options["autoShow"] = false end
 	if not OPMasterTable.ParamPresetKeys then OPMasterTable.ParamPresetKeys = {"Building Tile","Fine Positioning"} end
 	if not OPMasterTable.ParamPresetContent then OPMasterTable.ParamPresetContent = {
 		["Building Tile"] = {
@@ -95,9 +111,11 @@ FrameLoadingPoints = 0
 OPSaveType = nil
 ObjectSelectLineCount = 3
 
-function ClientShowRotate(guid,roll,pitch,yaw)
-	C_Epsilon.RotateObject(guid,roll,pitch,yaw)
+--[[
+function ClientShowRotate(object,roll,pitch,yaw)
+	object:C_Epsilon.RotateObject(roll,pitch,yaw)
 end
+--]]
 
 function OPInitializeLoading()
 	FrameLoadingPoints = FrameLoadingPoints+1
@@ -108,55 +126,40 @@ function OPInitializeLoading()
 	end
 end
 
-local OPloginhandle = CreateFrame("frame","OPloginhandle");
-OPloginhandle:RegisterEvent("PLAYER_LOGIN");
-OPloginhandle:SetScript("OnEvent", function()
-	OPMiniMapLoadIt()
-	loadMasterTable()
-end);
-
-local OPAddonDetect = CreateFrame("frame","OPAddonDetect");
-OPAddonDetect:RegisterEvent("ADDON_LOADED");
-OPAddonDetect:SetScript("OnEvent", function(self,event,name)
+local OPAddon_OnLoad = CreateFrame("frame","OPAddon_OnLoad");
+OPAddon_OnLoad:RegisterEvent("ADDON_LOADED");
+OPAddon_OnLoad:SetScript("OnEvent", function(self,event,name)
 	if name == "ObjectMover" then
-		--Quickly Show / Hide the Frame on Start-Up to initialize everything for key bindings
-		OPMainFrame:Show()
-		OPMainFrame:Hide()
-		
-		-- Fix Tint ValueChanged Handlers
-		OPTintSliderR:SetScript("OnValueChanged", function(self,value,byUser)
-			if byUser then
-				if value ~= tonumber(_G[self:GetName().."Text"]:GetText()) then
-					OPTintObject();
-				end
-			end
-			_G[self:GetName().."Text"]:SetText(OPTintSliderR:GetValue())
-		end)
-		OPTintSliderG:SetScript("OnValueChanged", function(self,value,byUser)
-			if byUser then
-				if value ~= tonumber(_G[self:GetName().."Text"]:GetText()) then
-					OPTintObject();
-				end
-			end
-			_G[self:GetName().."Text"]:SetText(OPTintSliderG:GetValue())
-		end)
-		OPTintSliderB:SetScript("OnValueChanged", function(self,value,byUser)
-			if byUser then
-				if value ~= tonumber(_G[self:GetName().."Text"]:GetText()) then
-					OPTintObject();
-				end
-			end
-			_G[self:GetName().."Text"]:SetText(OPTintSliderB:GetValue())
-		end)
-		OPTintSliderT:SetScript("OnValueChanged", function(self,value,byUser)
-			if byUser then
-				if value ~= tonumber(_G[self:GetName().."Text"]:GetText()) then
-					OPTintObject();
-				end
-			end
-			_G[self:GetName().."Text"]:SetText(OPTintSliderT:GetValue())
+		OPMiniMapLoadPosition()
+		loadMasterTable()
+	
+		--Quickly Show / Hide the Frame on Start-Up to initialize everything for key bindings & loading
+		C_Timer.After(1,function()
+			OPMainFrame:Show()
+			OPPanel4Tint:Show(); -- Quickly Show & Hide the Tint Frame to initialize it so it updates as well from the start if auto-update is on.
+			OPPanel4Tint:Hide();
+			OPMainFrame:Hide()
+			if OPMasterTable.Options["autoShow"] then OPMainFrame:Show() end
+			
 		end)
 		
+		-- Adjust Radial Offset for Minimap Icon for alternate UI Overhaul Addons
+		if IsAddOnLoaded("AzeriteUI") then
+			RadialOffset = 18;
+		elseif IsAddOnLoaded("DiabolicUI") then
+			RadialOffset = 12;
+		elseif IsAddOnLoaded("GoldieSix") then
+			--GoldpawUI
+			RadialOffset = 18;
+		elseif IsAddOnLoaded("GW2_UI") then
+			RadialOffset = 44;
+		elseif IsAddOnLoaded("SpartanUI") then
+			RadialOffset = 8;
+		else
+			RadialOffset = 10;
+		end
+		
+		-- Create our ModelScene handler frame for use later in auto-dimensions
 		m = CreateFrame("ModelScene")
 		Mixin(m, ModelSceneMixin)
 		m.o = m:CreateActor(nil, "ObjectMoverActorTemplate")
@@ -171,18 +174,110 @@ OPAddonDetect:SetScript("OnEvent", function(self,event,name)
 			m.o:ClearModel()
 		end
 		
+		-- Hook our OnEnter for the MiniMap Icon Tooltip
+		ObjectManipulator_MinimapButton:SetScript("OnEnter", function(self)
+			SetCursor("Interface/CURSOR/architect.blp");
+			GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+			GameTooltip:SetText("ObjectMover")
+			GameTooltip:AddLine(" ")
+			GameTooltip:AddLine("/om - Toggle UI",1,1,1,true)
+			GameTooltip:AddLine("/omdebug - Toggle Debug",1,1,1,true)
+			GameTooltip:AddLine(" ")
+			GameTooltip:AddLine("Mouse over most UI Elements to see tooltips for help!",0.9,0.75,0.75,true)
+			GameTooltip:AddDoubleLine(" ", addonName.." v"..addonVersion, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8);
+			GameTooltip:Show()
+		end)
 	end
 end);
 
-function OPMiniMapSaveIt()
-	local point, relativeTo, relativePoint, xOffset, yOffset = ObjectManipulator_MinimapButton:GetPoint()
-	OPMasterTable.Options["MinimapButtonSavePoint"] = strjoin(" ", point, "Minimap", relativePoint, xOffset, yOffset)
+
+-------------------------------------------------------------------------------
+-- Minimap Icon Handlers
+-------------------------------------------------------------------------------
+
+local minimapShapes = {
+	["ROUND"] = {true, true, true, true},
+	["SQUARE"] = {false, false, false, false},
+	["CORNER-TOPLEFT"] = {false, false, false, true},
+	["CORNER-TOPRIGHT"] = {false, false, true, false},
+	["CORNER-BOTTOMLEFT"] = {false, true, false, false},
+	["CORNER-BOTTOMRIGHT"] = {true, false, false, false},
+	["SIDE-LEFT"] = {false, true, false, true},
+	["SIDE-RIGHT"] = {true, false, true, false},
+	["SIDE-TOP"] = {false, false, true, true},
+	["SIDE-BOTTOM"] = {true, true, false, false},
+	["TRICORNER-TOPLEFT"] = {false, true, true, true},
+	["TRICORNER-TOPRIGHT"] = {true, false, true, true},
+	["TRICORNER-BOTTOMLEFT"] = {true, true, false, true},
+	["TRICORNER-BOTTOMRIGHT"] = {true, true, true, false},
+}
+
+local RadialOffset = 10;	--minimapbutton offset
+local function ObjectManipulator_MinimapButton_UpdateAngle(radian)
+	local x, y, q = math.cos(radian), math.sin(radian), 1;
+	if x < 0 then q = q + 1 end
+	if y > 0 then q = q + 2 end
+	local minimapShape = GetMinimapShape and GetMinimapShape() or "ROUND";
+	local quadTable = minimapShapes[minimapShape];
+	local w = (Minimap:GetWidth() / 2) + RadialOffset	--10
+	local h = (Minimap:GetHeight() / 2) + RadialOffset
+	if quadTable[q] then
+		x, y = x*w, y*h
+	else
+		local diagRadiusW = sqrt(2*(w)^2) - RadialOffset	--  -10
+		local diagRadiusH = sqrt(2*(h)^2) - RadialOffset
+		x = max(-w, min(x*diagRadiusW, w));
+		y = max(-h, min(y*diagRadiusH, h));
+	end
+	ObjectManipulator_MinimapButton:SetPoint("CENTER", "Minimap", "CENTER", x, y);
 end
 
-function OPMiniMapLoadIt()
-	if OPMasterTable.Options["MinimapButtonSavePoint"] ~= nil and OPMasterTable.Options["MinimapButtonSavePoint"] ~= "" then
-		local point, relativeTo, relativePoint, xOffset, yOffset = strsplit(" ", OPMasterTable.Options["MinimapButtonSavePoint"])
-		ObjectManipulator_MinimapButton:SetPoint(point, "Minimap", relativePoint, xOffset, yOffset)
+function OPMiniMapLoadPosition(self)
+	local radian = tonumber(OPMasterTable.Options["MinimapButtonSavePoint"]) or 2.2;
+	ObjectManipulator_MinimapButton:SetClampRectInsets(5,-5,-5,5)
+	ObjectManipulator_MinimapButton_UpdateAngle(radian);
+end
+
+function ObjectManipulator_MinimapButton_OnUpdate()
+	local radian;
+
+	local mx, my = Minimap:GetCenter();
+	local px, py = GetCursorPosition();
+	local scale = Minimap:GetEffectiveScale();
+	px, py = px / scale, py / scale;
+	radian = math.atan2(py - my, px - mx);
+
+	ObjectManipulator_MinimapButton_UpdateAngle(radian);
+	OPMasterTable.Options["MinimapButtonSavePoint"] = radian;
+end
+
+function ObjectManipulator_MinimapButton_OnDragStart(self)
+	self:LockHighlight()
+	self:SetScript("OnUpdate", ObjectManipulator_MinimapButton_OnUpdate)
+end
+
+function ObjectManipulator_MinimapButton_OnDragStop(self)
+	self:UnlockHighlight()
+	self:SetScript("OnUpdate", nil)
+end
+
+function OPMainFrame_OnUpdate(self)
+	if not OPMasterTable.Options["fadePanel"] then
+		if self.Timer then self.Timer:Cancel(); self.Timer = nil end
+	else
+		if self:IsMouseOver(0,-25,0,0) then
+			if self.Timer then self.Timer:Cancel(); self.Timer = nil end
+			if self:GetAlpha() <= 0.3 then
+				UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
+			end
+		elseif self:GetAlpha() == 1 then
+			if not self.Timer then
+				self.Timer = C_Timer.NewTicker(0.75, function()
+					UIFrameFadeOut(self, 0.5, self:GetAlpha(), 0.3)
+					self.Timer = nil
+				end, 1)
+			end
+		end
 	end
 end
 
@@ -225,9 +320,7 @@ end
 
 --Update Internal Dimensions for movement when used, factoring in scale, double and halve options
 function updateDimensions(val)
-	if OPHalveToggle:GetChecked() == true then OPmoveModifier = 0.5
-	elseif OPBifoldToggle:GetChecked() == true then OPmoveModifier = 2
-	else OPmoveModifier = 1 end	
+	OPmoveModifier = 1	
 	if ScaleObject:GetChecked() == true and ScaleObject:IsEnabled() then
 		if val == "length" then if tonumber(OPLengthBox:GetText()) ~= nil then OPmoveLength = (tonumber(OPLengthBox:GetText())*tonumber(OPScaleBox:GetText())*OPmoveModifier) end end
 		if val == "width" then if tonumber(OPWidthBox:GetText()) ~= nil then OPmoveWidth = (tonumber(OPWidthBox:GetText())*tonumber(OPScaleBox:GetText())*OPmoveModifier) end end
@@ -352,7 +445,7 @@ function OPDown()
 			if isGroupSelected then cmdPref = "go group" else cmdPref = "go" end
 			cmd(cmdPref.." move down "..OPmoveHeight)
 		else
-			cmd(cmdPref.." down "..OPmoveHeight)
+			cmd("gps down "..OPmoveHeight)
 		end
 		if SpawnonMoveButton:GetChecked() == true and not OPMoveObjectInstead:GetChecked() then
 			OPSpawn()
@@ -389,6 +482,18 @@ function EnableBoxes(Box1, Box2)
 	if Box2:GetChecked() then
 		Box2:SetChecked(false)
 	end
+end
+
+
+-- Tinting Stuff
+
+function OPTintSlider_OnValueChanged(self,value,byUser)
+	if byUser then
+		if value ~= self.Text:GetText() then
+			OPTintObject();
+		end
+	end
+	self.Text:SetText(self:GetValue())
 end
 
 function OPTintObject()
@@ -512,6 +617,11 @@ StaticPopupDialogs["OP_TINTS_SPELL"] = {
 		else 
 			self.editBox:SetText("")
 		end
+		if self.editBox:GetText() ~= "" then
+			self.button1:SetText(APPLY)
+		else
+			self.button1:SetText(REMOVE)
+		end
 		self.editBox:SetNumeric(true)
 	end,
 	OnHide = function(self)
@@ -627,7 +737,7 @@ function OPSaveMenuRotSave(name)
 					end
 					return
 				else
-					eprint("You tried to save with the same name as another Rotation Save, and an error occurred internally. Please remember how you did this and report it as a bug. Thanks you.")
+					eprint("You tried to save with the same name as another Rotation Save, and an error occurred internally. Please remember how you did this and report it as a bug. Thank you.")
 					return
 				end
 				return
@@ -654,14 +764,25 @@ end
 
 function OPCreateLoadDropDownMenus()
 	
+local function createFramesHook(numLevels, numButtons)
+	for level = 1, numLevels do
+		for i = 1, numButtons do
+			_G["DropDownList"..level.."Button"..i]:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+		end
+	end
+end
+
+createFramesHook(UIDROPDOWNMENU_MAXLEVELS, UIDROPDOWNMENU_MAXBUTTONS)
+hooksecurefunc("UIDropDownMenu_CreateFrames", createFramesHook)
+	
 	--Param Loading
 	local paramPresetDropSelect = CreateFrame("Frame", "paramPresetDropDownMenu", OPPanel2, "UIDropDownMenuTemplate")
-	paramPresetDropSelect:SetPoint("LEFT", OPParamSaveButton, "RIGHT", -15, -1)
+	paramPresetDropSelect:SetPoint("TOP", OPParamSaveButton, "BOTTOM", 2, -2)
 	paramPresetDropSelect:SetScript("OnEnter",function()
 		GameTooltip:SetOwner(paramPresetDropSelect, "ANCHOR_LEFT")
 		paramPresetDropSelect.Timer = C_Timer.NewTimer(0.5,function()
 			GameTooltip:SetText("Select a previously saved parameter pre-set to load.\r\n", nil, nil, nil, nil, true)
-			GameTooltip:AddLine("You can use '/opdelparam Name' in chat (where Name is the pre-set name, case sensitive) to delete any of these pre-sets including the default ones.",1,1,1,true)
+			GameTooltip:AddLine("Right-Click a saved Pre-set to Delete it. You must do this twice to confirm deletion to avoid mis-clicks.",1,1,1,true)
 			GameTooltip:Show()
 			end)
 	end)
@@ -671,25 +792,31 @@ function OPCreateLoadDropDownMenus()
 	end)
 	
 	local function ParamPresetOnClick(self)
-		UIDropDownMenu_SetSelectedID(paramPresetDropSelect, self:GetID())
-		if self.value ~= "Select a Preset" then
-			_OPMTPPC = OPMasterTable.ParamPresetContent[self.value]
-			if _OPMTPPC.ObjectID and tostring(_OPMTPPC.ObjectID) ~= "" and tostring(_OPMTPPC.ObjectID) ~= "0" then
-				OPObjectIDBox:SetText(OPMasterTable.ParamPresetContent[self.value].ObjectID)
+		local button = GetMouseButtonClicked()
+		if button == "LeftButton" then
+			UIDropDownMenu_SetSelectedID(paramPresetDropSelect, self:GetID())
+			if self.value ~= "Select a Preset" then
+				_OPMTPPC = OPMasterTable.ParamPresetContent[self.value]
+				if _OPMTPPC.ObjectID and tostring(_OPMTPPC.ObjectID) ~= "" and tostring(_OPMTPPC.ObjectID) ~= "0" then
+					OPObjectIDBox:SetText(OPMasterTable.ParamPresetContent[self.value].ObjectID)
+				end
+				if _OPMTPPC.Length and tostring(_OPMTPPC.Length) ~= "" and tostring(_OPMTPPC.Length) ~= "0" then
+					OPLengthBox:SetText(OPMasterTable.ParamPresetContent[self.value].Length)
+				end
+				if _OPMTPPC.Width and tostring(_OPMTPPC.Width) ~= "" and tostring(_OPMTPPC.Width) ~= "0" then
+					OPWidthBox:SetText(OPMasterTable.ParamPresetContent[self.value].Width)
+				end
+				if _OPMTPPC.Height and tostring(_OPMTPPC.Height) ~= "" and tostring(_OPMTPPC.Height) ~= "0" then
+					OPHeightBox:SetText(OPMasterTable.ParamPresetContent[self.value].Height)
+				end
+				if _OPMTPPC.Scale and tostring(_OPMTPPC.Scale) ~= "" and tostring(_OPMTPPC.Scale) ~= "0" then
+					OPScaleBox:SetText(OPMasterTable.ParamPresetContent[self.value].Scale)
+				end
+				dprint(false,"Tried to load Param Pre-set: "..self.value)
 			end
-			if _OPMTPPC.Length and tostring(_OPMTPPC.Length) ~= "" and tostring(_OPMTPPC.Length) ~= "0" then
-				OPLengthBox:SetText(OPMasterTable.ParamPresetContent[self.value].Length)
-			end
-			if _OPMTPPC.Width and tostring(_OPMTPPC.Width) ~= "" and tostring(_OPMTPPC.Width) ~= "0" then
-				OPWidthBox:SetText(OPMasterTable.ParamPresetContent[self.value].Width)
-			end
-			if _OPMTPPC.Height and tostring(_OPMTPPC.Height) ~= "" and tostring(_OPMTPPC.Height) ~= "0" then
-				OPHeightBox:SetText(OPMasterTable.ParamPresetContent[self.value].Height)
-			end
-			if _OPMTPPC.Scale and tostring(_OPMTPPC.Scale) ~= "" and tostring(_OPMTPPC.Scale) ~= "0" then
-				OPScaleBox:SetText(OPMasterTable.ParamPresetContent[self.value].Scale)
-			end
-			dprint(false,"Tried to load Param Pre-set: "..self.value)
+		elseif button == "RightButton" then
+			SlashCmdList.OPDELPARAM(self.value)
+			dprint(false,"Trying to delete Param Pre-Set ("..self.value..") from Right-Click Trigger")
 		end
 	end
 	local function paramPresetInitialize(self,level)
@@ -703,8 +830,8 @@ function OPCreateLoadDropDownMenus()
 		end
 	end
 	UIDropDownMenu_Initialize(paramPresetDropSelect, paramPresetInitialize)
-	UIDropDownMenu_SetWidth(paramPresetDropSelect, 65);
-	UIDropDownMenu_SetButtonWidth(paramPresetDropSelect, 80)
+	UIDropDownMenu_SetWidth(paramPresetDropSelect, 55);
+	UIDropDownMenu_SetButtonWidth(paramPresetDropSelect, 70)
 	UIDropDownMenu_SetSelectedID(paramPresetDropSelect, 0)
 	UIDropDownMenu_JustifyText(paramPresetDropSelect, "LEFT")
 	UIDropDownMenu_SetText(paramPresetDropSelect, "Load")
@@ -719,7 +846,7 @@ function OPCreateLoadDropDownMenus()
 		GameTooltip:SetOwner(rotPresetDropSelect, "ANCHOR_LEFT")
 		rotPresetDropSelect.Timer = C_Timer.NewTimer(0.5,function()
 			GameTooltip:SetText("Select a previously saved rotation pre-set to load.\r\n", nil, nil, nil, nil, true)
-			GameTooltip:AddLine("You can use '/opdelrot Name' in chat (where Name is the pre-set name, case sensitive) to delete any of these pre-sets including the default ones.",1,1,1,true)
+			GameTooltip:AddLine("Right-Click a saved Pre-set to Delete it. You must do this twice to confirm deletion to avoid mis-clicks.",1,1,1,true)
 			GameTooltip:Show()
 			end)
 	end)
@@ -729,26 +856,32 @@ function OPCreateLoadDropDownMenus()
 	end)
 	
 	local function RotPresetOnClick(self)
-		UIDropDownMenu_SetSelectedID(rotPresetDropSelect, self:GetID())
-		if self.value ~= "Select a Preset" then
-			local origx, origy, origz = OPRotationSliderX:GetValue(), OPRotationSliderY:GetValue(), OPRotationSliderZ:GetValue()
-			_OPMTRPC = OPMasterTable.RotPresetContent[self.value]
-			if _OPMTRPC.RotX and tostring(_OPMTRPC.RotX) ~= "" and tonumber(_OPMTRPC.RotX) >= 0 then
-				OPRotationSliderX:SetValue(tonumber(OPMasterTable.RotPresetContent[self.value].RotX))
+		local button = GetMouseButtonClicked()
+		if button == "LeftButton" then
+			UIDropDownMenu_SetSelectedID(rotPresetDropSelect, self:GetID())
+			if self.value ~= "Select a Preset" then
+				local origx, origy, origz = OPRotationSliderX:GetValue(), OPRotationSliderY:GetValue(), OPRotationSliderZ:GetValue()
+				_OPMTRPC = OPMasterTable.RotPresetContent[self.value]
+				if _OPMTRPC.RotX and tostring(_OPMTRPC.RotX) ~= "" and tonumber(_OPMTRPC.RotX) >= 0 then
+					OPRotationSliderX:SetValue(tonumber(OPMasterTable.RotPresetContent[self.value].RotX))
+				end
+				if _OPMTRPC.RotY and tostring(_OPMTRPC.RotY) ~= "" and tonumber(_OPMTRPC.RotY) >= 0 then
+					OPRotationSliderY:SetValue(tonumber(OPMasterTable.RotPresetContent[self.value].RotY))
+				end
+				if _OPMTRPC.RotZ and tostring(_OPMTRPC.RotZ) ~= "" and tonumber(_OPMTRPC.RotZ) >= 0 then
+					OPRotationSliderZ:SetValue(tonumber(OPMasterTable.RotPresetContent[self.value].RotZ))
+				end
+				dprint(false,"Tried to load Rot Pre-set: "..self.value)
+				dprint(false,origx.." | "..origy.." | "..origz)
+				
+				OPRotateObject();
+				OPIMFUCKINGROTATINGDONTSPAMME = true
+				OPClearRotateChatFilter()
+				--dprint(false,"Loaded the same as whatever it is currently, so we're gonna apply the rotation anyways!")
 			end
-			if _OPMTRPC.RotY and tostring(_OPMTRPC.RotY) ~= "" and tonumber(_OPMTRPC.RotY) >= 0 then
-				OPRotationSliderY:SetValue(tonumber(OPMasterTable.RotPresetContent[self.value].RotY))
-			end
-			if _OPMTRPC.RotZ and tostring(_OPMTRPC.RotZ) ~= "" and tonumber(_OPMTRPC.RotZ) >= 0 then
-				OPRotationSliderZ:SetValue(tonumber(OPMasterTable.RotPresetContent[self.value].RotZ))
-			end
-			dprint(false,"Tried to load Rot Pre-set: "..self.value)
-			dprint(false,origx.." | "..origy.." | "..origz)
-			
-			OPRotateObject();
-			OPIMFUCKINGROTATINGDONTSPAMME = true
-			OPClearRotateChatFilter()
-			--dprint(false,"Loaded the same as whatever it is currently, so we're gonna apply the rotation anyways!")
+		elseif button == "RightButton" then
+			SlashCmdList.OPDELROT(self.value)
+			dprint(false,"Trying to delete Rotation Pre-Set ("..self.value..") from Right-Click Trigger")
 		end
 	end
 	local function rotPresetInitialize(self,level)
@@ -1002,6 +1135,10 @@ local function Addon_OnEvent(self, event, ...)
 			local sender = select(4,...)
 			local self = string.gsub(table.concat({UnitFullName("PLAYER")}, "-"),"%s+","")
 			if sender == self then
+				
+				isGroupSelected = false
+				dprint(false,"isGroupSelected false")
+				
 				local guid, entry, name, filedataid, x, y, z, orientation, rx, ry, rz, HasTint, red, green, blue, alpha, spell, scale, groupLeader = strsplit(strchar(31),objdetails)
 				OPLastSelectedObjectData = {strsplit(strchar(31), objdetails)}
 				if OPMasterTable.Options["debug"] then
@@ -1009,8 +1146,12 @@ local function Addon_OnEvent(self, event, ...)
 				end
 				
 				-- Update Object
-				if OPParamAutoUpdateButton:GetChecked() and prefix == "EPSILON_OBJ_SEL" then
-					OPGetObject("RightButton")
+				if OPParamAutoUpdateButton:GetChecked() then
+					if prefix == "EPSILON_OBJ_SEL" then
+						OPGetObject("RightButton")
+					else
+						OPScaleBox:SetText(tonumber(scale))
+					end
 				end
 				
 				-- Update Tints & Spell
@@ -1049,7 +1190,7 @@ local function Addon_OnEvent(self, event, ...)
 			else
 				eprint("Illegal Sender ("..sender..") | (Expected:"..self..")")
 			end
-			dprint(false,"Caught EPSILON_OBJ_INFO prefix")
+			dprint(false,"Caught "..prefix.." prefix")
 			dprint(false,event, ...)
 		end
 	elseif event == "PLAYER_LOGIN" then
@@ -1083,39 +1224,85 @@ function SlashCmdList.OPDEBUG(msg, editbox) -- 4.
 	else
 		OPMasterTable.Options["debug"] = not OPMasterTable.Options["debug"]
 		dprint(true,"Object Mover Debug Set to: "..tostring(OPMasterTable.Options["debug"]))
+		if OPMasterTable.Options["debug"] and OPMainFrame:GetAlpha() < 1 then 
+			if OPMainFrame.Timer then OPMainFrame.Timer:Cancel() end
+			UIFrameFadeIn(OPMainFrame,0.3,OPMainFrame:GetAlpha(),1)
+		end
 	end
 end
 
 SLASH_OPDELPARAM1, SLASH_OPDELPARAM2 = '/opdelparam', '/omdelparam';
 function SlashCmdList.OPDELPARAM(msg, editbox) -- 4.
-	if msg then
-		for k,v in ipairs(OPMasterTable.ParamPresetKeys) do
-			if msg == v then
-				table.remove(OPMasterTable.ParamPresetKeys, k)
-				OPMasterTable.ParamPresetContent[msg] = nil
-				print("ObjectMover: Deleting Parameter Pre-set "..msg)
-			else
-				dprint(false,""..msg.." is not a saved Param Pre-set?")
+	local deleted
+	if editbox then
+		if msg then
+			for k,v in ipairs(OPMasterTable.ParamPresetKeys) do
+				if msg == v then
+					table.remove(OPMasterTable.ParamPresetKeys, k)
+					OPMasterTable.ParamPresetContent[msg] = nil
+					cprint("Deleting Parameter Pre-set: "..msg)
+					deleted = true
+				end
 			end
+		else
+			print("ObjectMover SYNTAX: '/opdelparam [name of Parameter Pre-set to delete, Case Sensitive]'")
 		end
 	else
-		print("ObjectMover SYNTAX: '/opdelparam [name of Parameter Pre-set to delete, Case Sensitive]'")
+		if OPDeleteParamByMenuConfirm then
+			for k,v in ipairs(OPMasterTable.ParamPresetKeys) do
+				if msg == v then
+					table.remove(OPMasterTable.ParamPresetKeys, k)
+					OPMasterTable.ParamPresetContent[msg] = nil
+					cprint("Deleting Parameter Pre-set: "..msg)
+					deleted = true
+				end
+			end
+			OPDeleteParamByMenuConfirm = nil
+		else
+			cprint("Please Right-Click the Menu Option again to confirm deleting Parameter Preset: "..msg)
+			OPDeleteParamByMenuConfirm = true
+		end
 	end
+	if not deleted and not OPDeleteParamByMenuConfirm then
+		cprint(msg.." is not a saved Param Pre-set.")
+	end
+	deleted = nil
 end
 
 SLASH_OPDELROT1, SLASH_OPDELROT2 = '/opdelrot', '/omdelrot';
 function SlashCmdList.OPDELROT(msg, editbox) -- 4.
-	if msg then
-		for k,v in ipairs(OPMasterTable.RotPresetKeys) do
-			if msg == v then
-				table.remove(OPMasterTable.RotPresetKeys, k)
-				OPMasterTable.RotPresetContent[msg] = nil
-				print("ObjectMover: Deleting Rotation Pre-set: "..msg)
-			else
-				dprint(false,msg.." is not a saved Rot Pre-set?")
+	local deleted
+	if editbox then
+		if msg then
+			for k,v in ipairs(OPMasterTable.RotPresetKeys) do
+				if msg == v then
+					table.remove(OPMasterTable.RotPresetKeys, k)
+					OPMasterTable.RotPresetContent[msg] = nil
+					cprint("Deleting Rotation Pre-set: "..msg)
+					deleted = true
+				end
 			end
+		else
+			print("ObjectMover SYNTAX: '/opdelparam [name of Parameter Pre-set to delete, Case Sensitive]'")
 		end
 	else
-		print("ObjectMover SYNTAX: '/opdelparam [name of Parameter Pre-set to delete, Case Sensitive]'")
+		if OPDeleteRotByMenuConfirm then
+			for k,v in ipairs(OPMasterTable.RotPresetKeys) do
+				if msg == v then
+					table.remove(OPMasterTable.RotPresetKeys, k)
+					OPMasterTable.RotPresetContent[msg] = nil
+					cprint("Deleting Rotation Pre-set: "..msg)
+					deleted = true
+				end
+			end
+			OPDeleteRotByMenuConfirm = nil
+		else
+			cprint("Please Right-Click the Menu Option again to confirm deleting Rotation Preset: "..msg)
+			OPDeleteRotByMenuConfirm = true
+		end
 	end
+	if not deleted and not OPDeleteRotByMenuConfirm then
+		cprint(msg.." is not a saved Rotation Pre-set.")
+	end
+	deleted = nil
 end

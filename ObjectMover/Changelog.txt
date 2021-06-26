@@ -1,10 +1,13 @@
 v6.1.0 (June 13, 2021)
 	- Added Tint & Object Spell Support
-	- Improved Slider Logic
 	- Scale Object now works with Macro Spawning instead of delayed scale commands (No Delay, No Desync)
 	- Automatic Object Group Control Support
+	- Automatic Dimension Detection for M2's
+	- Auto Update mode for Object Parameters (Will auto fill selected objects ID, Scale, and if it's an M2, the dimensions as well)
+	- Saved Presets can now be deleted directly from the UI (Right-Click in Load Dropdown to delete, no need to use chat commands now)
+	- Minimap Icon is better and more adaptable to if you use other minimaps / UI's
 	- Improved ToolTips & UI Indications when things are disabled
-	- Automatic Dimension Detection for M2's (Right-Click "Get ID")
+	- Improved Slider Logic
 
 ----------------------------------------
 
