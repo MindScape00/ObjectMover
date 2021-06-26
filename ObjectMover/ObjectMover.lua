@@ -8,12 +8,8 @@
 -- local tabs = utils.tabs
 
 -- local main = Epsilon.main
-
-local addonName = "ObjectMover"
-local addonVersion, addonAuthor, addonName = GetAddOnMetadata(addonName, "Version"), GetAddOnMetadata(addonName, "Author"), GetAddOnMetadata(addonName, "Title")
-
-local currentVersion = GetAddOnMetadata("ChatBubble", "Version")
-local author = GetAddOnMetadata("ChatBubble", "Author")
+local MYADDON, MyAddOn = ...
+local addonVersion, addonAuthor, addonName = GetAddOnMetadata(MYADDON, "Version"), GetAddOnMetadata(MYADDON, "Author"), GetAddOnMetadata(MYADDON, "Title")
 
 local OPmoveLength, OPmoveWidth, OPmoveHeight, OPmoveModifier, MessageCount, ObjectClarifier, SpawnClarifier, ScaleClarifier, RotateClarifier, OPObjectSpell, cmdPref, isGroupSelected, m = 0, 0, 0, 1, 0, false, false, false, false, nil, "go", nil, nil
 BINDING_HEADER_OBJECTMANIP, SLASH_SHOWCLOSE1, SLASH_SHOWCLOSE2, SLASH_SHOWCLOSE3 = "Object Mover", "/obj", "/om", "/op"
@@ -316,6 +312,14 @@ function OPGetObject(button)
 			end
 		end
 	end
+end
+
+function OPUpdateAllDimensions(amount)
+	if not amount then return end;
+	amount = tonumber(amount)
+	OPLengthBox:SetText(tonumber(OPLengthBox:GetText())*amount)
+	OPWidthBox:SetText(tonumber(OPWidthBox:GetText())*amount)
+	OPHeightBox:SetText(tonumber(OPHeightBox:GetText())*amount)
 end
 
 --Update Internal Dimensions for movement when used, factoring in scale, double and halve options

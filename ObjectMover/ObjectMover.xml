@@ -90,7 +90,7 @@
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
 								self.Timer = C_Timer.NewTimer(0.5,function()
-									GameTooltip:SetText("Moves you (or the selected object, if you have Move Object enabled in Options) forwards by the amount specified in the Length field in Object Parameters.", nil, nil, nil, nil, true)
+									GameTooltip:SetText("Moves you (or the selected object, if you have Move Object enabled in Options) forwards by the amount specified in the Length field in Object Info.", nil, nil, nil, nil, true)
 									GameTooltip:Show()
 								end)
 							</OnEnter>
@@ -133,7 +133,7 @@
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
 								self.Timer = C_Timer.NewTimer(0.5,function()
-									GameTooltip:SetText("Moves you (or the selected object, if you have Move Object enabled in Options) backwards by the amount specified in the Length field in Object Parameters.", nil, nil, nil, nil, true)
+									GameTooltip:SetText("Moves you (or the selected object, if you have Move Object enabled in Options) backwards by the amount specified in the Length field in Object Info.", nil, nil, nil, nil, true)
 									GameTooltip:Show()
 								end)
 							</OnEnter>
@@ -175,7 +175,7 @@
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
 								self.Timer = C_Timer.NewTimer(0.5,function()
-									GameTooltip:SetText("Moves you (or the selected object, if you have Move Object enabled in Options) left by the amount specified in the Width field in Object Parameters.", nil, nil, nil, nil, true)
+									GameTooltip:SetText("Moves you (or the selected object, if you have Move Object enabled in Options) left by the amount specified in the Width field in Object Info.", nil, nil, nil, nil, true)
 									GameTooltip:Show()
 								end)
 							</OnEnter>
@@ -218,7 +218,7 @@
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
 								self.Timer = C_Timer.NewTimer(0.5,function()
-									GameTooltip:SetText("Moves you (or the selected object, if you have Move Object enabled in Options) right by the amount specified in the Width field in Object Parameters.", nil, nil, nil, nil, true)
+									GameTooltip:SetText("Moves you (or the selected object, if you have Move Object enabled in Options) right by the amount specified in the Width field in Object Info.", nil, nil, nil, nil, true)
 									GameTooltip:Show()
 								end)
 							</OnEnter>
@@ -261,7 +261,7 @@
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
 								self.Timer = C_Timer.NewTimer(0.5,function()
-									GameTooltip:SetText("Moves you (or the selected object, if you have Move Object enabled in Options) up by the amount specified in the Height field in Object Parameters.", nil, nil, nil, nil, true)
+									GameTooltip:SetText("Moves you (or the selected object, if you have Move Object enabled in Options) up by the amount specified in the Height field in Object Info.", nil, nil, nil, nil, true)
 									GameTooltip:Show()
 								end)
 							</OnEnter>
@@ -303,7 +303,7 @@
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
 								self.Timer = C_Timer.NewTimer(0.5,function()
-									GameTooltip:SetText("Moves you (or the selected object, if you have Move Object enabled in Options) down by the amount specified in the Height field in Object Parameters.", nil, nil, nil, nil, true)
+									GameTooltip:SetText("Moves you (or the selected object, if you have Move Object enabled in Options) down by the amount specified in the Height field in Object Info.", nil, nil, nil, nil, true)
 									GameTooltip:Show()
 								end)
 							</OnEnter>
@@ -409,7 +409,7 @@
 						</Anchors>
 						<Layers>
 							<Layer>
-								<FontString name="OPPanel2TitleText" font="Fonts\FRIZQT__.TTF" text="Object Parameters">
+								<FontString name="OPPanel2TitleText" font="Fonts\FRIZQT__.TTF" text="Object Info">
 									<Anchors>
 										<Anchor point="TOPLEFT" />
 										<Anchor point="BOTTOMRIGHT" />
@@ -870,9 +870,10 @@
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
 								self.Timer = C_Timer.NewTimer(0.5,function()
-									GameTooltip:SetText("Enable Scale Option\r\n", nil, nil, nil, nil, true)
-									GameTooltip:AddLine("All dimensions (Length, Width, Height) will be multiplied by the defined scale, and objects spawned by ObjectMover will be automatically set to that scale.\r\n",1,1,1,true)
-									GameTooltip:AddLine("May stack with 'Double' and 'Halve' modifiers.\r\n",1,1,1,true)
+									GameTooltip:SetText("Enable Scale Option", nil, nil, nil, nil, true)
+									GameTooltip:AddLine(" ")
+									GameTooltip:AddLine("All dimensions (Length, Width, Height) will be multiplied by the defined scale, and objects spawned by ObjectMover will be automatically set to that scale.",1,1,1,true)
+									GameTooltip:AddLine(" ")
 									GameTooltip:AddLine("If disabled, Scale will have no effect anywhere.",1,1,1,true)
 									GameTooltip:Show()
 								end)
@@ -942,6 +943,8 @@
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
 								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Doubles the current Length value", nil, nil, nil, nil, false)
+									GameTooltip:AddLine(" ")
+									GameTooltip:AddLine("Shift-Click to affect all dimensions at once.",1,1,1,true)
 									GameTooltip:Show()
 								end)
 							</OnEnter>
@@ -950,7 +953,11 @@
 								self.Timer:Cancel()
 							</OnLeave>
 							<OnClick>
-								OPLengthBox:SetText(OPLengthBox:GetText()*2)
+								if IsShiftKeyDown() then 
+									OPUpdateAllDimensions(2)
+								else
+									OPLengthBox:SetText(OPLengthBox:GetText()*2)
+								end
 							</OnClick>
 						</Scripts>
 						<ButtonText name="$parentText">
@@ -972,6 +979,8 @@
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
 								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Halves the current Length value", nil, nil, nil, nil, false)
+									GameTooltip:AddLine(" ")
+									GameTooltip:AddLine("Shift-Click to affect all dimensions at once.",1,1,1,true)
 									GameTooltip:Show()
 								end)
 							</OnEnter>
@@ -980,7 +989,11 @@
 								self.Timer:Cancel()
 							</OnLeave>
 							<OnClick>
-								OPLengthBox:SetText(OPLengthBox:GetText()/2)
+								if IsShiftKeyDown() then 
+									OPUpdateAllDimensions(0.5)
+								else
+									OPLengthBox:SetText(OPLengthBox:GetText()/2)
+								end
 							</OnClick>
 						</Scripts>
 						<ButtonText name="$parentText">
@@ -1002,6 +1015,8 @@
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
 								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Doubles the current Width value", nil, nil, nil, nil, false)
+									GameTooltip:AddLine(" ")
+									GameTooltip:AddLine("Shift-Click to affect all dimensions at once.",1,1,1,true)
 									GameTooltip:Show()
 								end)
 							</OnEnter>
@@ -1010,7 +1025,11 @@
 								self.Timer:Cancel()
 							</OnLeave>
 							<OnClick>
-								OPWidthBox:SetText(OPWidthBox:GetText()*2)
+								if IsShiftKeyDown() then 
+									OPUpdateAllDimensions(2)
+								else
+									OPWidthBox:SetText(OPWidthBox:GetText()*2)
+								end
 							</OnClick>
 						</Scripts>
 						<ButtonText name="$parentText">
@@ -1032,6 +1051,8 @@
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
 								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Halves the current Width value", nil, nil, nil, nil, false)
+									GameTooltip:AddLine(" ")
+									GameTooltip:AddLine("Shift-Click to affect all dimensions at once.",1,1,1,true)
 									GameTooltip:Show()
 								end)
 							</OnEnter>
@@ -1040,7 +1061,11 @@
 								self.Timer:Cancel()
 							</OnLeave>
 							<OnClick>
-								OPWidthBox:SetText(OPWidthBox:GetText()/2)
+								if IsShiftKeyDown() then 
+									OPUpdateAllDimensions(0.5)
+								else
+									OPWidthBox:SetText(OPWidthBox:GetText()/2)
+								end
 							</OnClick>
 						</Scripts>
 						<ButtonText name="$parentText">
@@ -1062,6 +1087,8 @@
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
 								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Doubles the current Height value", nil, nil, nil, nil, false)
+									GameTooltip:AddLine(" ")
+									GameTooltip:AddLine("Shift-Click to affect all dimensions at once.",1,1,1,true)
 									GameTooltip:Show()
 								end)
 							</OnEnter>
@@ -1070,7 +1097,11 @@
 								self.Timer:Cancel()
 							</OnLeave>
 							<OnClick>
-								OPHeightBox:SetText(OPHeightBox:GetText()*2)
+								if IsShiftKeyDown() then 
+									OPUpdateAllDimensions(2)
+								else
+									OPHeightBox:SetText(OPHeightBox:GetText()*2)
+								end
 							</OnClick>
 						</Scripts>
 						<ButtonText name="$parentText">
@@ -1092,6 +1123,8 @@
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
 								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Halves the current Height value", nil, nil, nil, nil, false)
+									GameTooltip:AddLine(" ")
+									GameTooltip:AddLine("Shift-Click to affect all dimensions at once.",1,1,1,true)
 									GameTooltip:Show()
 								end)
 							</OnEnter>
@@ -1100,7 +1133,11 @@
 								self.Timer:Cancel()
 							</OnLeave>
 							<OnClick>
-								OPHeightBox:SetText(OPHeightBox:GetText()/2)
+								if IsShiftKeyDown() then 
+									OPUpdateAllDimensions(0.5)
+								else
+									OPHeightBox:SetText(OPHeightBox:GetText()/2)
+								end
 							</OnClick>
 						</Scripts>
 						<ButtonText name="$parentText">
@@ -1240,7 +1277,7 @@
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
 								self.Timer = C_Timer.NewTimer(0.5,function()
-									GameTooltip:SetText("Spawns a GameObject using the ID from the Object ID field in Object Parameters.", nil, nil, nil, nil, true)
+									GameTooltip:SetText("Spawns a GameObject using the ID from the Object ID field in Object Info.", nil, nil, nil, nil, true)
 									GameTooltip:Show()
 								end)
 							</OnEnter>
@@ -1282,7 +1319,7 @@
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
 								self.Timer = C_Timer.NewTimer(0.5,function()
-									GameTooltip:SetText("Opens up a new dialogue to save the current Object Parameters (ID, Length, Width, Height, and Scale) for quickly loading later.\r\n", nil, nil, nil, nil, true)
+									GameTooltip:SetText("Opens up a new dialogue to save the current Object Info (ID, Length, Width, Height, and Scale) for quickly loading later.\r\n", nil, nil, nil, nil, true)
 									GameTooltip:AddLine("Leaving an option blank, or as '0', will cause it to not load (i.e., leaving the ObjectID blank will cause it to not change your current ObjectID when loaded).",1,1,1,true)
 									GameTooltip:Show()
 								end)
