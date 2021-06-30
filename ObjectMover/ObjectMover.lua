@@ -1137,8 +1137,8 @@ local function Addon_OnEvent(self, event, ...)
 		if prefix == "EPSILON_OBJ_INFO" or prefix == "EPSILON_OBJ_SEL" then
 			local objdetails = select(2,...)
 			local sender = select(4,...)
-			local self = string.gsub(table.concat({UnitFullName("PLAYER")}, "-"),"%s+","")
-			if sender == self then
+			local self = table.concat({UnitFullName("PLAYER")}, "-")
+			if sender == self or string.gsub(self,"%s+","") then
 				
 				isGroupSelected = false
 				dprint(false,"isGroupSelected false")
