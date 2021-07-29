@@ -179,8 +179,9 @@ OPAddon_OnLoad:SetScript("OnEvent", function(self,event,name)
 			GameTooltip:AddLine("/om - Toggle UI",1,1,1,true)
 			GameTooltip:AddLine("/omdebug - Toggle Debug",1,1,1,true)
 			GameTooltip:AddLine(" ")
-			GameTooltip:AddLine("Mouse over most UI Elements to see tooltips for help!",0.9,0.75,0.75,true)
+			GameTooltip:AddLine("Mouse over most UI Elements to see tooltips for help! (Like this one!)",0.9,0.75,0.75,true)
 			GameTooltip:AddDoubleLine(" ", addonName.." v"..addonVersion, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8);
+			GameTooltip:AddDoubleLine(" ", "by "..addonAuthor, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8);
 			GameTooltip:Show()
 		end)
 	end
@@ -274,6 +275,35 @@ function OPMainFrame_OnUpdate(self)
 				end, 1)
 			end
 		end
+	end
+end
+
+function OPUpdateMoveButtons()
+	dprint(false, "Updated to use WASD Layout: "..tostring(OPMasterTable.Options["wasdButtonLayout"]))
+	local parentFrame = OPForwardButton:GetParent()
+	local centerAnchor = parentFrame.MovementButtonsAnchor
+	if OPMasterTable.Options["wasdButtonLayout"] then
+		-- change to WASD Layout
+		centerAnchor:SetPoint("CENTER",0,-6)
+		OPForwardButton:SetPoint("CENTER",centerAnchor,"CENTER",0,16)
+		OPBackwardButton:SetPoint("CENTER",centerAnchor,"CENTER",0,-4)
+		OPLeftButton:SetPoint("CENTER",centerAnchor,"CENTER",-56,-4)
+		OPRightButton:SetPoint("CENTER",centerAnchor,"CENTER",56,-4)
+		OPUpButton:SetPoint("CENTER",centerAnchor,"CENTER",-56,15)
+		OPDownButton:SetPoint("CENTER",centerAnchor,"CENTER",56,15)
+		OPTeleporttoObjectButton:SetPoint("CENTER",centerAnchor,"CENTER",0,-24)
+		OPTeleporttoObjectButton:SetSize(72,18)
+	else
+		-- Reset to standard Layout
+		centerAnchor:SetPoint("CENTER",-21,1)
+		OPForwardButton:SetPoint("CENTER",centerAnchor,"CENTER",0,14)
+		OPBackwardButton:SetPoint("CENTER",centerAnchor,"CENTER",0,-26)
+		OPLeftButton:SetPoint("CENTER",centerAnchor,"CENTER",-28,-6)
+		OPRightButton:SetPoint("CENTER",centerAnchor,"CENTER",28,-6)
+		OPUpButton:SetPoint("CENTER",centerAnchor,"CENTER",78,3)
+		OPDownButton:SetPoint("CENTER",centerAnchor,"CENTER",78,-15)
+		OPTeleporttoObjectButton:SetPoint("CENTER",centerAnchor,"CENTER",78,-34)
+		OPTeleporttoObjectButton:SetSize(48,16)
 	end
 end
 
@@ -474,6 +504,10 @@ end
 
 function OPTeletoObject()
 	SendChatMessage(".go go")
+end
+
+function OPScaleObject(scale)
+	cmd("go scale "..scale)
 end
 
 function EnableBoxes(Box1, Box2)
@@ -785,7 +819,8 @@ hooksecurefunc("UIDropDownMenu_CreateFrames", createFramesHook)
 	paramPresetDropSelect:SetScript("OnEnter",function()
 		GameTooltip:SetOwner(paramPresetDropSelect, "ANCHOR_LEFT")
 		paramPresetDropSelect.Timer = C_Timer.NewTimer(0.5,function()
-			GameTooltip:SetText("Select a previously saved parameter pre-set to load.\r\n", nil, nil, nil, nil, true)
+			GameTooltip:SetText("Select a previously saved parameter pre-set to load.", nil, nil, nil, nil, true)
+			GameTooltip:AddLine(" ")
 			GameTooltip:AddLine("Right-Click a saved Pre-set to Delete it. You must do this twice to confirm deletion to avoid mis-clicks.",1,1,1,true)
 			GameTooltip:Show()
 			end)
@@ -849,7 +884,8 @@ hooksecurefunc("UIDropDownMenu_CreateFrames", createFramesHook)
 	rotPresetDropSelect:SetScript("OnEnter",function()
 		GameTooltip:SetOwner(rotPresetDropSelect, "ANCHOR_LEFT")
 		rotPresetDropSelect.Timer = C_Timer.NewTimer(0.5,function()
-			GameTooltip:SetText("Select a previously saved rotation pre-set to load.\r\n", nil, nil, nil, nil, true)
+			GameTooltip:SetText("Select a previously saved rotation pre-set to load.", nil, nil, nil, nil, true)
+			GameTooltip:AddLine(" ")
 			GameTooltip:AddLine("Right-Click a saved Pre-set to Delete it. You must do this twice to confirm deletion to avoid mis-clicks.",1,1,1,true)
 			GameTooltip:Show()
 			end)
@@ -970,7 +1006,7 @@ function RunChecks(Message)
 	end
 end
 
-function Filter(Self,Event,Message)
+local function OMChatFilter(Self,Event,Message)
 	
 	local clearmsg = gsub(Message,"|cff%x%x%x%x%x%x","");
 	local clearmsg = clearmsg:gsub("|r","");
@@ -1118,8 +1154,21 @@ function Filter(Self,Event,Message)
 end
 
 --Apply filter
-ChatFrame_AddMessageEventFilter("CHAT_MSG_SYSTEM", Filter)
-
+ChatFrame_AddMessageEventFilter("CHAT_MSG_SYSTEM", OMChatFilter)
+ChatFrame_AddMessageEventFilter("CHAT_MSG_ACHIEVEMENT", OMChatFilter);
+ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER_INFORM", OMChatFilter);
+ChatFrame_AddMessageEventFilter("CHAT_MSG_COMBAT_XP_GAIN", OMChatFilter);
+ChatFrame_AddMessageEventFilter("CHAT_MSG_COMBAT_HONOR_GAIN", OMChatFilter);
+ChatFrame_AddMessageEventFilter("CHAT_MSG_COMBAT_FACTION_CHANGE", OMChatFilter);
+ChatFrame_AddMessageEventFilter("CHAT_MSG_TRADESKILLS", OMChatFilter);
+ChatFrame_AddMessageEventFilter("CHAT_MSG_OPENING", OMChatFilter);
+ChatFrame_AddMessageEventFilter("CHAT_MSG_PET_INFO", OMChatFilter);
+ChatFrame_AddMessageEventFilter("CHAT_MSG_COMBAT_MISC_INFO", OMChatFilter);
+ChatFrame_AddMessageEventFilter("CHAT_MSG_BG_SYSTEM_HORDE", OMChatFilter);
+ChatFrame_AddMessageEventFilter("CHAT_MSG_BG_SYSTEM_ALLIANCE", OMChatFilter);
+ChatFrame_AddMessageEventFilter("CHAT_MSG_BG_SYSTEM_NEUTRAL", OMChatFilter);
+ChatFrame_AddMessageEventFilter("CHAT_MSG_TARGETICONS", OMChatFilter);
+ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_CONVERSATION_NOTICE", OMChatFilter);
 
 -------------------------------------------------------------------------------
 -- Recieving GObject Info on Select
