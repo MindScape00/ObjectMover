@@ -1,7 +1,7 @@
 ## Interface: 80300
 ## Title: ObjectMover
 ## Author: MindScape
-## Version: 7.0.0
+## Version: 7.0.1
 ## Notes: Suite of tools to assist in the manipulation of GameObjects.
 ## DefaultState: Enabled
 ## SavedVariables: OPAutoDimObjectDB, OPMasterTable

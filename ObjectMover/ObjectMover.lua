@@ -179,6 +179,8 @@ OPAddon_OnLoad:SetScript("OnEvent", function(self,event,name)
 			GameTooltip:AddLine("/om - Toggle UI",1,1,1,true)
 			GameTooltip:AddLine("/omdebug - Toggle Debug",1,1,1,true)
 			GameTooltip:AddLine(" ")
+			GameTooltip:AddLine("Right-Click for Options, Changelog, and the Help Manual!",1,1,1,true)
+			GameTooltip:AddLine(" ")
 			GameTooltip:AddLine("Mouse over most UI Elements to see tooltips for help! (Like this one!)",0.9,0.75,0.75,true)
 			GameTooltip:AddDoubleLine(" ", addonName.." v"..addonVersion, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8);
 			GameTooltip:AddDoubleLine(" ", "by "..addonAuthor, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8);
@@ -258,25 +260,9 @@ function ObjectManipulator_MinimapButton_OnDragStop(self)
 	self:SetScript("OnUpdate", nil)
 end
 
-function OPMainFrame_OnUpdate(self)
-	if not OPMasterTable.Options["fadePanel"] then
-		if self.Timer then self.Timer:Cancel(); self.Timer = nil end
-	else
-		if self:IsMouseOver(0,-25,0,0) then
-			if self.Timer then self.Timer:Cancel(); self.Timer = nil end
-			if self:GetAlpha() <= 0.3 then
-				UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
-			end
-		elseif self:GetAlpha() == 1 then
-			if not self.Timer then
-				self.Timer = C_Timer.NewTicker(0.75, function()
-					UIFrameFadeOut(self, 0.5, self:GetAlpha(), 0.3)
-					self.Timer = nil
-				end, 1)
-			end
-		end
-	end
-end
+-----------------------------
+--- Frame & UI Functions
+-----------------------------
 
 function OPUpdateMoveButtons()
 	dprint(false, "Updated to use WASD Layout: "..tostring(OPMasterTable.Options["wasdButtonLayout"]))
@@ -304,6 +290,60 @@ function OPUpdateMoveButtons()
 		OPDownButton:SetPoint("CENTER",centerAnchor,"CENTER",78,-15)
 		OPTeleporttoObjectButton:SetPoint("CENTER",centerAnchor,"CENTER",78,-34)
 		OPTeleporttoObjectButton:SetSize(48,16)
+	end
+end
+
+function OPMainFrame_OnUpdate(self)
+	if not OPMasterTable.Options["fadePanel"] then
+		if self.Timer then self.Timer:Cancel(); self.Timer = nil end
+	else
+		if self:IsMouseOver(0,-25,0,0) then
+			if self.Timer then self.Timer:Cancel(); self.Timer = nil end
+			if self:GetAlpha() <= 0.3 then
+				UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
+			end
+		elseif self:GetAlpha() == 1 then
+			if not self.Timer then
+				self.Timer = C_Timer.NewTicker(0.75, function()
+					UIFrameFadeOut(self, 0.5, self:GetAlpha(), 0.3)
+					self.Timer = nil
+				end, 1)
+			end
+		end
+	end
+end
+
+function OPMainFrame_OnShow(self)
+	OPUpdateMoveButtons()
+	-- Check if Version Update for Changelog
+	if OPFramesAreLoaded then
+		if OPMasterTable.Options["LastVersion"] then
+			local cmajor, cminor, crev = strsplit(".", addonVersion,3)
+			local lmajor, lminor, lrev = strsplit(".", OPMasterTable.Options["LastVersion"],3)
+			local showChangelog = false
+			if cmajor > lmajor then showChangelog = true 
+			elseif cminor > lminor then showChangelog = true
+			elseif crev > lrev then showChangelog = true end
+			
+			if showChangelog then
+				OPNewOptionsFrame:Show()
+				PanelTemplates_SetTab(OPNewOptionsFrame, 2);
+				OPNewOptionsFrame.MainArea.Changelog:Show();
+				OPNewOptionsFrame.MainArea.Help:Hide();
+				OPNewOptionsFrame.MainArea.NewOptions:Hide();
+				dprint(false,"Addon version "..addonVersion.." detected as being > last version seen ("..OPMasterTable.Options["LastVersion"]..")")
+			end
+			
+			OPMasterTable.Options["LastVersion"] = addonVersion
+		else
+			OPNewOptionsFrame:Show()
+			PanelTemplates_SetTab(OPNewOptionsFrame, 2);
+			OPNewOptionsFrame.MainArea.Changelog:Show();
+			OPNewOptionsFrame.MainArea.Help:Hide();
+			OPNewOptionsFrame.MainArea.NewOptions:Hide();
+			OPMasterTable.Options["LastVersion"] = addonVersion
+			dprint(false,"Addon version "..addonVersion.." detected as being > .. well, nothing.")
+		end
 	end
 end
 

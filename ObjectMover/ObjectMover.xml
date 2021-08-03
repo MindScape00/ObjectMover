@@ -1,24 +1,20 @@
 <Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd" xmlns="http://www.blizzard.com/wow/ui/">
-	<Frame name="OPMainFrame" hidden="true" enableMouse="true" movable="true" clampedToScreen="true" parent="UIParent">
+	<Script file="Changelog.lua"/>
+	<Script file="HTMLUtils.lua"/>
+	<Frame name="OPMainFrame" hidden="true" enableMouse="true" movable="true" resizable="true" clampedToScreen="true" parent="UIParent" ignoreParentScale="true">
 		<Size x="355" y="355" />
+		<ResizeBounds>
+			<minResize x="200" y="200"/>
+			<maxResize x="650" y="650"/>
+		</ResizeBounds>
 		<Anchors>
 			<Anchor point="TOPRIGHT" relativeTo="UIParent">
 				<Offset y="-280"/>
 			</Anchor>
 		</Anchors>
 		<TitleRegion setAllPoints="true" />
-		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
-			<BackgroundInsets>
-				<AbsInset left="11" right="12" top="12" bottom="11" />
-			</BackgroundInsets>
-			<TileSize>
-				<AbsValue val="32" />
-			</TileSize>
-			<EdgeSize>
-				<AbsValue val="32" />
-			</EdgeSize>
-		</Backdrop>
 		<Frames>
+			<Frame parentKey="Border" inherits="DialogBorderTemplate"/>
 			<Frame name="OPPanel1">
 				<Size x="180" y="90" />
 				<Anchors>
@@ -3525,10 +3521,53 @@
 					</OnLeave>
 				</Scripts>
 			</Button>
+			<Button parentKey="ResizeButton" text="Resize" hidden="false" registerForClicks="RightButtonUp">
+				<Size>
+					<AbsDimension x="16" y="16"/>
+				</Size>
+				<NormalTexture file="Interface\ChatFrame\UI-ChatIM-SizeGrabber-Up"/>
+				<PushedTexture file="Interface\ChatFrame\UI-ChatIM-SizeGrabber-Down"/>
+				<HighlightTexture file="Interface\ChatFrame\UI-ChatIM-SizeGrabber-Highlight" alphaMode="ADD"/>
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT">
+						<Offset x="-4" y="5" />
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						if button == "RightButton" then
+							self:GetParent():SetWidth(355)
+						end
+					</OnClick>
+					<OnMouseDown>
+						local parent = self:GetParent()
+						self.isScaling = true
+						parent:StartSizing("BOTTOMRIGHT")
+					</OnMouseDown>
+					<OnMouseUp>
+						local parent = self:GetParent()
+						self.isScaling = false
+						parent:StopMovingOrSizing()
+					</OnMouseUp>
+					<OnEnter>
+						GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+						self.Timer = C_Timer.NewTimer(0.5,function()
+							GameTooltip:SetText("Drag to resize the UI.", nil, nil, nil, nil, true)
+							GameTooltip:AddLine(" ")
+							GameTooltip:AddLine("Right Click to reset the size to default.",1,1,1,true)
+							GameTooltip:Show()
+						end)
+					</OnEnter>
+					<OnLeave>
+						GameTooltip_Hide()
+						self.Timer:Cancel()
+					</OnLeave>
+				</Scripts>
+			</Button>
 		</Frames>
 		<Scripts>
 			<OnShow>
-				OPUpdateMoveButtons()
+				OPMainFrame_OnShow()
 			</OnShow>
 			<OnLoad>
 				self:RegisterForDrag("LeftButton");
@@ -3546,6 +3585,15 @@
 			</OnDragStart>
 			<OnDragStop>self:StopMovingOrSizing();</OnDragStop>
 			<OnUpdate function="OPMainFrame_OnUpdate"/>
+			<OnSizeChanged>
+				local n = self:GetWidth()
+				local n = n / 355
+				local childrens = {self:GetChildren()}
+				for _,child in ipairs(childrens) do
+					if child ~= 1 then child:SetScale(n) end
+				end
+				self:SetHeight(355*n)
+			</OnSizeChanged>
 		</Scripts>
 	</Frame>
 	<Frame name="OPMainSaveFrame" frameStrata="DIALOG" hidden="true" enableMouse="true" clampedToScreen="true">
@@ -3742,7 +3790,11 @@
 			<OnDragStart function="ObjectManipulator_MinimapButton_OnDragStart"/>
 			<OnDragStop function="ObjectManipulator_MinimapButton_OnDragStop"/>
 			<OnClick>
-				SlashCmdList.SHOWCLOSE()
+				if button == "RightButton" then 
+					if not OPNewOptionsFrame:IsShown() then OPNewOptionsFrame:Show() else OPNewOptionsFrame:Hide() end
+				else
+					SlashCmdList.SHOWCLOSE()
+				end
 			</OnClick>
 		</Scripts>
 		<HighlightTexture file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight" alphaMode="ADD" />
@@ -3754,4 +3806,234 @@
 			</OnModelLoaded>
         </Scripts>
     </Actor>
+	<Frame name="OPNewOptionsFrame" hidden="true" enableMouse="true" moveable="true" clampedToScreen="true" parent="UIParent">
+		<Size x="500" y="600" />
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+		<Frames>
+			<Frame parentKey="Border" inherits="DialogBorderTemplate"/>
+			<Frame parentKey="Header" inherits="DialogHeaderTemplate">
+				<KeyValues>
+					<KeyValue key="textString" value="ObjectMover" type="string"/>
+				</KeyValues>
+			</Frame>
+			<Button name="$parentCloseButton" parentKey="CloseButton" inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" x="-5.6" y="-4"/>
+				</Anchors>
+				<Frames>
+					<Frame parentKey="Border">
+						<Size x="32" y="32"/>
+						<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Corner.PNG" edgeFile="" />
+						<Anchors>
+							<Anchor point="TOPLEFT" x="-4" y="-4" />
+						</Anchors>
+					</Frame>
+				</Frames>
+			</Button>
+			<Frame parentKey="MainArea">
+				<Anchors>
+					<Anchor point="TOPLEFT"/>
+					<Anchor point="BOTTOMRIGHT"/>
+				</Anchors>
+				<Frames>
+					<Frame parentKey="NewOptions" name="OPNewOptionsPanel" hidden="true">
+						<Anchors>
+						  <Anchor point="TOPLEFT">
+							<Offset>
+							  <AbsDimension x="18" y="-32"/>
+							</Offset>
+						  </Anchor>
+						  <Anchor point="BOTTOMRIGHT">
+							<Offset>
+							  <AbsDimension x="-36" y="12"/>
+							</Offset>
+						  </Anchor>
+						</Anchors>
+						<Frames>
+							<Frame parentKey="Title">
+								<Size>
+									<AbsDimension x="300" y="12" />
+								</Size>
+								<Anchors>
+									<Anchor point="TOP">
+										<Offset y="-5" />
+									</Anchor>
+								</Anchors>
+								<Layers>
+									<Layer>
+										<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="More Options Coming Soon!">
+											<Anchors>
+												<Anchor point="TOPLEFT" />
+												<Anchor point="BOTTOMRIGHT" />
+											</Anchors>
+											<FontHeight val="12" />
+											<Color r="1" g="0.8196079" b="0" />
+											<Shadow>
+												<Offset>
+													<AbsDimension x="1" y="-1" />
+												</Offset>
+												<Color r="0" g="0" b="0" />
+											</Shadow>
+										</FontString>
+									</Layer>
+								</Layers>
+							</Frame>
+						</Frames>
+						<Scripts>
+						</Scripts>
+					</Frame>
+					<ScrollFrame parentKey="Changelog" name="OPChangeLogScrollframe" inherits="UIPanelScrollFrameTemplate" hidden="true">
+						<Anchors>
+						  <Anchor point="TOPLEFT">
+							<Offset>
+							  <AbsDimension x="18" y="-32"/>
+							</Offset>
+						  </Anchor>
+						  <Anchor point="BOTTOMRIGHT">
+							<Offset>
+							  <AbsDimension x="-36" y="12"/>
+							</Offset>
+						  </Anchor>
+						</Anchors>
+						<ScrollChild>
+							<SimpleHTML name="$parentChangelogHTML">
+								<Size>
+									<AbsDimension x="446" y="600"/>
+								</Size>
+								<Scripts>
+									<OnHyperlinkClick>
+										ChatFrame1EditBox:SetFocus()
+										if ChatFrame1EditBox:GetText() ~= "" then
+											ChatFrame1EditBox:SetText(ChatFrame1EditBox:GetText() .. link)
+										else
+											ChatFrame1EditBox:SetText(link)
+										end
+										
+										ChatFrame1EditBox:HighlightText()
+									</OnHyperlinkClick>
+									<OnLoad>
+										self:SetFontObject("p", GameFontNormal);
+										self:SetFontObject("h1", GameFontNormalHuge2);
+										self:SetFontObject("h2", GameFontNormalLarge);
+										self:SetFontObject("h3", GameFontNormalMed2);
+										self:SetText(stringtoHTML(ObjectMoverChangelog))
+									</OnLoad>
+								</Scripts>
+								<FontString inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="TOP" spacing="2">
+									<Color r="1" g="1" b="1"/>
+								</FontString>
+							</SimpleHTML>
+						</ScrollChild>
+						<Scripts>
+							<OnLoad>
+								ScrollFrame_OnLoad(self);
+							</OnLoad>
+						</Scripts>
+					</ScrollFrame>
+					<ScrollFrame parentKey="Help" name="OPHelpMeScrollframe" inherits="UIPanelScrollFrameTemplate" hidden="true">
+						<Anchors>
+						  <Anchor point="TOPLEFT">
+							<Offset>
+							  <AbsDimension x="18" y="-32"/>
+							</Offset>
+						  </Anchor>
+						  <Anchor point="BOTTOMRIGHT">
+							<Offset>
+							  <AbsDimension x="-36" y="12"/>
+							</Offset>
+						  </Anchor>
+						</Anchors>
+						<ScrollChild>
+							<SimpleHTML name="$parentHelpManualHTML">
+								<Size>
+									<AbsDimension x="446" y="600"/>
+								</Size>
+								<Scripts>
+									<OnHyperlinkClick>
+										SetItemRef(link, text, button, self);
+									</OnHyperlinkClick>
+									<OnLoad>
+										self:SetFontObject("p", GameFontNormal);
+										self:SetFontObject("h1", GameFontNormalHuge2);
+										self:SetFontObject("h2", GameFontNormalLarge);
+										self:SetFontObject("h3", GameFontNormalMed2);
+										self:SetText(stringtoHTML(ObjectMoverHelpManual))
+									</OnLoad>
+								</Scripts>
+								<FontString inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="TOP" spacing="2">
+									<Color r="1" g="1" b="1"/>
+								</FontString>
+							</SimpleHTML>
+						</ScrollChild>
+						<Scripts>
+							<OnLoad>
+								ScrollFrame_OnLoad(self);
+							</OnLoad>
+						</Scripts>
+					</ScrollFrame>
+				</Frames>
+			</Frame>
+			<Button name="$parentTab1" inherits="CharacterFrameTabButtonTemplate" id="1" text="Options">
+				<Anchors>
+					<Anchor point="CENTER" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="60" y="-9"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						PanelTemplates_SetTab(OPNewOptionsFrame, 1);
+						OPNewOptionsFrame.MainArea.Changelog:Hide();
+						OPNewOptionsFrame.MainArea.Help:Hide();
+						OPNewOptionsFrame.MainArea.NewOptions:Show();
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentTab2" inherits="CharacterFrameTabButtonTemplate" id="2" text="Changelog">
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentTab1" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="-16" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						PanelTemplates_SetTab(OPNewOptionsFrame, 2);
+						OPNewOptionsFrame.MainArea.Changelog:Show();
+						OPNewOptionsFrame.MainArea.Help:Hide();
+						OPNewOptionsFrame.MainArea.NewOptions:Hide();
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentTab3" inherits="CharacterFrameTabButtonTemplate" id="3" text="Help">
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentTab2" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="-16" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						PanelTemplates_SetTab(OPNewOptionsFrame, 3);
+						OPNewOptionsFrame.MainArea.Changelog:Hide();
+						OPNewOptionsFrame.MainArea.NewOptions:Hide();
+						OPNewOptionsFrame.MainArea.Help:Show();
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnLoad>
+				PanelTemplates_SetNumTabs(OPNewOptionsFrame, 3);
+				PanelTemplates_SetTab(OPNewOptionsFrame, 1);
+				OPNewOptionsFrame.MainArea.NewOptions:Show();
+				tinsert(UISpecialFrames, self:GetName());
+			</OnLoad>
+		</Scripts>
+	</Frame>
 </Ui>
