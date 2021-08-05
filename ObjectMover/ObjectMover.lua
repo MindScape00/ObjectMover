@@ -26,14 +26,8 @@ local function cmd(text)
   SendChatMessage("."..text, "GUILD");
 end
 
-local function eprint(text,rest)
-	local line = strmatch(debugstack(2),":(%d+):")
-	if line then
-		print("|cffFFD700 ObjectMover Error @ "..line..": "..text.." | "..(rest and " | "..rest or "").." |r")
-	else
-		print("|cffFFD700 ObjectMover @ ERROR: "..text.." | "..rest.." |r")
-		print(debugstack(2))
-	end
+local function cprint(text)
+	print("|cffFFD700ObjectMover: "..(text and text or "ERROR").."|r")
 end
 
 local function dprint(force, text, rest)
@@ -48,8 +42,14 @@ local function dprint(force, text, rest)
 	end
 end
 
-local function cprint(text)
-	print("|cffFFD700ObjectMover: "..(text and text or "ERROR").."|r")
+local function eprint(text,rest)
+	local line = strmatch(debugstack(2),":(%d+):")
+	if line then
+		print("|cffFFD700 ObjectMover Error @ "..line..": "..text.." | "..(rest and " | "..rest or "").." |r")
+	else
+		print("|cffFFD700 ObjectMover @ ERROR: "..text.." | "..rest.." |r")
+		print(debugstack(2))
+	end
 end
 
 -------------------------------------------------------------------------------

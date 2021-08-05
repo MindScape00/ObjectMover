@@ -3904,14 +3904,7 @@
 								</Size>
 								<Scripts>
 									<OnHyperlinkClick>
-										ChatFrame1EditBox:SetFocus()
-										if ChatFrame1EditBox:GetText() ~= "" then
-											ChatFrame1EditBox:SetText(ChatFrame1EditBox:GetText() .. link)
-										else
-											ChatFrame1EditBox:SetText(link)
-										end
-										
-										ChatFrame1EditBox:HighlightText()
+										HTML_HyperlinkClick_Copy(self,link)
 									</OnHyperlinkClick>
 									<OnLoad>
 										self:SetFontObject("p", GameFontNormal);

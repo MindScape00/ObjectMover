@@ -1,3 +1,11 @@
+---------------------------
+-- HTML Utilities v1.0.1 --
+---------------------------
+
+-- For use to make SimpleHTML frames easier to populate by using Markdown to format it. This does not directly create SimpleHTML frames, you'll need one already made, this only helps in converting from Markdown to HTML format & a built in OnHyperlinkClick handler to show a copy-box for the hyperlink.
+-- Run a Markdown formatted string through html = stringtoHTML(markdown)
+-- Use HTML_HyperlinkClick_Copy(self,link) for a default Hyperlink handler.
+
 local directReplacements = {
 	["/col"] = "|r",
 };
@@ -204,4 +212,33 @@ stringtoHTML = function(text, noColor)
 	finalText = convertTextTags(finalText);
 
 	return "<HTML><BODY>" .. finalText .. "</BODY></HTML>";
+end
+
+----------------------------------
+-- Copy Hyperlink Static Pop-up --
+----------------------------------
+
+StaticPopupDialogs["HTMLUTILS_HYPERLINK_COPYBOX"] = {
+	text = "%s",
+	button1 = CLOSE,
+	OnAccept = function(self)
+		self.editBox:SetText("")
+	end,
+	hasEditBox = true,
+	timeout = 0,
+	cancels = "HTMLUTILS_HYPERLINK_COPYBOX",
+	whileDead = true,
+	hideOnEscape = true,
+	preferredIndex = 3,
+}
+
+function HTML_HyperlinkClick_Copy(self,link)
+	local popup = StaticPopup_Show("HTMLUTILS_HYPERLINK_COPYBOX", link);
+	local width = popup.text:GetStringWidth()
+	popup.editBox:SetWidth(width);
+	popup:SetWidth(width+50)
+	popup.text:SetText(BROWSER_COPY_LINK)
+	popup.editBox:SetText(link)
+	popup.editBox:SetFocus()
+	popup.editBox:HighlightText()
 end
