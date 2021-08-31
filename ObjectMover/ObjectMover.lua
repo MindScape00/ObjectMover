@@ -16,7 +16,7 @@ BINDING_HEADER_OBJECTMANIP, SLASH_SHOWCLOSE1, SLASH_SHOWCLOSE2, SLASH_SHOWCLOSE3
 
 local addonPrefix = "EPISLON_OBJ_INFO"
 
-local isWMO = {[14] = true, [15] = true, [33] = true, [38] = true}
+local isWMO = {[14] = true, [15] = true, [33] = true, [38] = true, [43] = true, [54] = true}
 
 -------------------------------------------------------------------------------
 -- Simple Chat Functions
