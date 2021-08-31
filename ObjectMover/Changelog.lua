@@ -1,4 +1,8 @@
 ObjectMoverChangelog = [[
+# v7.0.1 (b/No Version Change) (August 31, 2021)
+
+	- Added more GameObject_Type's to isWMO to help prevent crashes on !go select.
+
 # v7.0.1 (August 3, 2021)
 
 	- Added an in-game Changelog/Help Manual (Options tab added but not functional yet)
