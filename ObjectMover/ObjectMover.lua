@@ -351,6 +351,44 @@ end
 -- Main Functions
 -------------------------------------------------------------------------------
 
+--
+function updateGroupSelected(status)
+	if status then 
+		isGroupSelected = status
+	else
+		isGroupSelected = false
+	end
+	if isGroupSelected == true then
+		OPRotationSliderX:Disable()
+		OPRotationSliderY:Disable()
+		OPRotationSliderZ:Disable()
+		OPRotationEditBoxX:Disable()
+		OPRotationEditBoxY:Disable()
+		OPRotationEditBoxZ:Disable()
+		rotPresetDropDownMenuButton:Disable()
+		OPRotationEditBoxX:SetTextColor(0.5,0.5,0.5)
+		OPRotationEditBoxY:SetTextColor(0.5,0.5,0.5)
+		OPRotationEditBoxZ:SetTextColor(0.5,0.5,0.5)
+		OPRotationSliderXTitle:SetTextColor(0.5,0.5,0.5)
+		OPRotationSliderYTitle:SetTextColor(0.5,0.5,0.5)
+		OPRotationSliderZTitle:SetTextColor(0.5,0.5,0.5)
+	else
+		OPRotationSliderX:Enable()
+		OPRotationSliderY:Enable()
+		OPRotationSliderZ:Enable()
+		OPRotationEditBoxX:Enable()
+		OPRotationEditBoxY:Enable()
+		OPRotationEditBoxZ:Enable()
+		rotPresetDropDownMenuButton:Enable()
+		OPRotationEditBoxX:SetTextColor(255,255,255,1)
+		OPRotationEditBoxY:SetTextColor(255,255,255,1)
+		OPRotationEditBoxZ:SetTextColor(255,255,255,1)
+		OPRotationSliderXTitle:SetTextColor(1,0.82,0)
+		OPRotationSliderYTitle:SetTextColor(1,0.82,0)
+		OPRotationSliderZTitle:SetTextColor(1,0.82,0)
+	end
+end
+
 --Check to make sure entry is valid
 function CheckIfValid(Box, IsNotObjectID, Function)
 	if IsNotObjectID then
@@ -543,7 +581,9 @@ function OPSpawn()
 end
 
 function OPTeletoObject()
-	SendChatMessage(".go go")
+	if isGroupSelected then cmdPref = "go group" else cmdPref = "go" end
+	cmd(cmdPref.." go")
+	print("Command was "..cmdPref)
 end
 
 function OPScaleObject(scale)
@@ -1066,7 +1106,7 @@ local function OMChatFilter(Self,Event,Message)
 	end
 	--]]
 	if clearmsg:find("Selected gameobject group") or clearmsg:find("Spawned gameobject group") or clearmsg:find("Spawned blueprint") or clearmsg:find("added %d+ objects to gameobject group") then
-		isGroupSelected = true
+		updateGroupSelected(true)
 		dprint(false,"isGroupSelected true")
 	end
 		
@@ -1229,7 +1269,7 @@ local function Addon_OnEvent(self, event, ...)
 			local self = table.concat({UnitFullName("PLAYER")}, "-")
 			if sender == self or string.gsub(self,"%s+","") then
 				
-				isGroupSelected = false
+				updateGroupSelected(false)
 				dprint(false,"isGroupSelected false")
 				
 				local guid, entry, name, filedataid, x, y, z, orientation, rx, ry, rz, HasTint, red, green, blue, alpha, spell, scale, groupLeader = strsplit(strchar(31),objdetails)

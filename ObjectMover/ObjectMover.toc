@@ -1,7 +1,7 @@
 ## Interface: 80300
 ## Title: ObjectMover
 ## Author: MindScape
-## Version: 7.0.1
+## Version: 7.0.2
 ## Notes: Move, Turn, Tilt, Tint, and Manipulate Objects with ease! /om to show!
 ## DefaultState: Enabled
 ## SavedVariables: OPAutoDimObjectDB, OPMasterTable

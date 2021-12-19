@@ -1,4 +1,14 @@
 ObjectMoverChangelog = [[
+#v7.0.2 (December 18, 2021)
+	
+	- Improved Group Support (Go To supports Group)	
+	- Disabled Rotation Sliders when selecting a group to be more clear that they only work on single objects - sorry, no Rotating Groups yet!
+	
+### Did you know: ObjectMover supports moving Groups! Simply select a group, and ObjectMover will switch to moving the group instead!
+
+
+## __________________________________________________
+
 # v7.0.1 (b/No Version Change) (August 31, 2021)
 
 	- Added more GameObject_Type's to isWMO to help prevent crashes on !go select.
