@@ -1862,7 +1862,7 @@
 					<BorderColor r="0.75" g="0.75" b="0.75"/>
 				</Backdrop>
 				<Frames>
-					<Slider name="OPTintSliderR" orientation="HORIZONTAL" enableMouse="true" defaultValue="100" minValue="0" maxValue="100" valueStep="20" ObeyStepOnDrag="true">
+					<Slider name="OPTintSliderR" orientation="HORIZONTAL" enableMouse="true" defaultValue="100" minValue="0" maxValue="100" valueStep="5" ObeyStepOnDrag="true">
 						<Size>
 							<AbsDimension x="175" y="14" />
 						</Size>
@@ -1977,7 +1977,7 @@
 							</OnLeave>
 						</Scripts>
 					</Slider>
-					<Slider name="OPTintSliderG" orientation="HORIZONTAL" enableMouse="true" defaultValue="100" minValue="0" maxValue="100" valueStep="20" ObeyStepOnDrag="true">
+					<Slider name="OPTintSliderG" orientation="HORIZONTAL" enableMouse="true" defaultValue="100" minValue="0" maxValue="100" valueStep="5" ObeyStepOnDrag="true">
 						<Size>
 							<AbsDimension x="175" y="14" />
 						</Size>
@@ -2092,7 +2092,7 @@
 							</OnLeave>
 						</Scripts>
 					</Slider>
-					<Slider name="OPTintSliderB" orientation="HORIZONTAL" enableMouse="true" defaultValue="100" minValue="0" maxValue="100" valueStep="20" ObeyStepOnDrag="true">
+					<Slider name="OPTintSliderB" orientation="HORIZONTAL" enableMouse="true" defaultValue="100" minValue="0" maxValue="100" valueStep="5" ObeyStepOnDrag="true">
 						<Size>
 							<AbsDimension x="175" y="14" />
 						</Size>
@@ -2510,7 +2510,848 @@
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
 								self.Timer = C_Timer.NewTimer(0.5,function()
-									GameTooltip:SetText("Automatically Updates the Tint Sliders &amp; Spell to the Selected Object", nil, nil, nil, nil, true)
+									GameTooltip:SetText("Automatically Updates the Overlay &amp; Tint Sliders, &amp; Spell to the Selected Object.", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
+							<OnClick>
+								if self:GetChecked() == true then
+									OPMasterTable.Options["autoUpdateTint"] = true
+									--self:SetChecked(false)
+								else
+									OPMasterTable.Options["autoUpdateTint"] = false
+									--self:SetChecked(true)
+								end
+							</OnClick>
+							<OnShow>if OPMasterTable.Options["autoUpdateTint"] then self:SetChecked(true) end</OnShow>
+						</Scripts>
+						<NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
+						<PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
+						<HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD" />
+						<CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
+						<DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled" />
+					</CheckButton>
+				</Frames>
+			</Frame>
+			<Frame name="OPPanel4Overlay" hidden="false">
+				<Size x="335" y="132" />
+				<Anchors>
+					<Anchor point="BOTTOMLEFT">
+						<Offset x="10" y="10" />
+					</Anchor>
+				</Anchors>
+				<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+					<BackgroundInsets>
+						<AbsInset left="5" right="5" top="5" bottom="5" />
+					</BackgroundInsets>
+					<TileSize>
+						<AbsValue val="16" />
+					</TileSize>
+					<EdgeSize>
+						<AbsValue val="16" />
+					</EdgeSize>
+					<Color r="0.5" g="0.5" b="0.5" a="0"/>
+					<BorderColor r="0.75" g="0.75" b="0.75"/>
+				</Backdrop>
+				<Frames>
+					<Slider name="OPOverlaySliderR" orientation="HORIZONTAL" enableMouse="true" defaultValue="100" minValue="0" maxValue="100" valueStep="5" ObeyStepOnDrag="true">
+						<Size>
+							<AbsDimension x="175" y="14" />
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset x="11" y="-20" />
+							</Anchor>
+						</Anchors>
+						<Backdrop bgFile="Interface\Buttons\UI-SliderBar-Background" edgeFile="Interface\Buttons\UI-SliderBar-Border" tile="true">
+							<BackgroundInsets>
+								<AbsInset left="3" right="3" top="6" bottom="6" />
+							</BackgroundInsets>
+							<TileSize>
+								<AbsValue val="8" />
+							</TileSize>
+							<EdgeSize>
+								<AbsValue val="8" />
+							</EdgeSize>
+						</Backdrop>
+						<Layers>
+							<Layer>
+								<FontString name="$parentTitle" font="Fonts\FRIZQT__.TTF" text="Red">
+									<Anchors>
+										<Anchor point="TOPLEFT">
+											<Offset x="10" y="10" />
+										</Anchor>
+									</Anchors>
+									<FontHeight>
+										<AbsValue val="10" />
+									</FontHeight>
+									<Color r="1" g="0.75" b="0.75" />
+									<Shadow>
+										<Color r="0" g="0" b="0" />
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+									</Shadow>
+								</FontString>
+								<FontString name="$parentLabel" font="Fonts\FRIZQT__.TTF" text="R:">
+									<Anchors>
+										<Anchor point="BOTTOMLEFT" relativePoint="TOPRIGHT">
+											<Offset x="-35" />
+										</Anchor>
+									</Anchors>
+									<FontHeight val="10" />
+									<Color r="1" g="0.75" b="0.75" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+								<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="100">
+									<Anchors>
+										<Anchor relativeTo="$parentLabel" point="LEFT" relativePoint="RIGHT">
+											<Offset x="5" />
+										</Anchor>
+									</Anchors>
+									<FontHeight val="10" />
+									<Color r="1" g="0.75" b="0.75" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
+						<ThumbTexture name="$parentThumb" file="Interface\Buttons\UI-SliderBar-Button-Horizontal">
+							<Size>
+								<AbsDimension x="24" y="24" />
+							</Size>
+						</ThumbTexture>
+						<Scripts>
+							<OnMouseDown>
+								if self.dragEndTimer then
+									self.dragEndTimer:Cancel()
+								end
+								self.sliderDragChange = true
+								self.isDragging = true
+								OPOverlayDragging = true
+							</OnMouseDown>
+							<OnMouseUp>
+								self.isDragging = false
+								self.dragEndTimer = C_Timer.NewTimer(0.2,function()
+									if not self.isMousedOver then
+										self.sliderDragChange = false
+									end
+									OPOverlayDragging = false
+								end)
+							</OnMouseUp>
+							<OnValueChanged function="OPOverlaySlider_OnValueChanged"/>
+							<OnLoad></OnLoad>
+							<OnEnter>
+								self.sliderDragChange = true
+								self.isMousedOver = true
+								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+								self.Timer = C_Timer.NewTimer(0.5,function()
+									GameTooltip:SetText("Drag to change current Red Overlay on an Object", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								self.isMousedOver = false
+								if not self.isDragging then
+									self.sliderDragChange = false
+								end
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
+						</Scripts>
+					</Slider>
+					<Slider name="OPOverlaySliderG" orientation="HORIZONTAL" enableMouse="true" defaultValue="100" minValue="0" maxValue="100" valueStep="5" ObeyStepOnDrag="true">
+						<Size>
+							<AbsDimension x="175" y="14" />
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset x="11" y="-47" />
+							</Anchor>
+						</Anchors>
+						<Backdrop bgFile="Interface\Buttons\UI-SliderBar-Background" edgeFile="Interface\Buttons\UI-SliderBar-Border" tile="true">
+							<BackgroundInsets>
+								<AbsInset left="3" right="3" top="6" bottom="6" />
+							</BackgroundInsets>
+							<TileSize>
+								<AbsValue val="8" />
+							</TileSize>
+							<EdgeSize>
+								<AbsValue val="8" />
+							</EdgeSize>
+						</Backdrop>
+						<Layers>
+							<Layer>
+								<FontString name="$parentTitle" font="Fonts\FRIZQT__.TTF" text="Green">
+									<Anchors>
+										<Anchor point="TOPLEFT">
+											<Offset x="10" y="10" />
+										</Anchor>
+									</Anchors>
+									<FontHeight>
+										<AbsValue val="10" />
+									</FontHeight>
+									<Color r="0.75" g="1" b="0.75" />
+									<Shadow>
+										<Color r="0" g="0" b="0" />
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+									</Shadow>
+								</FontString>
+								<FontString name="$parentLabel" font="Fonts\FRIZQT__.TTF" text="G:">
+									<Anchors>
+										<Anchor point="BOTTOMLEFT" relativePoint="TOPRIGHT">
+											<Offset x="-35" />
+										</Anchor>
+									</Anchors>
+									<FontHeight val="10" />
+									<Color r="0.75" g="1" b="0.75" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+								<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="100">
+									<Anchors>
+										<Anchor relativeTo="$parentLabel" point="LEFT" relativePoint="RIGHT">
+											<Offset x="5" />
+										</Anchor>
+									</Anchors>
+									<FontHeight val="10" />
+									<Color r="0.75" g="1" b="0.75" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
+						<ThumbTexture name="$parentThumb" file="Interface\Buttons\UI-SliderBar-Button-Horizontal">
+							<Size>
+								<AbsDimension x="24" y="24" />
+							</Size>
+						</ThumbTexture>
+						<Scripts>
+							<OnMouseDown>
+								if self.dragEndTimer then
+									self.dragEndTimer:Cancel()
+								end
+								self.sliderDragChange = true
+								self.isDragging = true
+								OPOverlayDragging = true
+							</OnMouseDown>
+							<OnMouseUp>
+								self.isDragging = false
+								self.dragEndTimer = C_Timer.NewTimer(0.2,function()
+									if not self.isMousedOver then
+										self.sliderDragChange = false
+									end
+									OPOverlayDragging = false
+								end)
+							</OnMouseUp>
+							<OnValueChanged function="OPOverlaySlider_OnValueChanged"/>
+							<OnLoad></OnLoad>
+							<OnEnter>
+								self.sliderDragChange = true
+								self.isMousedOver = true
+								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+								self.Timer = C_Timer.NewTimer(0.5,function()
+									GameTooltip:SetText("Drag to change current Green Overlay on an Object", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								self.isMousedOver = false
+								if not self.isDragging then
+									self.sliderDragChange = false
+								end
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
+						</Scripts>
+					</Slider>
+					<Slider name="OPOverlaySliderB" orientation="HORIZONTAL" enableMouse="true" defaultValue="100" minValue="0" maxValue="100" valueStep="5" ObeyStepOnDrag="true">
+						<Size>
+							<AbsDimension x="175" y="14" />
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset x="11" y="-74" />
+							</Anchor>
+						</Anchors>
+						<Backdrop bgFile="Interface\Buttons\UI-SliderBar-Background" edgeFile="Interface\Buttons\UI-SliderBar-Border" tile="true">
+							<BackgroundInsets>
+								<AbsInset left="3" right="3" top="6" bottom="6" />
+							</BackgroundInsets>
+							<TileSize>
+								<AbsValue val="8" />
+							</TileSize>
+							<EdgeSize>
+								<AbsValue val="8" />
+							</EdgeSize>
+						</Backdrop>
+						<Layers>
+							<Layer>
+								<FontString name="$parentTitle" font="Fonts\FRIZQT__.TTF" text="Blue">
+									<Anchors>
+										<Anchor point="TOPLEFT">
+											<Offset x="10" y="10" />
+										</Anchor>
+									</Anchors>
+									<FontHeight>
+										<AbsValue val="10" />
+									</FontHeight>
+									<Color r="0.75" g="0.75" b="1" />
+									<Shadow>
+										<Color r="0" g="0" b="0" />
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+									</Shadow>
+								</FontString>
+								<FontString name="$parentLabel" font="Fonts\FRIZQT__.TTF" text="B:">
+									<Anchors>
+										<Anchor point="BOTTOMLEFT" relativePoint="TOPRIGHT">
+											<Offset x="-35" />
+										</Anchor>
+									</Anchors>
+									<FontHeight val="10" />
+									<Color r="0.75" g="0.75" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+								<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="100">
+									<Anchors>
+										<Anchor relativeTo="$parentLabel" point="LEFT" relativePoint="RIGHT">
+											<Offset x="5" />
+										</Anchor>
+									</Anchors>
+									<FontHeight val="10" />
+									<Color r="0.75" g="0.75" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
+						<ThumbTexture name="$parentThumb" file="Interface\Buttons\UI-SliderBar-Button-Horizontal">
+							<Size>
+								<AbsDimension x="24" y="24" />
+							</Size>
+						</ThumbTexture>
+						<Scripts>
+							<OnMouseDown>
+								if self.dragEndTimer then
+									self.dragEndTimer:Cancel()
+								end
+								self.sliderDragChange = true
+								self.isDragging = true
+								OPOverlayDragging = true
+							</OnMouseDown>
+							<OnMouseUp>
+								self.isDragging = false
+								self.dragEndTimer = C_Timer.NewTimer(0.2,function()
+									if not self.isMousedOver then
+										self.sliderDragChange = false
+									end
+									OPOverlayDragging = false
+								end)
+							</OnMouseUp>
+							<OnValueChanged function="OPOverlaySlider_OnValueChanged"/>
+							<OnLoad></OnLoad>
+							<OnEnter>
+								self.sliderDragChange = true
+								self.isMousedOver = true
+								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+								self.Timer = C_Timer.NewTimer(0.5,function()
+									GameTooltip:SetText("Drag to change current Blue Overlay on an Object", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								self.isMousedOver = false
+								if not self.isDragging then
+									self.sliderDragChange = false
+								end
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
+						</Scripts>
+					</Slider>
+					<Slider name="OPOverlaySliderT" orientation="HORIZONTAL" enableMouse="true" defaultValue="0" minValue="0" maxValue="100" valueStep="20" ObeyStepOnDrag="true">
+						<Size>
+							<AbsDimension x="175" y="14" />
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset x="11" y="-101" />
+							</Anchor>
+						</Anchors>
+						<Backdrop bgFile="Interface\Buttons\UI-SliderBar-Background" edgeFile="Interface\Buttons\UI-SliderBar-Border" tile="true">
+							<BackgroundInsets>
+								<AbsInset left="3" right="3" top="6" bottom="6" />
+							</BackgroundInsets>
+							<TileSize>
+								<AbsValue val="8" />
+							</TileSize>
+							<EdgeSize>
+								<AbsValue val="8" />
+							</EdgeSize>
+						</Backdrop>
+						<Layers>
+							<Layer>
+								<FontString name="$parentTitle" font="Fonts\FRIZQT__.TTF" text="Transparency">
+									<Anchors>
+										<Anchor point="TOPLEFT">
+											<Offset x="10" y="10" />
+										</Anchor>
+									</Anchors>
+									<FontHeight>
+										<AbsValue val="10" />
+									</FontHeight>
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Color r="0" g="0" b="0" />
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+									</Shadow>
+								</FontString>
+								<FontString name="$parentLow" font="Fonts\FRIZQT__.TTF" text="0">
+									<Anchors>
+										<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" />
+									</Anchors>
+									<FontHeight>
+										<AbsValue val="10" />
+									</FontHeight>
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Color r="0" g="0" b="0" />
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+									</Shadow>
+								</FontString>
+								<FontString name="$parentHigh" font="Fonts\FRIZQT__.TTF" text="100">
+									<Anchors>
+										<Anchor point="TOPRIGHT" relativePoint="BOTTOMRIGHT" />
+									</Anchors>
+									<FontHeight>
+										<AbsValue val="10" />
+									</FontHeight>
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Color r="0" g="0" b="0" />
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+									</Shadow>
+								</FontString>
+								<FontString name="$parentLabel" font="Fonts\FRIZQT__.TTF" text="T:">
+									<Anchors>
+										<Anchor point="BOTTOMLEFT" relativePoint="TOPRIGHT">
+											<Offset x="-35" />
+										</Anchor>
+									</Anchors>
+									<FontHeight val="10" />
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+								<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="0">
+									<Anchors>
+										<Anchor relativeTo="$parentLabel" point="LEFT" relativePoint="RIGHT">
+											<Offset x="5" />
+										</Anchor>
+									</Anchors>
+									<FontHeight val="10" />
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
+						<ThumbTexture name="$parentThumb" file="Interface\Buttons\UI-SliderBar-Button-Horizontal">
+							<Size>
+								<AbsDimension x="24" y="24" />
+							</Size>
+						</ThumbTexture>
+						<Scripts>
+							<OnMouseDown>
+								if self.dragEndTimer then
+									self.dragEndTimer:Cancel()
+								end
+								self.sliderDragChange = true
+								self.isDragging = true
+								OPOverlayDragging = true
+							</OnMouseDown>
+							<OnMouseUp>
+								self.isDragging = false
+								self.dragEndTimer = C_Timer.NewTimer(0.2,function()
+									if not self.isMousedOver then
+										self.sliderDragChange = false
+									end
+									OPOverlayDragging = false
+								end)
+							</OnMouseUp>
+							<OnValueChanged function="OPOverlaySlider_OnValueChanged"/>
+							<OnLoad></OnLoad>
+							<OnEnter>
+								self.sliderDragChange = true
+								self.isMousedOver = true
+								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+								self.Timer = C_Timer.NewTimer(0.5,function()
+									GameTooltip:SetText("Drag to change current Transparency on an Object", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								self.isMousedOver = false
+								if not self.isDragging then
+									self.sliderDragChange = false
+								end
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
+						</Scripts>
+					</Slider>
+					<Slider name="OPOverlaySliderS" orientation="VERTICAL" enableMouse="true" defaultValue="100" minValue="0" maxValue="100" valueStep="20" ObeyStepOnDrag="true">
+						<Size>
+							<AbsDimension x="14" y="100" />
+						</Size>
+						<Anchors>
+							<Anchor point="TOPRIGHT">
+								<Offset x="-115" y="-18" />
+							</Anchor>
+						</Anchors>
+						<Backdrop bgFile="Interface\Buttons\UI-SliderBar-Background" edgeFile="Interface\Buttons\UI-SliderBar-Border" tile="true">
+							<BackgroundInsets>
+								<AbsInset left="3" right="3" top="6" bottom="6" />
+							</BackgroundInsets>
+							<TileSize>
+								<AbsValue val="8" />
+							</TileSize>
+							<EdgeSize>
+								<AbsValue val="8" />
+							</EdgeSize>
+						</Backdrop>
+						<Layers>
+							<Layer>
+								<FontString name="$parentTitle" font="Fonts\FRIZQT__.TTF" text="s|na|nt|nu|nr|na|nt|ni|no|nn">
+									<Anchors>
+										<Anchor point="RIGHT" relativePoint="LEFT">
+											<Offset x="0" y="0" />
+										</Anchor>
+									</Anchors>
+									<FontHeight>
+										<AbsValue val="8" />
+									</FontHeight>
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Color r="0" g="0" b="0" />
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+									</Shadow>
+								</FontString>
+								<FontString name="$parentLow" font="Fonts\FRIZQT__.TTF" text="100">
+									<Anchors>
+										<Anchor point="BOTTOM" relativePoint="TOP" />
+									</Anchors>
+									<FontHeight>
+										<AbsValue val="10" />
+									</FontHeight>
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Color r="0" g="0" b="0" />
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+									</Shadow>
+								</FontString>
+								<FontString name="$parentHigh" font="Fonts\FRIZQT__.TTF" text="0">
+									<Anchors>
+										<Anchor point="TOP" relativePoint="BOTTOM" />
+									</Anchors>
+									<FontHeight>
+										<AbsValue val="10" />
+									</FontHeight>
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Color r="0" g="0" b="0" />
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+									</Shadow>
+								</FontString>
+								<FontString name="$parentLabel" font="Fonts\FRIZQT__.TTF" text="S:">
+									<Anchors>
+										<Anchor point="LEFT" relativePoint="RIGHT">
+											<Offset x="5" />
+										</Anchor>
+									</Anchors>
+									<FontHeight val="8" />
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+								<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="0">
+									<Anchors>
+										<Anchor point="LEFT" relativePoint="RIGHT">
+											<Offset x="15" />
+										</Anchor>
+									</Anchors>
+									<FontHeight val="8" />
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
+						<ThumbTexture name="$parentThumb" file="Interface\Buttons\UI-SliderBar-Button-Horizontal">
+							<Size>
+								<AbsDimension x="24" y="24" />
+							</Size>
+						</ThumbTexture>
+						<Scripts>
+							<OnMouseDown>
+								if self.dragEndTimer then
+									self.dragEndTimer:Cancel()
+								end
+								self.sliderDragChange = true
+								self.isDragging = true
+								OPOverlayDragging = true
+							</OnMouseDown>
+							<OnMouseUp>
+								self.isDragging = false
+								self.dragEndTimer = C_Timer.NewTimer(0.2,function()
+									if not self.isMousedOver then
+										self.sliderDragChange = false
+									end
+									OPOverlayDragging = false
+								end)
+							</OnMouseUp>
+							<OnValueChanged function="OPOverlaySlider_OnValueChanged"/>
+							<OnLoad></OnLoad>
+							<OnEnter>
+								self.sliderDragChange = true
+								self.isMousedOver = true
+								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+								self.Timer = C_Timer.NewTimer(0.5,function()
+									GameTooltip:SetText("Drag to change color overlay saturation on an Object", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								self.isMousedOver = false
+								if not self.isDragging then
+									self.sliderDragChange = false
+								end
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
+						</Scripts>
+					</Slider>
+					<Button name="OPOverlayColorWheelButton" inherits="UIPanelButtonTemplate" text="COLOR_PICKER">
+						<Size x="72" y="24" />
+						<Anchors>
+							<Anchor point="TOPRIGHT">
+								<Offset x="-10" y="-10" />
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								r, g, b, a = OPOverlaySliderR:GetValue()/100,OPOverlaySliderG:GetValue()/100,OPOverlaySliderB:GetValue()/100,OPOverlaySliderS:GetValue()/100
+								ColorPickerFrame:SetColorRGB(r, g, b)
+								ColorPickerFrame.hasOpacity, ColorPickerFrame.opacity = true, a
+								ColorPickerFrame.previousValues = {r,g,b,a};
+								ColorPickerFrame.func, ColorPickerFrame.cancelFunc = OPUpdateOverlays, OPUpdateOverlays
+								
+								ColorPickerFrame.opacityFunc = (function()
+									OPOverlaySliderS:SetValue(OpacitySliderFrame:GetValue()*100)
+								end)
+								ColorPickerOkayButton:HookScript("OnClick", OPUpdateOverlaysApply)
+								OPOverlayIsControllingColorPicker = true
+								ColorPickerFrame:Hide()
+								ColorPickerFrame:Show()
+							</OnClick>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+								self.Timer = C_Timer.NewTimer(0.5,function()
+									GameTooltip:SetText("Open the Color Wheel to Select a Color.", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
+						</Scripts>
+						<ButtonText name="$parentText">
+							<FontHeight val="10" />
+						</ButtonText>
+						<NormalFont style="GameFontNormalSmall" />
+						<HighlightFont style="GameFontHighlightSmall" />
+						<DisabledFont style="GameFontDisableSmall" />
+					</Button>
+					<Button name="OPOverlayApplyButton" inherits="UIPanelButtonTemplate" text="APPLY">
+						<Size x="72" y="24" />
+						<Anchors>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="OPOverlayColorWheelButton">
+								<Offset x="0" y="-5" />
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnLoad>
+								self:RegisterForClicks("LeftButtonUp", "RightButtonUp", "LeftButtonDown", "RightButtonDown");
+							</OnLoad>
+							<OnClick>
+								if not down then
+									if button == "LeftButton" then
+										OPOverlayObject();
+									elseif button == "RightButton" then
+										OPResetOverlay(true);
+									end
+								end
+							</OnClick>
+							<OnMouseDown>
+								if button == "LeftButton" then
+									self:SetText(APPLY)
+								elseif button == "RightButton" then
+									self:SetText(REMOVE)
+								end
+							</OnMouseDown>
+							<OnMouseUp>
+								self:SetText(APPLY)
+							</OnMouseUp>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+								self.Timer = C_Timer.NewTimer(0.5,function()
+									GameTooltip:SetText("Applies the current Overlay Settings to the selected object.", nil, nil, nil, nil, true)
+									GameTooltip:AddLine(" ")
+									GameTooltip:AddLine("Right Click to Reset/Remove the object's Overlay.",1,1,1,true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
+						</Scripts>
+						<ButtonText name="$parentText">
+							<FontHeight val="10" />
+						</ButtonText>
+						<NormalFont style="GameFontNormalSmall" />
+						<HighlightFont style="GameFontHighlightSmall" />
+						<DisabledFont style="GameFontDisableSmall" />
+					</Button>
+					<Button name="OPOverlaySpellButton" inherits="UIPanelButtonTemplate" text="Spell">
+						<Size x="72" y="24" />
+						<Anchors>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="OPOverlayApplyButton">
+								<Offset x="0" y="-5" />
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnLoad>
+								self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+							</OnLoad>
+							<OnClick>
+								OPSpellButtonFunc(button)
+							</OnClick>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+								self.Timer = C_Timer.NewTimer(0.5,function()
+									GameTooltip:SetText("Opens a Dialogue Box to Apply a Spell to the Selected Object.", nil, nil, nil, nil, true)
+									GameTooltip:AddLine(" ")
+									GameTooltip:AddLine("Right Click to Remove the Current Spell.",1,1,1,true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
+						</Scripts>
+						<ButtonText parentKey="Text">
+							<FontHeight val="9" />
+						</ButtonText>
+						<NormalFont style="GameFontNormalSmall" />
+						<HighlightFont style="GameFontHighlightSmall" />
+						<DisabledFont style="GameFontDisableSmall" />
+					</Button>
+					<CheckButton name="OPOverlayAutoUpdateButton">
+						<Size x="24" y="24" />
+						<Anchors>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="OPOverlaySpellButton">
+								<Offset x="-24" y="-5" />
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer>
+								<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="Auto|n|rUpdate">
+									<Anchors>
+										<Anchor point="LEFT">
+											<Offset x="25" />
+										</Anchor>
+									</Anchors>
+									<FontHeight val="9" />
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Scripts>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+								self.Timer = C_Timer.NewTimer(0.5,function()
+									GameTooltip:SetText("Automatically Updates the Overlay &amp; Tint Sliders, &amp; Spell to the Selected Object.", nil, nil, nil, nil, true)
 									GameTooltip:Show()
 								end)
 							</OnEnter>
@@ -3424,6 +4265,7 @@
 						PanelTemplates_SetTab(OPMainFrame, 1);
 						OPPanel4Rotation:Show();
 						OPPanel4Tint:Hide();
+						OPPanel4Overlay:Hide();
 					</OnClick>
 				</Scripts>
 			</Button>
@@ -3440,6 +4282,24 @@
 						PanelTemplates_SetTab(OPMainFrame, 2);
 						OPPanel4Rotation:Hide();
 						OPPanel4Tint:Show();
+						OPPanel4Overlay:Hide();
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentTab3" inherits="CharacterFrameTabButtonTemplate" id="3" text="Overlay">
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentTab2" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="-16" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						PanelTemplates_SetTab(OPMainFrame, 3);
+						OPPanel4Rotation:Hide();
+						OPPanel4Tint:Hide();
+						OPPanel4Overlay:Show();
 					</OnClick>
 				</Scripts>
 			</Button>
@@ -3572,10 +4432,11 @@
 			<OnLoad>
 				self:RegisterForDrag("LeftButton");
 				OPCreateLoadDropDownMenus()
-				PanelTemplates_SetNumTabs(OPMainFrame, 2);
+				PanelTemplates_SetNumTabs(OPMainFrame, 3);
 				PanelTemplates_SetTab(OPMainFrame, 1);
 				OPPanel4Rotation:Show()
 				OPPanel4Tint:Hide()
+				OPPanel4Overlay:Hide()
 				OPUpdateMoveButtons()
 			</OnLoad>
 			<OnDragStart>

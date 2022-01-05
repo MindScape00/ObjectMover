@@ -131,10 +131,12 @@ OPAddon_OnLoad:SetScript("OnEvent", function(self,event,name)
 	
 		--Quickly Show / Hide the Frame on Start-Up to initialize everything for key bindings & loading
 		C_Timer.After(1,function()
-			OPMainFrame:Show()
+			OPMainFrame:Show();
 			OPPanel4Tint:Show(); -- Quickly Show & Hide the Tint Frame to initialize it so it updates as well from the start if auto-update is on.
 			OPPanel4Tint:Hide();
-			OPMainFrame:Hide()
+			OPPanel4Overlay:Show();
+			OPPanel4Overlay:Hide();
+			OPMainFrame:Hide();
 			if OPMasterTable.Options["autoShow"] then OPMainFrame:Show() end
 			
 		end)
@@ -661,6 +663,74 @@ function OPResetTint(applyAfter)
 		OPTintObject();
 	end
 end
+
+-- Overlay Stuff
+
+function OPOverlaySlider_OnValueChanged(self,value,byUser)
+	if byUser then
+		if value ~= self.Text:GetText() then
+			OPOverlayObject();
+		end
+	end
+	if self:GetName() == "OPOverlaySliderS" then
+		self.Text:SetText(100-self:GetValue())
+	else
+		self.Text:SetText(self:GetValue())
+	end
+end
+
+function OPOverlayObject()
+	if OPFramesAreLoaded then
+		local s = 100-OPOverlaySliderS:GetValue()
+		local cmdType = "overlay"
+		if s == 0 then cmdType = "tint" end
+		local r = OPOverlaySliderR:GetValue()
+		local g = OPOverlaySliderG:GetValue()
+		local b = OPOverlaySliderB:GetValue()
+		local t = OPOverlaySliderT:GetValue()
+		--addFilter("Removed GameObject .*\'s Overlay.")
+		if isGroupSelected then cmdPref = "go group" else cmdPref = "go" end
+		cmd(cmdPref.." "..cmdType.." "..r.." "..g.." "..b.." "..s.." "..t)
+	end
+end
+
+function OPUpdateOverlays(restore)
+	if restore and restore ~= "APPLY" then
+		local r,g,b,a = unpack(restore)
+		OPOverlaySliderR:SetValue(r*100)
+		OPOverlaySliderG:SetValue(g*100)
+		OPOverlaySliderB:SetValue(b*100)
+		OPOverlaySliderS:SetValue(100 - a*100)
+		OPOverlayIsControllingColorPicker = false
+	else
+		local r,g,b = ColorPickerFrame:GetColorRGB()
+		OPOverlaySliderR:SetValue(r*100)
+		OPOverlaySliderG:SetValue(g*100)
+		OPOverlaySliderB:SetValue(b*100)
+	end
+	if restore == "APPLY" then
+		OPOverlayObject()
+	end
+end
+
+function OPUpdateOverlaysApply()
+	if OPOverlayIsControllingColorPicker then
+		OPUpdateOverlays("APPLY")
+		OPOverlayIsControllingColorPicker = false
+	end
+end
+
+function OPResetOverlay(applyAfter)
+	OPOverlaySliderR:SetValue(100)
+	OPOverlaySliderG:SetValue(100)
+	OPOverlaySliderB:SetValue(100)
+	OPOverlaySliderT:SetValue(0)
+	if applyAfter then
+		OPOverlayObject();
+	end
+end
+
+-- Spell Button Stuff
 
 local function updateSpellButton()
 	if OPObjectSpell and OPObjectSpell ~= "" and tonumber(OPObjectSpell) ~= 0 then
