@@ -681,16 +681,18 @@ end
 
 function OPOverlayObject()
 	if OPFramesAreLoaded then
-		local s = 100-OPOverlaySliderS:GetValue()
-		local cmdType = "overlay"
-		if s == 0 then cmdType = "tint" end
 		local r = OPOverlaySliderR:GetValue()
 		local g = OPOverlaySliderG:GetValue()
 		local b = OPOverlaySliderB:GetValue()
 		local t = OPOverlaySliderT:GetValue()
+		local s = 100-OPOverlaySliderS:GetValue()
 		--addFilter("Removed GameObject .*\'s Overlay.")
 		if isGroupSelected then cmdPref = "go group" else cmdPref = "go" end
-		cmd(cmdPref.." "..cmdType.." "..r.." "..g.." "..b.." "..s.." "..t)
+		if s == 0 then 
+			cmd(cmdPref.." tint "..r.." "..g.." "..b.." "..t)
+		else
+			cmd(cmdPref.." overlay "..r.." "..g.." "..b.." "..s.." "..t)
+		end
 	end
 end
 
@@ -700,7 +702,7 @@ function OPUpdateOverlays(restore)
 		OPOverlaySliderR:SetValue(r*100)
 		OPOverlaySliderG:SetValue(g*100)
 		OPOverlaySliderB:SetValue(b*100)
-		OPOverlaySliderS:SetValue(100 - a*100)
+		OPOverlaySliderS:SetValue(a*100)
 		OPOverlayIsControllingColorPicker = false
 	else
 		local r,g,b = ColorPickerFrame:GetColorRGB()
@@ -734,11 +736,11 @@ end
 
 local function updateSpellButton()
 	if OPObjectSpell and OPObjectSpell ~= "" and tonumber(OPObjectSpell) ~= 0 then
-		OPTintSpellButton.Text:SetFont("Fonts\\FRIZQT__.TTF", 8)
-		OPTintSpellButton.Text:SetText("Spell\n("..OPObjectSpell..")")
+		OPOverlaySpellButton.Text:SetFont("Fonts\\FRIZQT__.TTF", 8)
+		OPOverlaySpellButton.Text:SetText("Spell\n("..OPObjectSpell..")")
 	else
-		OPTintSpellButton.Text:SetFont("Fonts\\FRIZQT__.TTF", 10)
-		OPTintSpellButton.Text:SetText("Spell")
+		OPOverlaySpellButton.Text:SetFont("Fonts\\FRIZQT__.TTF", 10)
+		OPOverlaySpellButton.Text:SetText("Spell")
 	end
 end
 
@@ -1342,7 +1344,7 @@ local function Addon_OnEvent(self, event, ...)
 				updateGroupSelected(false)
 				dprint(false,"isGroupSelected false")
 				
-				local guid, entry, name, filedataid, x, y, z, orientation, rx, ry, rz, HasTint, red, green, blue, alpha, spell, scale, groupLeader = strsplit(strchar(31),objdetails)
+				local guid, entry, name, filedataid, x, y, z, orientation, rx, ry, rz, HasTint, red, green, blue, alpha, spell, scale, groupLeader, objType, saturation = strsplit(strchar(31),objdetails)
 				OPLastSelectedObjectData = {strsplit(strchar(31), objdetails)}
 				if OPMasterTable.Options["debug"] then
 					print("GOBINFO:", unpack(OPLastSelectedObjectData))
@@ -1358,13 +1360,15 @@ local function Addon_OnEvent(self, event, ...)
 				end
 				
 				-- Update Tints & Spell
-				if OPTintAutoUpdateButton:GetChecked() then
-					if not OPTintDragging then
-						OPTintSliderR:SetValue(red)
-						OPTintSliderG:SetValue(green)
-						OPTintSliderB:SetValue(blue)
-						OPTintSliderT:SetValue(alpha)
-						dprint(false,"Updating Tint Sliders")
+				--if OPTintAutoUpdateButton:GetChecked() then
+				if OPOverlayAutoUpdateButton:GetChecked() then
+					if not OPOverlayDragging then
+						OPOverlaySliderR:SetValue(red)
+						OPOverlaySliderG:SetValue(green)
+						OPOverlaySliderB:SetValue(blue)
+						OPOverlaySliderT:SetValue(alpha)
+						OPOverlaySliderS:SetValue(100 - saturation)
+						dprint(false,"Updating Overlay Sliders, saturation: "..saturation)
 					end
 					
 					

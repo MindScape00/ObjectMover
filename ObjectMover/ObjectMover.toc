@@ -1,11 +1,11 @@
 ## Interface: 80300
 ## Title: ObjectMover
 ## Author: MindScape
-## Version: 7.0.2
-## Notes: Move, Turn, Tilt, Tint, and Manipulate Objects with ease! /om to show!
+## Version: 7.1.0
+## Notes: Move, Turn, Tilt, Tint, and Manipulate Objects with ease! Type /om to show, or click the Gear icon on the mini-map!
 ## DefaultState: Enabled
 ## SavedVariables: OPAutoDimObjectDB, OPMasterTable
-## X-Changes: Tint & Object Spell Support
+## X-Changes: Removed Tint Tab. Added Overlay Tab. Overlay can still do Tint if Saturation is 0.
 
 # Original Addon by Dkcaptain (AKA Nomer) / Almost completely remade to update to Epsilon and expanded by MindScape.
 # Did you know, this was originally called "ObjectPlayground"! There's references in the code to it by "OP" still as the original abbreviation.

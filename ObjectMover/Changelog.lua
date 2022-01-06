@@ -1,4 +1,11 @@
 ObjectMoverChangelog = [[
+#v7.1.0 (January 7th, 2022)
+	
+	- UPDATED: Tint now supports the new |cffFFAAAA!go overlay|r system.
+	- - - NOTE: Tint is still supported - ObjectMover will use |cffFFAAAA!go tint|r system if Saturation is 0!
+
+## __________________________________________________
+
 #v7.0.2 (December 18, 2021)
 	
 	- Improved Group Support (Go To supports Group)	
@@ -11,7 +18,7 @@ ObjectMoverChangelog = [[
 
 # v7.0.1 (b/No Version Change) (August 31, 2021)
 
-	- Added more GameObject_Type's to isWMO to help prevent crashes on !go select.
+	- Added more GameObject_Type's to isWMO to help prevent crashes on |cffFFAAAA!go select|r.
 
 # v7.0.1 (August 3, 2021)
 
@@ -124,9 +131,10 @@ These will automatically apply to the object as you drag the sliders:
 
 |cffFFCC00 - Red/Green/Blue|r - Adjust the tint colors of an object.
 |cffFFCC00 - Transparency|r - Adjust the transparency of an object.
-|cffFFCC00 - Color Picker|r - Open a color wheel to select a color & transparency from there.
+|cffFFCC00 - Saturation|r - Adjust the color overlay saturation (strength) on an object. Setting to 0 will apply the color as a Tint instead of an Overlay.
+|cffFFCC00 - Color Picker|r - Open a color wheel to select a color & saturation from there.
 |cffFFCC00 - Apply|r - Apply the current color to the selected object. |cffFFAAAARight-Click|r to remove/reset the tint on an object.
 |cffFFCC00 - Spell|r - Apply a spell as a visual effect on an object. |cffFFAAAARight-Click|r to remove/reset the spells on an object.
-|cffFFCC00 - Auto Update|r - Updates the tint sliders & spell button to match an object when selected.
+|cffFFCC00 - Auto Update|r - Updates the sliders & spell button to match an object when selected.
 
 ]]
