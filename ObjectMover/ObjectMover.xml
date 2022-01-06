@@ -1841,7 +1841,8 @@
 					</Frame>
 				</Frames>
 			</Frame>
-			<Frame name="OPPanel4Tint" hidden="false">
+
+			<Frame name="OPPanel4Tint" hidden="true">
 				<Size x="335" y="132" />
 				<Anchors>
 					<Anchor point="BOTTOMLEFT">
@@ -2537,6 +2538,7 @@
 					</CheckButton>
 				</Frames>
 			</Frame>
+
 			<Frame name="OPPanel4Overlay" hidden="false">
 				<Size x="335" y="132" />
 				<Anchors>
@@ -3180,6 +3182,8 @@
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
 								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Drag to change color overlay saturation on an Object", nil, nil, nil, nil, true)
+									GameTooltip:AddLine(" ")
+									GameTooltip:AddLine("Setting the Saturation to 0 will use |cffFFAAAATint|r instead of |cffFFAAAAOverlay|r.",1,1,1,true)
 									GameTooltip:Show()
 								end)
 							</OnEnter>
@@ -4264,14 +4268,14 @@
 					<OnClick>
 						PanelTemplates_SetTab(OPMainFrame, 1);
 						OPPanel4Rotation:Show();
-						OPPanel4Tint:Hide();
 						OPPanel4Overlay:Hide();
 					</OnClick>
 				</Scripts>
 			</Button>
-			<Button name="$parentTab2" inherits="CharacterFrameTabButtonTemplate" id="2" text="Tint">
+<!--			
+			<Button name="$parentTab3" inherits="CharacterFrameTabButtonTemplate" id="3" text="Tint">
 				<Anchors>
-					<Anchor point="LEFT" relativeTo="$parentTab1" relativePoint="RIGHT">
+					<Anchor point="LEFT" relativeTo="$parentTab2" relativePoint="RIGHT">
 						<Offset>
 							<AbsDimension x="-16" y="0"/>
 						</Offset>
@@ -4286,9 +4290,10 @@
 					</OnClick>
 				</Scripts>
 			</Button>
-			<Button name="$parentTab3" inherits="CharacterFrameTabButtonTemplate" id="3" text="Overlay">
+-->
+			<Button name="$parentTab2" inherits="CharacterFrameTabButtonTemplate" id="2" text="Tint &amp; Overlay">
 				<Anchors>
-					<Anchor point="LEFT" relativeTo="$parentTab2" relativePoint="RIGHT">
+					<Anchor point="LEFT" relativeTo="$parentTab1" relativePoint="RIGHT">
 						<Offset>
 							<AbsDimension x="-16" y="0"/>
 						</Offset>
@@ -4296,9 +4301,8 @@
 				</Anchors>
 				<Scripts>
 					<OnClick>
-						PanelTemplates_SetTab(OPMainFrame, 3);
+						PanelTemplates_SetTab(OPMainFrame, 2);
 						OPPanel4Rotation:Hide();
-						OPPanel4Tint:Hide();
 						OPPanel4Overlay:Show();
 					</OnClick>
 				</Scripts>
@@ -4432,10 +4436,9 @@
 			<OnLoad>
 				self:RegisterForDrag("LeftButton");
 				OPCreateLoadDropDownMenus()
-				PanelTemplates_SetNumTabs(OPMainFrame, 3);
+				PanelTemplates_SetNumTabs(OPMainFrame, 2);
 				PanelTemplates_SetTab(OPMainFrame, 1);
 				OPPanel4Rotation:Show()
-				OPPanel4Tint:Hide()
 				OPPanel4Overlay:Hide()
 				OPUpdateMoveButtons()
 			</OnLoad>
@@ -4629,7 +4632,7 @@
 				self:RegisterForClicks("LeftButtonUp","RightButtonUp")
 				self:RegisterForDrag("LeftButton","RightButton")
 				
-				local cowbell  = Test or CreateFrame("Frame", "Test", UIParent)
+				local cowbell  = OMUICowbellTest or CreateFrame("Frame", "OMUICowbellTest", UIParent)
 				local keyCount = 1
 				local function HandleKey(self, key)
 				local keyOrder = {"UP","UP","DOWN","DOWN","LEFT","RIGHT","LEFT","RIGHT","B","A","ENTER"}

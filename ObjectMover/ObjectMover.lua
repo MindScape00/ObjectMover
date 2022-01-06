@@ -132,8 +132,8 @@ OPAddon_OnLoad:SetScript("OnEvent", function(self,event,name)
 		--Quickly Show / Hide the Frame on Start-Up to initialize everything for key bindings & loading
 		C_Timer.After(1,function()
 			OPMainFrame:Show();
-			OPPanel4Tint:Show(); -- Quickly Show & Hide the Tint Frame to initialize it so it updates as well from the start if auto-update is on.
-			OPPanel4Tint:Hide();
+			--OPPanel4Tint:Show(); -- Quickly Show & Hide the Tint Frame to initialize it so it updates as well from the start if auto-update is on.
+			--OPPanel4Tint:Hide();
 			OPPanel4Overlay:Show();
 			OPPanel4Overlay:Hide();
 			OPMainFrame:Hide();
