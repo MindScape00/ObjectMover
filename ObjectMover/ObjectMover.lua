@@ -26,6 +26,10 @@ local function cmd(text)
   SendChatMessage("."..text, "GUILD");
 end
 
+function OPManagerCMD(text)
+	cmd(text)
+end
+
 local function cprint(text)
 	print("|cffFFD700ObjectMover: "..(text and text or "ERROR").."|r")
 end
@@ -136,6 +140,8 @@ OPAddon_OnLoad:SetScript("OnEvent", function(self,event,name)
 			--OPPanel4Tint:Hide();
 			OPPanel4Overlay:Show();
 			OPPanel4Overlay:Hide();
+			OPPanel4Manager:Show();
+			OPPanel4Manager:Hide();
 			OPMainFrame:Hide();
 			if OPMasterTable.Options["autoShow"] then OPMainFrame:Show() end
 			
@@ -1358,6 +1364,14 @@ local function Addon_OnEvent(self, event, ...)
 						OPScaleBox:SetText(tonumber(scale))
 					end
 				end
+				
+				-- Update Manager Tab
+				local shortname = name:gsub(".*/+","")
+				print("Name: "..name)
+				print("Shortname: "..shortname)
+				OPPanel2.SelectedObjName:SetText(shortname)
+				OPPanel4Manager.SelectedObjName:SetText(shortname)
+				--OPPanel4Manager.GroupLeaderIndicator.Entry:SetText(groupLeader)
 				
 				-- Update Tints & Spell
 				--if OPTintAutoUpdateButton:GetChecked() then

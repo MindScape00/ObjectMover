@@ -3,8 +3,10 @@ ObjectMoverChangelog = [[
 	
 	- UPDATED: Tint now supports the new |cffFFAAAA!go overlay|r system.
 	- - - NOTE: Tint is still supported - ObjectMover will use |cffFFAAAA!go tint|r system if Saturation is 0!
+	- ADDED: ObjectMover will now display the name of the object selected at the top of the Object Info panel.
+	- NEW: Manager Tab! This allows you quicker access to basic object controls & management, such as Select, Copy, Delete, and Group Controls!
 
-## __________________________________________________
+## _________________________________________________
 
 #v7.0.2 (December 18, 2021)
 	
@@ -14,7 +16,7 @@ ObjectMoverChangelog = [[
 ### Did you know: ObjectMover supports moving Groups! Simply select a group, and ObjectMover will switch to moving the group instead!
 
 
-## __________________________________________________
+## _________________________________________________
 
 # v7.0.1 (b/No Version Change) (August 31, 2021)
 
@@ -28,7 +30,7 @@ ObjectMoverChangelog = [[
 	
 	- Reminded everyone that "Double" and "Half" features are still here. You can |cffFFAAAAShift-Click|r on the x2 and 1/2 buttons on Length/Width/Height in order to update all three at the same time, which is exactly what the old checkboxes did in the background.
 
-## __________________________________________________
+## _________________________________________________
 
 # v7.0.0 (July 29, 2021)
 
@@ -51,7 +53,7 @@ ObjectMoverChangelog = [[
 	- Improved Slider Logic
 	- Keybindings are sorted into their own category to be easier to find
 
-## __________________________________________________
+## _________________________________________________
 
 # v6.0.0 (March 21, 2020)
 
@@ -60,7 +62,7 @@ ObjectMoverChangelog = [[
 	- Move Relative now uses the server commands for best performance
 	- More Cowbell
 	
-## __________________________________________________
+## _________________________________________________
 
 See [https://forums.epsilonwow.net/topic/467-addon-objectmover/](https://forums.epsilonwow.net/topic/467-addon-objectmover/) for more.
 ]]
@@ -73,7 +75,7 @@ ObjectMoverHelpManual = [[
 ### Parameters:
 |cffFFCC00 - Object ID|r - This is where you would fill in the ID of the Object you want to spawn. Only single objects are supported here, not Blueprints.
 |cffFFCC00 - Length/Width/Height|r - This determines how far you, or the object, will move when using the Movement buttons. AKA: The object dimensions.
-|cffFFCC00 - Scale|r - Changing this will scale your currently selected object, and, |cffFFAAAAif the checkbox is enabled|r, apply the scale to any newly spawned objected. If the checkbox is enabled, all Length/Width/Height will be automatically adjusted for the scale as well. |cffAAAAAA(Example: Lenght 4 at Scale 2 will move by 8.)|r
+|cffFFCC00 - Scale|r - Changing this will scale your currently selected object, and, |cffFFAAAAif the checkbox is enabled|r, apply the scale to any newly spawned objected. If the checkbox is enabled, all Length/Width/Height will be automatically adjusted for the scale as well. |cffAAAAAA(Example: Length 4 at Scale 2 will move by 8.)|r
 
 ### Buttons:
 |cffFFCC00 - Get ID|r - This will get the ID of the currently selected Object and fill it into the Object ID box. |cffFFAAAARight-Click|r will also try and auto-fill the Length/Width/Height parameters.
@@ -84,7 +86,7 @@ ObjectMoverHelpManual = [[
 |cffFFCC00 - Auto Update|r - Updates Object ID, Length/Width/Height, and Scale info when selecting an object. Note that Length/Width/Height will only update when selecting an |cffFFAAAAM2 object|r, not a WMO.
 |cffFFCC00 - Spawn|r - Spawns the currently selected object. Automatically scales it if Scale is set & checked.
 
-## __________________________________________________
+## _________________________________________________
 
 ## Movement
 
@@ -94,7 +96,7 @@ ObjectMoverHelpManual = [[
 |cffFFCC00 - Go To|r - Teleports you to the selected object.
 |cffFFCC00 - Classic Layout|r - Adjusts the Movement buttons to a more classic (WASD) style layout.
 
-## __________________________________________________
+## _________________________________________________
 
 ## Options
 
@@ -105,7 +107,7 @@ ObjectMoverHelpManual = [[
 |cffFFCC00 - Fade Out|r - Fade the UI out when not currently moused over.
 |cffFFCC00 - Messages|r - Show Rotation & Tint messages in chat. This will spam your chat.
 
-## __________________________________________________
+## _________________________________________________
 
 ## Rotation
 
@@ -125,7 +127,7 @@ These will automatically apply to the object as you drag the sliders:
 |cffFFCC00 - Auto Update|r - Updates the Roll/Pitch/Turn sliders to match an object when selected.
 |cffFFCC00 - Apply|r - Apply the current rotation to the selected object.
 
-## __________________________________________________
+## _________________________________________________
 
 ## Tint
 
