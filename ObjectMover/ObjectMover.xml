@@ -1,6 +1,27 @@
 <Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd" xmlns="http://www.blizzard.com/wow/ui/">
 	<Script file="Changelog.lua"/>
 	<Script file="HTMLUtils.lua"/>
+	<Button name="OPButtonTemplate" virtual="true">
+		<NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
+			<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+		</NormalTexture>
+		<PushedTexture file="Interface\Buttons\UI-Panel-Button-Down">
+			<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+		</PushedTexture>
+		<DisabledTexture file="Interface\Buttons\UI-Panel-Button-Disabled">
+			<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+		</DisabledTexture>
+		<HighlightTexture file="Interface\Buttons\UI-Panel-Button-Highlight" alphaMode="ADD">
+			<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+		</HighlightTexture>
+		<ButtonText name="$parentText">
+			<FontHeight val="10" />
+		</ButtonText>
+		<NormalFont style="GameFontNormalSmall" />
+		<HighlightFont style="GameFontHighlightSmall" />
+		<DisabledFont style="GameFontDisableSmall" />
+		<PushedTextOffset />
+	</Button>
 	<Frame name="OPMainFrame" hidden="true" enableMouse="true" movable="true" resizable="true" clampedToScreen="true" parent="UIParent" ignoreParentScale="true">
 		<Size x="355" y="355" />
 		<ResizeBounds>
@@ -72,7 +93,7 @@
 							</Anchor>
 						</Anchors>
 					</Frame>
-					<Button name="OPForwardButton" text="Forward">
+					<Button name="OPForwardButton" inherits="OPButtonTemplate" text="Forward">
 						<Size x="56" y="20" />
 						<Anchors>
 							<Anchor point="CENTER" relativeKey="$parent.MovementButtonsAnchor">
@@ -95,27 +116,8 @@
 								self.Timer:Cancel()
 							</OnLeave>
 						</Scripts>
-						<NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
-							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-						</NormalTexture>
-						<PushedTexture file="Interface\Buttons\UI-Panel-Button-Down">
-							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-						</PushedTexture>
-						<DisabledTexture file="Interface\Buttons\UI-Panel-Button-Disabled">
-							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-						</DisabledTexture>
-						<HighlightTexture file="Interface\Buttons\UI-Panel-Button-Highlight" alphaMode="ADD">
-							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-						</HighlightTexture>
-						<ButtonText name="$parentText">
-							<FontHeight val="10" />
-						</ButtonText>
-						<NormalFont style="GameFontNormalSmall" />
-						<HighlightFont style="GameFontHighlightSmall" />
-						<DisabledFont style="GameFontDisableSmall" />
-						<PushedTextOffset />
 					</Button>
-					<Button name="OPBackwardButton" text="Back">
+					<Button name="OPBackwardButton" inherits="OPButtonTemplate" text="Back">
 						<Size x="56" y="20" />
 						<Anchors>
 							<Anchor point="CENTER" relativeKey="$parent.MovementButtonsAnchor">
@@ -138,26 +140,9 @@
 								self.Timer:Cancel()
 							</OnLeave>
 						</Scripts>
-						<NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
-							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-						</NormalTexture>
-						<PushedTexture file="Interface\Buttons\UI-Panel-Button-Down">
-							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-						</PushedTexture>
-						<DisabledTexture file="Interface\Buttons\UI-Panel-Button-Disabled">
-							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-						</DisabledTexture>
-						<HighlightTexture file="Interface\Buttons\UI-Panel-Button-Highlight" alphaMode="ADD">
-							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-						</HighlightTexture>
-						<ButtonText name="$parentText">
-							<FontHeight val="10" />
-						</ButtonText>
-						<NormalFont style="GameFontNormalSmall" />
-						<HighlightFont style="GameFontHighlightSmall" />
-						<DisabledFont style="GameFontDisableSmall" />
+
 					</Button>
-					<Button name="OPLeftButton" text="Left">
+					<Button name="OPLeftButton" inherits="OPButtonTemplate" text="Left">
 						<Size x="56" y="20" />
 						<Anchors>
 							<Anchor point="CENTER" relativeKey="$parent.MovementButtonsAnchor">
@@ -180,27 +165,8 @@
 								self.Timer:Cancel()
 							</OnLeave>
 						</Scripts>
-						<NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
-							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-						</NormalTexture>
-						<PushedTexture file="Interface\Buttons\UI-Panel-Button-Down">
-							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-						</PushedTexture>
-						<DisabledTexture file="Interface\Buttons\UI-Panel-Button-Disabled">
-							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-						</DisabledTexture>
-						<HighlightTexture file="Interface\Buttons\UI-Panel-Button-Highlight" alphaMode="ADD">
-							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-						</HighlightTexture>
-						<ButtonText name="$parentText">
-							<FontHeight val="10" />
-						</ButtonText>
-						<NormalFont style="GameFontNormalSmall" />
-						<HighlightFont style="GameFontHighlightSmall" />
-						<DisabledFont style="GameFontDisableSmall" />
-						<PushedTextOffset />
 					</Button>
-					<Button name="OPRightButton" text="Right">
+					<Button name="OPRightButton" inherits="OPButtonTemplate" text="Right">
 						<Size x="56" y="20" />
 						<Anchors>
 							<Anchor point="CENTER" relativeKey="$parent.MovementButtonsAnchor">
@@ -223,27 +189,8 @@
 								self.Timer:Cancel()
 							</OnLeave>
 						</Scripts>
-						<NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
-							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-						</NormalTexture>
-						<PushedTexture file="Interface\Buttons\UI-Panel-Button-Down">
-							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-						</PushedTexture>
-						<DisabledTexture file="Interface\Buttons\UI-Panel-Button-Disabled">
-							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-						</DisabledTexture>
-						<HighlightTexture file="Interface\Buttons\UI-Panel-Button-Highlight" alphaMode="ADD">
-							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-						</HighlightTexture>
-						<ButtonText name="$parentText">
-							<FontHeight val="10" />
-						</ButtonText>
-						<NormalFont style="GameFontNormalSmall" />
-						<HighlightFont style="GameFontHighlightSmall" />
-						<DisabledFont style="GameFontDisableSmall" />
-						<PushedTextOffset />
 					</Button>
-					<Button name="OPUpButton" text="Up">
+					<Button name="OPUpButton" inherits="OPButtonTemplate" text="Up">
 						<Size x="40" y="16" />
 						<Anchors>
 							<Anchor point="CENTER" relativeKey="$parent.MovementButtonsAnchor">
@@ -266,26 +213,8 @@
 								self.Timer:Cancel()
 							</OnLeave>
 						</Scripts>
-						<NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
-							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-						</NormalTexture>
-						<PushedTexture file="Interface\Buttons\UI-Panel-Button-Down">
-							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-						</PushedTexture>
-						<DisabledTexture file="Interface\Buttons\UI-Panel-Button-Disabled">
-							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-						</DisabledTexture>
-						<HighlightTexture file="Interface\Buttons\UI-Panel-Button-Highlight" alphaMode="ADD">
-							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-						</HighlightTexture>
-						<ButtonText name="$parentText">
-							<FontHeight val="8" />
-						</ButtonText>
-						<NormalFont style="GameFontNormalSmall" />
-						<HighlightFont style="GameFontHighlightSmall" />
-						<DisabledFont style="GameFontDisableSmall" />
 					</Button>
-					<Button name="OPDownButton" text="Down">
+					<Button name="OPDownButton" inherits="OPButtonTemplate" text="Down">
 						<Size x="40" y="16" />
 						<Anchors>
 							<Anchor point="CENTER" relativeKey="$parent.MovementButtonsAnchor">
@@ -308,26 +237,8 @@
 								self.Timer:Cancel()
 							</OnLeave>
 						</Scripts>
-						<NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
-							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-						</NormalTexture>
-						<PushedTexture file="Interface\Buttons\UI-Panel-Button-Down">
-							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-						</PushedTexture>
-						<DisabledTexture file="Interface\Buttons\UI-Panel-Button-Disabled">
-							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-						</DisabledTexture>
-						<HighlightTexture file="Interface\Buttons\UI-Panel-Button-Highlight" alphaMode="ADD">
-							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-						</HighlightTexture>
-						<ButtonText name="$parentText">
-							<FontHeight val="8" />
-						</ButtonText>
-						<NormalFont style="GameFontNormalSmall" />
-						<HighlightFont style="GameFontHighlightSmall" />
-						<DisabledFont style="GameFontDisableSmall" />
 					</Button>
-					<Button name="OPTeleporttoObjectButton" text="Go To">
+					<Button name="OPTeleporttoObjectButton" inherits="OPButtonTemplate" text="Go To">
 						<Size>
 							<AbsDimension x="48" y="16" />
 						</Size>
@@ -352,24 +263,6 @@
 								self.Timer:Cancel()
 							</OnLeave>
 						</Scripts>
-						<NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
-							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-						</NormalTexture>
-						<PushedTexture file="Interface\Buttons\UI-Panel-Button-Down">
-							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-						</PushedTexture>
-						<DisabledTexture file="Interface\Buttons\UI-Panel-Button-Disabled">
-							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-						</DisabledTexture>
-						<HighlightTexture file="Interface\Buttons\UI-Panel-Button-Highlight" alphaMode="ADD">
-							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-						</HighlightTexture>
-						<ButtonText name="$parentText">
-							<FontHeight val="10" />
-						</ButtonText>
-						<NormalFont style="GameFontNormalSmall" />
-						<HighlightFont style="GameFontHighlightSmall" />
-						<DisabledFont style="GameFontDisableSmall" />
 					</Button>
 					<CheckButton name="OPWASDLayoutToggle">
 						<Size x="16" y="16" />
@@ -464,7 +357,7 @@
 				</Backdrop>
 				<Layers>
 					<Layer>
-						<FontString parentKey="Title" text="Object Info" font="Fonts\FRIZQT__.TTF">
+						<FontString parentKey="Title" text="Spawn/Move Info" font="Fonts\FRIZQT__.TTF">
 							<Size x="145" y="12" />
 							<Anchors>
 								<Anchor point="TOP">
@@ -499,6 +392,41 @@
 					</Layer>
 				</Layers>
 				<Frames>
+					<Button parentKey="InfoButton" inherits="UIPanelInfoButton">
+						<Size x="16" y="16" />
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset x="0" y="0" />
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+								self.Timer = C_Timer.NewTimer(0.5,function()
+									GameTooltip:SetText("Shows an extended panel for Object Information.", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
+							<OnClick>
+								if OPPanelPopout:IsShown() then
+									OPPanelPopout:Hide()
+									-- TO DO: Add a saved variable if it should be shown from last session
+								else
+									OPPanelPopout:Show()
+								end
+							</OnClick>
+						</Scripts>
+						<ButtonText name="$parentText">
+							<FontHeight val="8" />
+						</ButtonText>
+						<NormalFont style="GameFontNormalTiny2" />
+						<HighlightFont style="GameFontWhiteTiny2" />
+						<DisabledFont style="GameFontDisableTiny2" />
+					</Button>
 					<EditBox name="OPObjectIDBox" autoFocus="false">
 						<HighlightColor r="0.5" g="0.5" b="0.5" a="0.75"/>
 						<TextInsets>
@@ -1345,7 +1273,7 @@
 						<CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
 						<DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled" />
 					</CheckButton>
-					<Button name="OPSpawnButton" text="Spawn">
+					<Button name="OPSpawnButton" inherits="OPButtonTemplate" text="Spawn">
 						<Size x="56" y="16" />
 						<Anchors>
 							<Anchor point="BOTTOMRIGHT">
@@ -1368,24 +1296,6 @@
 								self.Timer:Cancel()
 							</OnLeave>
 						</Scripts>
-						<NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
-							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-						</NormalTexture>
-						<PushedTexture file="Interface\Buttons\UI-Panel-Button-Down">
-							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-						</PushedTexture>
-						<DisabledTexture file="Interface\Buttons\UI-Panel-Button-Disabled">
-							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-						</DisabledTexture>
-						<HighlightTexture file="Interface\Buttons\UI-Panel-Button-Highlight" alphaMode="ADD">
-							<TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-						</HighlightTexture>
-						<ButtonText name="$parentText">
-							<FontHeight val="10" />
-						</ButtonText>
-						<NormalFont style="GameFontNormalSmall" />
-						<HighlightFont style="GameFontHighlightSmall" />
-						<DisabledFont style="GameFontDisableSmall" />
 					</Button>
 					<Button name="OPParamSaveButton" inherits="UIPanelButtonTemplate" text="Save">
 						<Size x="56" y="16" />
@@ -1851,7 +1761,6 @@
 					</Frame>
 				</Frames>
 			</Frame>
-
 			<Frame name="OPPanel4Tint" hidden="true">
 				<Size x="335" y="132" />
 				<Anchors>
@@ -2548,7 +2457,6 @@
 					</CheckButton>
 				</Frames>
 			</Frame>
-
 			<Frame name="OPPanel4Overlay" hidden="false">
 				<Size x="335" y="132" />
 				<Anchors>
@@ -4266,7 +4174,6 @@
 					</CheckButton>
 				</Frames>
 			</Frame>
-
 			<Frame name="OPPanel4Manager" hidden="true">
 				<Size x="335" y="132" />
 				<Anchors>
@@ -4308,6 +4215,214 @@
 					</Layer>
 				</Layers>
 				<Frames>
+					<Frame parentKey="FaceButtonsAnchor">
+						<Size x="10" y="10"/>
+						<Anchors>
+							<Anchor point="TOPRIGHT">
+								<Offset x="-28" y="-50" />
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer>
+								<FontString parentKey="Title" text="Face Object" font="Fonts\FRIZQT__.TTF">
+									<Size x="70" y="8" />
+									<Anchors>
+										<Anchor point="BOTTOM" relativePoint="TOP">
+											<Offset y="22" />
+										</Anchor>
+									</Anchors>
+									<FontHeight val="8" />
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Frames>
+							<Button parentKey="FaceButtonSelf" inherits="UIPanelButtonTemplate" text="M">
+								<Size x="18" y="16" />
+								<Anchors>
+									<Anchor point="center" relativeKey="$parent.FaceButtonsAnchor">
+										<Offset x="0" y="0" />
+									</Anchor>
+								</Anchors>
+								<Scripts>
+									<OnClick>
+										OPManagerCMD("go turn")
+									</OnClick>
+									<OnEnter>
+										GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+										self.Timer = C_Timer.NewTimer(0.5,function()
+											GameTooltip:SetText("Face the object to match the direction your character is facing.", nil, nil, nil, nil, true)
+											GameTooltip:Show()
+										end)
+									</OnEnter>
+									<OnLeave>
+										GameTooltip_Hide()
+										self.Timer:Cancel()
+									</OnLeave>
+								</Scripts>
+								<ButtonText name="$parentText">
+									<FontHeight val="8" />
+								</ButtonText>
+								<NormalFont style="GameFontNormalTiny2" />
+								<HighlightFont style="GameFontWhiteTiny2" />
+								<DisabledFont style="GameFontDisableTiny2" />
+							</Button>
+							<Button parentKey="FaceButtonNorth" inherits="UIPanelButtonTemplate" text="N">
+								<Size x="20" y="20" />
+								<Anchors>
+									<Anchor point="bottom" relativeKey="$parent.FaceButtonsAnchor" relativePoint="top">
+										<Offset x="0" y="2" />
+									</Anchor>
+								</Anchors>
+								<Scripts>
+									<OnClick>
+										OPManagerCMD("go face north")
+									</OnClick>
+									<OnEnter>
+										GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+										self.Timer = C_Timer.NewTimer(0.5,function()
+											GameTooltip:SetText("Face the object North.", nil, nil, nil, nil, true)
+											GameTooltip:Show()
+										end)
+									</OnEnter>
+									<OnLeave>
+										GameTooltip_Hide()
+										self.Timer:Cancel()
+									</OnLeave>
+								</Scripts>
+								<ButtonText name="$parentText">
+									<FontHeight val="8" />
+								</ButtonText>
+								<NormalFont style="GameFontNormalTiny2" />
+								<HighlightFont style="GameFontWhiteTiny2" />
+								<DisabledFont style="GameFontDisableTiny2" />
+							</Button>
+							<Button parentKey="FaceButtonSouth" inherits="UIPanelButtonTemplate" text="S">
+								<Size x="20" y="20" />
+								<Anchors>
+									<Anchor point="top" relativeKey="$parent.FaceButtonsAnchor" relativePoint="bottom">
+										<Offset x="0" y="-2" />
+									</Anchor>
+								</Anchors>
+								<Scripts>
+									<OnClick>
+										OPManagerCMD("go face south")
+									</OnClick>
+									<OnEnter>
+										GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+										self.Timer = C_Timer.NewTimer(0.5,function()
+											GameTooltip:SetText("Face the object South.", nil, nil, nil, nil, true)
+											GameTooltip:Show()
+										end)
+									</OnEnter>
+									<OnLeave>
+										GameTooltip_Hide()
+										self.Timer:Cancel()
+									</OnLeave>
+								</Scripts>
+								<ButtonText name="$parentText">
+									<FontHeight val="8" />
+								</ButtonText>
+								<NormalFont style="GameFontNormalTiny2" />
+								<HighlightFont style="GameFontWhiteTiny2" />
+								<DisabledFont style="GameFontDisableTiny2" />
+							</Button>
+							<Button parentKey="FaceButtonEast" inherits="UIPanelButtonTemplate" text="E">
+								<Size x="20" y="20" />
+								<Anchors>
+									<Anchor point="left" relativeKey="$parent.FaceButtonsAnchor" relativePoint="right">
+										<Offset x="2" y="0" />
+									</Anchor>
+								</Anchors>
+								<Scripts>
+									<OnClick>
+										OPManagerCMD("go face east")
+									</OnClick>
+									<OnEnter>
+										GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+										self.Timer = C_Timer.NewTimer(0.5,function()
+											GameTooltip:SetText("Face the object East.", nil, nil, nil, nil, true)
+											GameTooltip:Show()
+										end)
+									</OnEnter>
+									<OnLeave>
+										GameTooltip_Hide()
+										self.Timer:Cancel()
+									</OnLeave>
+								</Scripts>
+								<ButtonText name="$parentText">
+									<FontHeight val="8" />
+								</ButtonText>
+								<NormalFont style="GameFontNormalTiny2" />
+								<HighlightFont style="GameFontWhiteTiny2" />
+								<DisabledFont style="GameFontDisableTiny2" />
+							</Button>
+							<Button parentKey="FaceButtonWest" inherits="UIPanelButtonTemplate" text="W">
+								<Size x="20" y="20" />
+								<Anchors>
+									<Anchor point="right" relativeKey="$parent.FaceButtonsAnchor" relativePoint="left">
+										<Offset x="-2" y="0" />
+									</Anchor>
+								</Anchors>
+								<Scripts>
+									<OnClick>
+										OPManagerCMD("go face west")
+									</OnClick>
+									<OnEnter>
+										GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+										self.Timer = C_Timer.NewTimer(0.5,function()
+											GameTooltip:SetText("Face the object West.", nil, nil, nil, nil, true)
+											GameTooltip:Show()
+										end)
+									</OnEnter>
+									<OnLeave>
+										GameTooltip_Hide()
+										self.Timer:Cancel()
+									</OnLeave>
+								</Scripts>
+								<ButtonText name="$parentText">
+									<FontHeight val="8" />
+								</ButtonText>
+								<NormalFont style="GameFontNormalTiny2" />
+								<HighlightFont style="GameFontWhiteTiny2" />
+								<DisabledFont style="GameFontDisableTiny2" />
+							</Button>
+						</Frames>
+					</Frame>
+					<Frame parentKey="AnimDropdownAnchor">
+						<Size x="10" y="10"/>
+						<Anchors>
+							<Anchor point="TOPRIGHT">
+								<Offset x="-28" y="-50" />
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer>
+								<FontString parentKey="Title" text="Face Object" font="Fonts\FRIZQT__.TTF">
+									<Size x="70" y="8" />
+									<Anchors>
+										<Anchor point="BOTTOM" relativePoint="TOP">
+											<Offset y="22" />
+										</Anchor>
+									</Anchors>
+									<FontHeight val="8" />
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
+					</Frame>
 					<Button parentKey="SelectButton" inherits="UIPanelButtonTemplate" text="Select">
 						<Size x="72" y="24" />
 						<Anchors>
@@ -4338,11 +4453,41 @@
 						<HighlightFont style="GameFontHighlightSmall" />
 						<DisabledFont style="GameFontDisableSmall" />
 					</Button>
-					<Button parentKey="CopyButton" inherits="UIPanelButtonTemplate" text="Copy">
+					<Button parentKey="UnselectButton" inherits="UIPanelButtonTemplate" text="Unselect">
 						<Size x="72" y="24" />
 						<Anchors>
 							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.SelectButton">
-								<Offset x="0" y="-5" />
+								<Offset x="0" y="-3" />
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								OPManagerCMD("go unsel")
+							</OnClick>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+								self.Timer = C_Timer.NewTimer(0.5,function()
+									GameTooltip:SetText("Copies the currently selected object in the same spot.", nil, nil, nil, nil, true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
+						</Scripts>
+						<ButtonText parentKey="Text">
+							<FontHeight val="10" />
+						</ButtonText>
+						<NormalFont style="GameFontNormalSmall" />
+						<HighlightFont style="GameFontHighlightSmall" />
+						<DisabledFont style="GameFontDisableSmall" />
+					</Button>
+					<Button parentKey="CopyButton" inherits="UIPanelButtonTemplate" text="Copy">
+						<Size x="72" y="24" />
+						<Anchors>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.UnselectButton">
+								<Offset x="0" y="-3" />
 							</Anchor>
 						</Anchors>
 						<Scripts>
@@ -4368,9 +4513,127 @@
 						<HighlightFont style="GameFontHighlightSmall" />
 						<DisabledFont style="GameFontDisableSmall" />
 					</Button>
+					<Button parentKey="DeleteButton" inherits="UIPanelButtonTemplate" text="Delete" registerForClicks="RightButtonUp, LeftButtonUp">
+						<Size x="72" y="24" />
+						<Anchors>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.CopyButton">
+								<Offset x="0" y="-3" />
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								if button == "RightButton" then
+									OPManagerCMD("go del")
+								else
+									OPManagerPrint("You must right click the delete button to delete an object.")
+								end
+							</OnClick>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+								self.Timer = C_Timer.NewTimer(0.5,function()
+									GameTooltip:SetText("Deletes the selected object.", nil, nil, nil, nil, true)
+									GameTooltip:AddLine(" ")
+									GameTooltip:AddLine("You must right click for this to work to avoid accidental deletion.",1,1,1,true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								self.Timer:Cancel()
+							</OnLeave>
+						</Scripts>
+						<ButtonText parentKey="Text">
+							<FontHeight val="10" />
+						</ButtonText>
+						<NormalFont style="GameFontNormalSmall" />
+						<HighlightFont style="GameFontHighlightSmall" />
+						<DisabledFont style="GameFontDisableSmall" />
+					</Button>
 				</Frames>
 			</Frame>
-
+			<Frame name="OPPanelPopout">
+				<Size x="180" y="345" />
+				<Anchors>
+					<Anchor point="RIGHT" relativePoint="LEFT">
+						<Offset x="0" y="0" />
+					</Anchor>
+				</Anchors>
+				<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+					<BackgroundInsets>
+						<AbsInset left="4" right="4" top="4" bottom="4" />
+					</BackgroundInsets>
+					<TileSize>
+						<AbsValue val="16" />
+					</TileSize>
+					<EdgeSize>
+						<AbsValue val="16" />
+					</EdgeSize>
+					<Color r="0" g="0" b="0" a="0.5"/>
+					<BorderColor r="0.75" g="0.75" b="0.75"/>
+				</Backdrop>
+				<Layers>
+					<Layer>
+						<FontString parentKey="Title" text="Extended Information" font="Fonts\FRIZQT__.TTF">
+							<Size x="150" y="12" />
+							<Anchors>
+								<Anchor point="TOP">
+									<Offset y="-6" />
+								</Anchor>
+							</Anchors>
+							<FontHeight val="12" />
+							<Color r="1" g="0.8196079" b="0" />
+							<Shadow>
+								<Offset>
+									<AbsDimension x="1" y="-1" />
+								</Offset>
+								<Color r="0" g="0" b="0" />
+							</Shadow>
+						</FontString>
+					</Layer>
+					<Layer>
+						<FontString parentKey="ObjNameTitle" font="Fonts\FRIZQT__.TTF" text="Object Name:">
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset x="8" y="-24" />
+								</Anchor>
+							</Anchors>
+							<FontHeight val="10" />
+							<Color r="1" g="0.8196079" b="0" />
+							<Shadow>
+								<Offset>
+									<AbsDimension x="1" y="-1" />
+								</Offset>
+								<Color r="0" g="0" b="0" />
+							</Shadow>
+						</FontString>
+						<FontString parentKey="ObjNameText" font="Fonts\FRIZQT__.TTF" text="No Object Selected" wordwrap="true" nonspacewrap="true" maxlines="2" justifyH="RIGHT">
+							<Size x="165" y="16" />
+							<Anchors>
+								<Anchor relativeKey="$parent.ObjNameTitle" point="TOPLEFT" relativePoint="BOTTOMLEFT">
+									<Offset x="0" y="-3" />
+								</Anchor>
+							</Anchors>
+							<FontHeight val="8" />
+							<Color r="1" g="1" b="1" />
+							<Shadow>
+								<Offset>
+									<AbsDimension x="1" y="-1" />
+								</Offset>
+								<Color r="0" g="0" b="0" />
+							</Shadow>
+						</FontString>
+						<Line name="ObjNameDivider" thickness="1" >
+							<StartAnchor relativekey="$parent.ObjNameText" point="BOTTOMLEFT">
+								<Offset x="0" y="-4"/>
+							</StartAnchor>
+							<EndAnchor relativekey="$parent.ObjNameText" point="BOTTOMLEFT">
+								<Offset x="164" y="-4"/>
+							</EndAnchor>
+							<color r="0.66" g="0.66" b="0.66" a="1"/>
+						</Line>
+					</Layer>
+				</Layers>
+			</Frame>
 			<Button name="$parentTab1" inherits="CharacterFrameTabButtonTemplate" id="1" text="Rotation">
 				<Anchors>
 					<Anchor point="CENTER" relativePoint="BOTTOMLEFT">

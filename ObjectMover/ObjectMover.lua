@@ -34,6 +34,10 @@ local function cprint(text)
 	print("|cffFFD700ObjectMover: "..(text and text or "ERROR").."|r")
 end
 
+function OPManagerPrint(text)
+	cprint(text)
+end
+
 local function dprint(force, text, rest)
 	if force == true or OPMasterTable.Options["debug"] then
 		local line = strmatch(debugstack(2),":(%d+):")
@@ -1333,7 +1337,7 @@ ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_CONVERSATION_NOTICE", OMChatFilter)
 -------------------------------------------------------------------------------
 
 --[[
-1 guid / 2 entry / 3 name / 4 filedataid / 5 x / 6 y / 7 z / 8 rx / 9 ry / 10 rz / 11 Orientation / 12 HasTint / 13 red / 14 green / 15 blue / 16 alpha / 17 spell / 18 scale / 19 Group Leader ID / 20 isWMO
+1 guid / 2 entry / 3 name / 4 filedataid / 5 x / 6 y / 7 z / 8 rx / 9 ry / 10 rz / 11 Orientation / 12 HasTint / 13 red / 14 green / 15 blue / 16 alpha / 17 spell / 18 scale / 19 Group Leader ID / 20 objType / 21 saturation
 
 77283554 827585 7af_shaman_rockslab_a02.m2 1329986 -433.999 135.15 41.3903 0 0 0 0 0 100 100 100 0 0 1 0 5 
 ]]
@@ -1372,6 +1376,10 @@ local function Addon_OnEvent(self, event, ...)
 				OPPanel2.SelectedObjName:SetText(shortname)
 				OPPanel4Manager.SelectedObjName:SetText(shortname)
 				--OPPanel4Manager.GroupLeaderIndicator.Entry:SetText(groupLeader)
+				
+				-- update extended info
+				OPPanelPopout.ObjNameText:SetText(shortname)
+				
 				
 				-- Update Tints & Spell
 				--if OPTintAutoUpdateButton:GetChecked() then
