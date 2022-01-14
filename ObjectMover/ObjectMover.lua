@@ -17,6 +17,7 @@ BINDING_HEADER_OBJECTMANIP, SLASH_SHOWCLOSE1, SLASH_SHOWCLOSE2, SLASH_SHOWCLOSE3
 local addonPrefix = "EPISLON_OBJ_INFO"
 
 local isWMO = {[14] = true, [15] = true, [33] = true, [38] = true, [43] = true, [54] = true}
+local ObjectTypes = {[0]="DOOR",[1]="BUTTON",[2]="QUESTGIVER",[3]="CHEST",[4]="BINDER",[5]="GENERIC",[6]="TRAP",[7]="CHAIR",[8]="SPELL_FOCUS",[9]="TEXT",[10]="GOOBER",[11]="TRANSPORT",[12]="AREADAMAGE",[13]="CAMERA",[14]="MAP_OBJECT (WMO)",[15]="MAP_OBJ_TRANSPORT (WMO)",[16]="DUEL_ARBITER",[17]="FISHINGNODE",[18]="RITUAL",[19]="MAILBOX",[20]="DO_NOT_USE",[21]="GUARDPOST",[22]="SPELLCASTER",[23]="MEETINGSTONE",[24]="FLAGSTAND",[25]="FISHINGHOLE",[26]="FLAGDROP",[27]="MINI_GAME",[28]="DO_NOT_USE_2",[29]="CONTROL_ZONE",[30]="AURA_GENERATOR",[31]="DUNGEON_DIFFICULTY",[32]="BARBER_CHAIR",[33]="DESTRUCTIBLE_BUILDING (WMO)",[34]="GUILD_BANK",[35]="TRAPDOOR",[36]="NEW_FLAG",[37]="NEW_FLAG_DROP",[38]="GARRISON_BUILDING (WMO)",[39]="GARRISON_PLOT",[40]="CLIENT_CREATURE",[41]="CLIENT_ITEM",[42]="CAPTURE_POINT (WMO)",[43]="PHASEABLE_MO",[44]="GARRISON_MONUMENT",[45]="GARRISON_SHIPMENT",[46]="GARRISON_MONUMENT_PLAQUE",[47]="ITEM_FORGE",[48]="UI_LINK",[49]="KEYSTONE_RECEPTACLE",[50]="GATHERING_NODE",[51]="CHALLENGE_MODE_REWARD",[52]="MULTI",[53]="SIEGEABLE_MULTI",[54]="SIEGEABLE_MO (WMO)",[55]="PVP_REWARD",[56]="PLAYER_CHOICE_CHEST",[57]="LEGENDARY_FORGE",[58]="GARR_TALENT_TREE",[59]="WEEKLY_REWARD_CHEST",[60]="CLIENT_MODEL"}
 
 -------------------------------------------------------------------------------
 -- Simple Chat Functions
@@ -38,7 +39,7 @@ function OPManagerPrint(text)
 	cprint(text)
 end
 
-local function dprint(force, text, rest)
+local function dprint(text, force, rest)
 	if force == true or OPMasterTable.Options["debug"] then
 		local line = strmatch(debugstack(2),":(%d+):")
 		if line then
@@ -126,7 +127,7 @@ function OPInitializeLoading()
 	if FrameLoadingPoints >= 3 then
 		OPFramesAreLoaded = true
 		FrameLoadingPoints = 0
-		dprint(false,"Frames Loaded: Rotation Enabled.")
+		dprint("Frames Loaded: Rotation Enabled.")
 	end
 end
 
@@ -172,13 +173,13 @@ OPAddon_OnLoad:SetScript("OnEvent", function(self,event,name)
 		Mixin(m, ModelSceneMixin)
 		m.o = m:CreateActor(nil, "ObjectMoverActorTemplate")
 		m.o.OnModelLoaded = function()
-			dprint(false,"Model Loaded - Getting boundingbox")
+			dprint("Model Loaded - Getting boundingbox")
 			local mX1, mY1, mZ1, mX2, mY2, mZ2 = m.o:GetActiveBoundingBox()
 			local mX = mX1-mX2; local mY = mY1-mY2; local mZ = mZ1-mZ2
 			OPLengthBox:SetText(roundToNthDecimal(abs(mX),7))
 			OPWidthBox:SetText(roundToNthDecimal(abs(mY),7))
 			OPHeightBox:SetText(roundToNthDecimal(abs(mZ),7))
-			dprint(false,"AUTODIM: X: "..mX.." ("..mX1.." | "..mX2.."), Y: "..mY.." ("..mY1.." | "..mY2.."), Z: "..mZ.." ("..mZ1.." | "..mZ2..")")
+			dprint("AUTODIM: X: "..mX.." ("..mX1.." | "..mX2.."), Y: "..mY.." ("..mY1.." | "..mY2.."), Z: "..mZ.." ("..mZ1.." | "..mZ2..")")
 			m.o:ClearModel()
 		end
 		
@@ -277,7 +278,7 @@ end
 -----------------------------
 
 function OPUpdateMoveButtons()
-	dprint(false, "Updated to use WASD Layout: "..tostring(OPMasterTable.Options["wasdButtonLayout"]))
+	dprint( "Updated to use WASD Layout: "..tostring(OPMasterTable.Options["wasdButtonLayout"]))
 	local parentFrame = OPForwardButton:GetParent()
 	local centerAnchor = parentFrame.MovementButtonsAnchor
 	if OPMasterTable.Options["wasdButtonLayout"] then
@@ -343,7 +344,7 @@ function OPMainFrame_OnShow(self)
 				OPNewOptionsFrame.MainArea.Changelog:Show();
 				OPNewOptionsFrame.MainArea.Help:Hide();
 				OPNewOptionsFrame.MainArea.NewOptions:Hide();
-				dprint(false,"Addon version "..addonVersion.." detected as being > last version seen ("..OPMasterTable.Options["LastVersion"]..")")
+				dprint("Addon version "..addonVersion.." detected as being > last version seen ("..OPMasterTable.Options["LastVersion"]..")")
 			end
 			
 			OPMasterTable.Options["LastVersion"] = addonVersion
@@ -354,7 +355,7 @@ function OPMainFrame_OnShow(self)
 			OPNewOptionsFrame.MainArea.Help:Hide();
 			OPNewOptionsFrame.MainArea.NewOptions:Hide();
 			OPMasterTable.Options["LastVersion"] = addonVersion
-			dprint(false,"Addon version "..addonVersion.." detected as being > .. well, nothing.")
+			dprint("Addon version "..addonVersion.." detected as being > .. well, nothing.")
 		end
 	end
 end
@@ -417,15 +418,15 @@ end
 --Get Object ID Function
 function OPGetObject(button)
 	OPObjectIDBox:SetText(tonumber(OPLastSelectedObjectData[2]))
-	dprint(false,"Obejct ID Box updated to: "..tonumber(OPLastSelectedObjectData[2]))
+	dprint("Obejct ID Box updated to: "..tonumber(OPLastSelectedObjectData[2]))
 	if button == "RightButton" then
 		if isWMO[tonumber(OPLastSelectedObjectData[20])] then
-			dprint(false,"Object was WMO")
+			dprint("Object was WMO")
 		else
 			--print("I would have crashed you here if this is a WMO, type:"..OPLastSelectedObjectData[20])
 			if OPLastSelectedObjectData[4] then
 				m.o:SetModelByFileID(OPLastSelectedObjectData[4])
-				dprint(false,"Generating ModelFrame to get Bounding Box (file ID "..OPLastSelectedObjectData[4]..")")
+				dprint("Generating ModelFrame to get Bounding Box (file ID "..OPLastSelectedObjectData[4]..")")
 				if OPLastSelectedObjectData[18] then
 					OPScaleBox:SetText(OPLastSelectedObjectData[18])
 				end
@@ -472,7 +473,7 @@ function OPForward()
 		if SpawnonMoveButton:GetChecked() == true and not OPMoveObjectInstead:GetChecked() then
 			OPSpawn()
 		end
-		dprint(false,"Moving "..OPmoveLength.." units forward.")
+		dprint("Moving "..OPmoveLength.." units forward.")
 	else
 		eprint("Invalid Move Length, please check your Object Parameters.")
 	end
@@ -494,7 +495,7 @@ function OPBackward()
 		if SpawnonMoveButton:GetChecked() == true and not OPMoveObjectInstead:GetChecked() then
 			OPSpawn()
 		end
-		dprint(false,"Moving "..OPmoveLength.." units backwards.")
+		dprint("Moving "..OPmoveLength.." units backwards.")
 	else
 		eprint("Invalid Move Length, please check your Object Parameters.")
 	end
@@ -516,7 +517,7 @@ function OPLeft()
 		if SpawnonMoveButton:GetChecked() == true and not OPMoveObjectInstead:GetChecked() then
 			OPSpawn()
 		end
-		dprint(false,"Moving "..OPmoveWidth.." units left.")
+		dprint("Moving "..OPmoveWidth.." units left.")
 	else
 		eprint("Invalid Move Width, please check your Object Parameters.")
 	end
@@ -538,7 +539,7 @@ function OPRight()
 		if SpawnonMoveButton:GetChecked() == true and not OPMoveObjectInstead:GetChecked() then
 			OPSpawn()
 		end
-		dprint(false,"Moving "..OPmoveWidth.." units right.")
+		dprint("Moving "..OPmoveWidth.." units right.")
 	else
 		eprint("Invalid Move Width, please check your Object Parameters.")
 	end
@@ -556,7 +557,7 @@ function OPUp()
 		if SpawnonMoveButton:GetChecked() == true and not OPMoveObjectInstead:GetChecked() then
 			OPSpawn()
 		end
-		dprint(false,"Moving "..OPmoveHeight.." units up.")
+		dprint("Moving "..OPmoveHeight.." units up.")
 	else
 		eprint("Invalid Move Height, please check your Object Parameters.")
 	end
@@ -574,7 +575,7 @@ function OPDown()
 		if SpawnonMoveButton:GetChecked() == true and not OPMoveObjectInstead:GetChecked() then
 			OPSpawn()
 		end
-		dprint(false,"Moving "..OPmoveHeight.." units down.")
+		dprint("Moving "..OPmoveHeight.." units down.")
 	else
 		eprint("Invalid Move Height, please check your Object Parameters.")
 	end
@@ -761,9 +762,9 @@ function OPRotateObject()
 	local RotationX = OPRotationSliderX:GetValue()
 	local RotationY = OPRotationSliderY:GetValue()
 	local RotationZ = OPRotationSliderZ:GetValue()
-	if RotationX < 0 then RotationX = 0; dprint(false,"RotX < 0, Made 0"); end
-	if RotationY < 0 then RotationY = 0; dprint(false,"RotY < 0, Made 0"); end
-	if RotationZ < 0 then RotationZ = 0; dprint(false,"RotZ < 0, Made 0"); end
+	if RotationX < 0 then RotationX = 0; dprint("RotX < 0, Made 0"); end
+	if RotationY < 0 then RotationY = 0; dprint("RotY < 0, Made 0"); end
+	if RotationZ < 0 then RotationZ = 0; dprint("RotZ < 0, Made 0"); end
 	cmd("go rot "..RotationX.." "..RotationY.." "..RotationZ)
 end
 
@@ -1013,11 +1014,11 @@ hooksecurefunc("UIDropDownMenu_CreateFrames", createFramesHook)
 				if _OPMTPPC.Scale and tostring(_OPMTPPC.Scale) ~= "" and tostring(_OPMTPPC.Scale) ~= "0" then
 					OPScaleBox:SetText(OPMasterTable.ParamPresetContent[self.value].Scale)
 				end
-				dprint(false,"Tried to load Param Pre-set: "..self.value)
+				dprint("Tried to load Param Pre-set: "..self.value)
 			end
 		elseif button == "RightButton" then
 			SlashCmdList.OPDELPARAM(self.value)
-			dprint(false,"Trying to delete Param Pre-Set ("..self.value..") from Right-Click Trigger")
+			dprint("Trying to delete Param Pre-Set ("..self.value..") from Right-Click Trigger")
 		end
 	end
 	local function paramPresetInitialize(self,level)
@@ -1073,17 +1074,17 @@ hooksecurefunc("UIDropDownMenu_CreateFrames", createFramesHook)
 				if _OPMTRPC.RotZ and tostring(_OPMTRPC.RotZ) ~= "" and tonumber(_OPMTRPC.RotZ) >= 0 then
 					OPRotationSliderZ:SetValue(tonumber(OPMasterTable.RotPresetContent[self.value].RotZ))
 				end
-				dprint(false,"Tried to load Rot Pre-set: "..self.value)
-				dprint(false,origx.." | "..origy.." | "..origz)
+				dprint("Tried to load Rot Pre-set: "..self.value)
+				dprint(origx.." | "..origy.." | "..origz)
 				
 				OPRotateObject();
 				OPIMFUCKINGROTATINGDONTSPAMME = true
 				OPClearRotateChatFilter()
-				--dprint(false,"Loaded the same as whatever it is currently, so we're gonna apply the rotation anyways!")
+				--dprint("Loaded the same as whatever it is currently, so we're gonna apply the rotation anyways!")
 			end
 		elseif button == "RightButton" then
 			SlashCmdList.OPDELROT(self.value)
-			dprint(false,"Trying to delete Rotation Pre-Set ("..self.value..") from Right-Click Trigger")
+			dprint("Trying to delete Rotation Pre-Set ("..self.value..") from Right-Click Trigger")
 		end
 	end
 	local function rotPresetInitialize(self,level)
@@ -1134,36 +1135,36 @@ function RunChecks(Message)
 
 -- GObject Rotate Message Filter
 	if RotateClarifier and Message:gsub("|.........",""):find("rotated") then
-		dprint(false,"RotateClarifier Caught Message")
+		dprint("RotateClarifier Caught Message")
 		return true
 
 -- GObject Spawn Message Filter
 	elseif SpawnClarifier and clearmsg:find("[Spawned gameobject|Map:|Syntax|was not found|You do not have]") then
 		if clearmsg:find("Spawned gameobject") then
-			dprint(false,"SpawnClarifier Caught SPAWNED Message")
+			dprint("SpawnClarifier Caught SPAWNED Message")
 			return true
 		elseif clearmsg:find("Map:") then
 			SpawnClarifier = false
-			dprint(false,"SpawnClarifier Caught MAP Message")
+			dprint("SpawnClarifier Caught MAP Message")
 			return true
 		elseif clearmsg:find("[Syntax|was not found|You do not have]") then
 			SpawnClarifier = false
-			dprint(false,"SpawnClarifier Caught Syntax or Failure, Disabled.")
+			dprint("SpawnClarifier Caught Syntax or Failure, Disabled.")
 		end
 
 -- GObject Scale Message Filter
 	elseif ScaleClarifier and clearmsg:find("[Syntax|was not found|You do not have|Incorrect|GameObject .* has been set to scale]") then
 		if clearmsg:find("Syntax") or clearmsg:find("was not found") or clearmsg:find("You do not have") or clearmsg:find("Incorrect") then
 			ScaleClarifier = false
-			dprint(false,"ScaleClarifier Caught Syntax or Failure, Disabled.")
+			dprint("ScaleClarifier Caught Syntax or Failure, Disabled.")
 			return false
 		elseif clearmsg:find("GameObject .* has been set to scale") then 
 			ScaleClarifier = false
-			dprint(false,"ScaleClarifier Caught SCALE Message")
+			dprint("ScaleClarifier Caught SCALE Message")
 			return true
 		end
 	else
-		dprint(false,"No Clarifier Caught this, so lets let it pass")
+		dprint("No Clarifier Caught this, so lets let it pass")
 		return false
 	end
 end
@@ -1178,18 +1179,18 @@ local function OMChatFilter(Self,Event,Message)
 		if not clearmsg:find("[aA]dd") and not clearmsg:find("group") then
 			lastSelectedObjectID = clearmsg:match("gameobject .* %- (%d*)%]")
 			print(clearmsg)
-			dprint(false,"Last Selected/Spawned Object = "..tostring(lastSelectedObjectID))
+			dprint("Last Selected/Spawned Object = "..tostring(lastSelectedObjectID))
 			if OPParamAutoUpdateButton:GetChecked() then
 				OPGetObject("RightButton")
 			end
 			isGroupSelected = false
-			dprint(false,"isGroupSelected false")
+			dprint("isGroupSelected false")
 		end
 	end
 	--]]
 	if clearmsg:find("Selected gameobject group") or clearmsg:find("Spawned gameobject group") or clearmsg:find("Spawned blueprint") or clearmsg:find("added %d+ objects to gameobject group") then
 		updateGroupSelected(true)
-		dprint(false,"isGroupSelected true")
+		dprint("isGroupSelected true")
 	end
 		
 	---------- Auto Update Rotation CAPTURES ----------
@@ -1202,40 +1203,40 @@ local function OMChatFilter(Self,Event,Message)
 				local x
 				if clearmsg:find("from X.*to X") then
 					x = tonumber(clearmsg:match("to X: (%-?%d*%.%d*)"))
-					dprint(false,"Relative Rotation Caught")
+					dprint("Relative Rotation Caught")
 				else
 					x = tonumber(clearmsg:match("X: (%-?%d*%.%d*)"))
 				end
 				if x < 0 then x = x+360 elseif x > 360 then x = x-360 end
 				OPRotationSliderX:SetValueStep(0.0001)
 				OPRotationSliderX:SetValue(x)
-				dprint(false,"Set Slider X to "..x)
+				dprint("Set Slider X to "..x)
 			end
 			if clearmsg:find("Y:") then
 				local y
 				if clearmsg:find("from Y.*to Y") then
 					y = tonumber(clearmsg:match("to Y: (%-?%d*%.%d*)"))
-					dprint(false,"Relative Rotation Caught")
+					dprint("Relative Rotation Caught")
 				else
 					y = tonumber(clearmsg:match("Y: (%-?%d*%.%d*)"))
 				end
 				if y < 0 then y = y+360 elseif y > 360 then y = y-360 end
 				OPRotationSliderY:SetValueStep(0.0001)
 				OPRotationSliderY:SetValue(y)
-				dprint(false,"Set Slider Y to "..y)
+				dprint("Set Slider Y to "..y)
 			end
 			if clearmsg:find("Z:") then
 				local z
 				if clearmsg:find("from Z.*to Z") then
 					z = tonumber(clearmsg:match("to Z: (%-?%d*%.%d*)"))
-					dprint(false,"Relative Rotation Caught")
+					dprint("Relative Rotation Caught")
 				else
 					z = tonumber(clearmsg:match("Z: (%-?%d*%.%d*)"))
 				end
 				if z < 0 then z = z+360 elseif z > 360 then z = z-360 end
 				OPRotationSliderZ:SetValueStep(0.0001)
 				OPRotationSliderZ:SetValue(z)
-				dprint(false,"Set Slider Z to "..z)
+				dprint("Set Slider Z to "..z)
 			end
 			--]]
 			dontFuckingRotate = false -- Allow sliders to cause rotation again
@@ -1249,7 +1250,7 @@ local function OMChatFilter(Self,Event,Message)
 			if roll < 0 then roll = roll+360 end
 			local yaw = tonumber(clearmsg:match("Pitch: %-?%d*%.%d*, Roll: %-?%d*%.%d*, Yaw/Turn: (%-?%d*%.%d*)"))
 			if yaw < 0 then yaw = yaw+360 end
-			dprint(false,clearmsg)
+			dprint(clearmsg)
 			
 			dontFuckingRotate = true
 			OPRotationSliderX:SetValueStep(0.0001)
@@ -1260,7 +1261,7 @@ local function OMChatFilter(Self,Event,Message)
 			OPRotationSliderZ:SetValue(yaw)
 			dontFuckingRotate = false
 			
-			dprint(false,"Roll: "..roll.." | Pitch: "..pitch.." | Turn: "..yaw)
+			dprint("Roll: "..roll.." | Pitch: "..pitch.." | Turn: "..yaw)
 		end
 		--]]
 	end
@@ -1280,11 +1281,11 @@ local function OMChatFilter(Self,Event,Message)
 				OPTintSliderG:SetValue(g)
 				OPTintSliderB:SetValue(b)
 				OPTintSliderT:SetValue(a)
-				dprint(false,"R:"..r.." G:"..g.." B:"..b.." T:"..a)
+				dprint("R:"..r.." G:"..g.." B:"..b.." T:"..a)
 			elseif clearmsg:find("Set GameObject.* to .* spell effect") or clearmsg:find("GameObject group.*uses spell effect") then
 				OPObjectSpell = clearmsg:match("spell effect (%d+)")
 				updateSpellButton()
-				dprint(false,"OPObjectSpell set: "..OPObjectSpell)
+				dprint("OPObjectSpell set: "..OPObjectSpell)
 			end
 			--]]
 		else
@@ -1352,7 +1353,7 @@ local function Addon_OnEvent(self, event, ...)
 			if sender == self or string.gsub(self,"%s+","") then
 				
 				updateGroupSelected(false)
-				dprint(false,"isGroupSelected false")
+				dprint("isGroupSelected false")
 				
 				local guid, entry, name, filedataid, x, y, z, orientation, rx, ry, rz, HasTint, red, green, blue, alpha, spell, scale, groupLeader, objType, saturation = strsplit(strchar(31),objdetails)
 				OPLastSelectedObjectData = {strsplit(strchar(31), objdetails)}
@@ -1371,15 +1372,16 @@ local function Addon_OnEvent(self, event, ...)
 				
 				-- Update Manager Tab
 				local shortname = name:gsub(".*/+","")
-				print("Name: "..name)
-				print("Shortname: "..shortname)
+				dprint("Name: "..name)
+				dprint("Shortname: "..shortname)
 				OPPanel2.SelectedObjName:SetText(shortname)
 				OPPanel4Manager.SelectedObjName:SetText(shortname)
 				--OPPanel4Manager.GroupLeaderIndicator.Entry:SetText(groupLeader)
 				
 				-- update extended info
-				OPPanelPopout.ObjNameText:SetText(shortname)
-				
+				OPPanelPopout.ObjName.Text:SetText(shortname)
+				OPPanelPopout.ObjEntry.Text:SetText(entry)
+				OPPanelPopout.ObjType.Text:SetText(ObjectTypes[tonumber(objType)])				
 				
 				-- Update Tints & Spell
 				--if OPTintAutoUpdateButton:GetChecked() then
@@ -1390,7 +1392,7 @@ local function Addon_OnEvent(self, event, ...)
 						OPOverlaySliderB:SetValue(blue)
 						OPOverlaySliderT:SetValue(alpha)
 						OPOverlaySliderS:SetValue(100 - saturation)
-						dprint(false,"Updating Overlay Sliders, saturation: "..saturation)
+						dprint("Updating Overlay Sliders, saturation: "..saturation)
 					end
 					
 					
@@ -1419,8 +1421,8 @@ local function Addon_OnEvent(self, event, ...)
 			else
 				eprint("Illegal Sender ("..sender..") | (Expected:"..self..")")
 			end
-			dprint(false,"Caught "..prefix.." prefix")
-			dprint(false,event, ...)
+			dprint("Caught "..prefix.." prefix")
+			dprint(event, ...)
 		end
 	elseif event == "PLAYER_LOGIN" then
 		local successfulRequest = C_ChatInfo.RegisterAddonMessagePrefix(addonPrefix)
@@ -1449,10 +1451,10 @@ end
 SLASH_OPDEBUG1, SLASH_OPDEBUG2 = '/opdebug', '/omdebug';
 function SlashCmdList.OPDEBUG(msg, editbox) -- 4.
 	if msg:find("clarifier") then
-		dprint(true,"RotateClarifier = "..tostring(RotateClarifier).." | SpawnClarifier = "..tostring(SpawnClarifier).." | ObjectClarifier = "..tostring(ObjectClarifier).." | ScaleClarifier = "..tostring(ScaleClarifier))
+		dprint("RotateClarifier = "..tostring(RotateClarifier).." | SpawnClarifier = "..tostring(SpawnClarifier).." | ObjectClarifier = "..tostring(ObjectClarifier).." | ScaleClarifier = "..tostring(ScaleClarifier), true)
 	else
 		OPMasterTable.Options["debug"] = not OPMasterTable.Options["debug"]
-		dprint(true,"Object Mover Debug Set to: "..tostring(OPMasterTable.Options["debug"]))
+		dprint("Object Mover Debug Set to: "..tostring(OPMasterTable.Options["debug"]),true)
 		if OPMasterTable.Options["debug"] and OPMainFrame:GetAlpha() < 1 then 
 			if OPMainFrame.Timer then OPMainFrame.Timer:Cancel() end
 			UIFrameFadeIn(OPMainFrame,0.3,OPMainFrame:GetAlpha(),1)

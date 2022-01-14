@@ -4590,49 +4590,210 @@
 							</Shadow>
 						</FontString>
 					</Layer>
-					<Layer>
-						<FontString parentKey="ObjNameTitle" font="Fonts\FRIZQT__.TTF" text="Object Name:">
-							<Anchors>
-								<Anchor point="TOPLEFT">
-									<Offset x="8" y="-24" />
-								</Anchor>
-							</Anchors>
-							<FontHeight val="10" />
-							<Color r="1" g="0.8196079" b="0" />
-							<Shadow>
-								<Offset>
-									<AbsDimension x="1" y="-1" />
-								</Offset>
-								<Color r="0" g="0" b="0" />
-							</Shadow>
-						</FontString>
-						<FontString parentKey="ObjNameText" font="Fonts\FRIZQT__.TTF" text="No Object Selected" wordwrap="true" nonspacewrap="true" maxlines="2" justifyH="RIGHT">
-							<Size x="165" y="16" />
-							<Anchors>
-								<Anchor relativeKey="$parent.ObjNameTitle" point="TOPLEFT" relativePoint="BOTTOMLEFT">
-									<Offset x="0" y="-3" />
-								</Anchor>
-							</Anchors>
-							<FontHeight val="8" />
-							<Color r="1" g="1" b="1" />
-							<Shadow>
-								<Offset>
-									<AbsDimension x="1" y="-1" />
-								</Offset>
-								<Color r="0" g="0" b="0" />
-							</Shadow>
-						</FontString>
-						<Line name="ObjNameDivider" thickness="1" >
-							<StartAnchor relativekey="$parent.ObjNameText" point="BOTTOMLEFT">
-								<Offset x="0" y="-4"/>
-							</StartAnchor>
-							<EndAnchor relativekey="$parent.ObjNameText" point="BOTTOMLEFT">
-								<Offset x="164" y="-4"/>
-							</EndAnchor>
-							<color r="0.66" g="0.66" b="0.66" a="1"/>
-						</Line>
-					</Layer>
 				</Layers>
+				<Frames>
+					<Frame parentKey="ObjName">
+						<Size x="180" y="37"/>
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset x="0" y="-24" />
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer>
+								<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="Object Name:">
+									<Anchors>
+										<Anchor point="TOPLEFT">
+											<Offset x="8" y="0" />
+										</Anchor>
+									</Anchors>
+									<FontHeight val="10" />
+									<Color r="1" g="0.8196079" b="0" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+								<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="No Object Selected" wordwrap="true" nonspacewrap="true" maxlines="2" justifyH="RIGHT">
+									<Size x="164" y="16" />
+									<Anchors>
+										<Anchor relativeKey="$parent.Title" point="TOPLEFT" relativePoint="BOTTOMLEFT">
+											<Offset x="0" y="-3" />
+										</Anchor>
+									</Anchors>
+									<FontHeight val="8" />
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+								<Line name="Divider" thickness="1" >
+									<StartAnchor relativekey="$parent.Text" point="BOTTOMLEFT">
+										<Offset x="0" y="-4"/>
+									</StartAnchor>
+									<EndAnchor relativekey="$parent.Text" point="BOTTOMLEFT">
+										<Offset x="164" y="-4"/>
+									</EndAnchor>
+									<color r="0.66" g="0.66" b="0.66" a="1"/>
+								</Line>
+							</Layer>
+						</Layers>
+					</Frame>
+					<Frame parentKey="ObjEntry">
+						<Size x="180" y="17"/>
+						<Anchors>
+							<Anchor relativeKey="$parent.ObjName" point="TOPLEFT" relativePoint="BOTTOMLEFT">
+								<Offset x="0" y="0" />
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer>
+								<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="Entry:">
+									<Anchors>
+										<Anchor point="TOPLEFT">
+											<Offset x="8" y="0" />
+										</Anchor>
+									</Anchors>
+									<FontHeight val="10" />
+									<Color r="1" g="0.8196079" b="0" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+								<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="" justifyH="RIGHT">
+									<Size x="130" y="10" />
+									<Anchors>
+										<Anchor relativeKey="$parent.Title" point="TOPLEFT" relativePoint="TOPRIGHT"/>
+										<Anchor relativeKey="$parent.Title" point="TOPRIGHT" relativePoint="TOPLEFT" x="164"/>
+									</Anchors>
+									<FontHeight val="10" />
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+								<Line name="Divider" thickness="1" >
+									<StartAnchor relativekey="$parent.Title" point="BOTTOMLEFT">
+										<Offset x="0" y="-4"/>
+									</StartAnchor>
+									<EndAnchor relativekey="$parent.Title" point="BOTTOMLEFT">
+										<Offset x="164" y="-4"/>
+									</EndAnchor>
+									<color r="0.66" g="0.66" b="0.66" a="1"/>
+								</Line>
+							</Layer>
+						</Layers>
+					</Frame>
+					<Frame parentKey="ObjDisplay">
+						<Size x="180" y="17"/>
+						<Anchors>
+							<Anchor relativeKey="$parent.ObjEntry" point="TOPLEFT" relativePoint="BOTTOMLEFT">
+								<Offset x="0" y="0" />
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer>
+								<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="DisplayID:">
+									<Anchors>
+										<Anchor point="TOPLEFT" x="8"/>
+									</Anchors>
+									<FontHeight val="10" />
+									<Color r="1" g="0.8196079" b="0" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+								<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="No Data Available" justifyH="RIGHT">
+									<Size y="10" />
+									<Anchors>
+										<Anchor relativeKey="$parent.Title" point="TOPLEFT" relativePoint="TOPRIGHT"/>
+										<Anchor relativeKey="$parent.Title" point="TOPRIGHT" relativePoint="TOPLEFT" x="164"/>
+									</Anchors>
+									<FontHeight val="10" />
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+								<Line name="Divider" thickness="1" >
+									<StartAnchor relativekey="$parent.Title" point="BOTTOMLEFT">
+										<Offset x="0" y="-4"/>
+									</StartAnchor>
+									<EndAnchor relativekey="$parent.Title" point="BOTTOMLEFT">
+										<Offset x="164" y="-4"/>
+									</EndAnchor>
+									<color r="0.66" g="0.66" b="0.66" a="1"/>
+								</Line>
+							</Layer>
+						</Layers>
+					</Frame>
+					<Frame parentKey="ObjType">
+						<Size x="180" y="17"/>
+						<Anchors>
+							<Anchor relativeKey="$parent.ObjDisplay" point="TOPLEFT" relativePoint="BOTTOMLEFT">
+								<Offset x="0" y="0" />
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer>
+								<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="Type:">
+									<Anchors>
+										<Anchor point="TOPLEFT" x="8"/>
+									</Anchors>
+									<FontHeight val="10" />
+									<Color r="1" g="0.8196079" b="0" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+								<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="No Data Available" justifyH="RIGHT">
+									<Size y="10" />
+									<Anchors>
+										<Anchor relativeKey="$parent.Title" point="TOPLEFT" relativePoint="TOPRIGHT"/>
+										<Anchor relativeKey="$parent.Title" point="TOPRIGHT" relativePoint="TOPLEFT" x="164"/>
+									</Anchors>
+									<FontHeight val="10" />
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+								<Line name="Divider" thickness="1" >
+									<StartAnchor relativekey="$parent.Title" point="BOTTOMLEFT">
+										<Offset x="0" y="-4"/>
+									</StartAnchor>
+									<EndAnchor relativekey="$parent.Title" point="BOTTOMLEFT">
+										<Offset x="164" y="-4"/>
+									</EndAnchor>
+									<color r="0.66" g="0.66" b="0.66" a="1"/>
+								</Line>
+							</Layer>
+						</Layers>
+					</Frame>
+				</Frames>
 			</Frame>
 			<Button name="$parentTab1" inherits="CharacterFrameTabButtonTemplate" id="1" text="Rotation">
 				<Anchors>
