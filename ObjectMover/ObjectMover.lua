@@ -11,13 +11,14 @@
 local MYADDON, MyAddOn = ...
 local addonVersion, addonAuthor, addonName = GetAddOnMetadata(MYADDON, "Version"), GetAddOnMetadata(MYADDON, "Author"), GetAddOnMetadata(MYADDON, "Title")
 
-local OPmoveLength, OPmoveWidth, OPmoveHeight, OPmoveModifier, MessageCount, ObjectClarifier, SpawnClarifier, ScaleClarifier, RotateClarifier, OPObjectSpell, cmdPref, isGroupSelected, m = 0, 0, 0, 1, 0, false, false, false, false, nil, "go", nil, nil
+local OPmoveLength, OPmoveWidth, OPmoveHeight, MessageCount, ObjectClarifier, SpawnClarifier, ScaleClarifier, RotateClarifier, OPObjectSpell, cmdPref, isGroupSelected, m = 0, 0, 0, 0, false, false, false, false, nil, "go", nil, nil
 BINDING_HEADER_OBJECTMANIP, SLASH_SHOWCLOSE1, SLASH_SHOWCLOSE2, SLASH_SHOWCLOSE3 = "Object Mover", "/obj", "/om", "/op"
 
 local addonPrefix = "EPISLON_OBJ_INFO"
 
 local isWMO = {[14] = true, [15] = true, [33] = true, [38] = true, [43] = true, [54] = true}
 local ObjectTypes = {[0]="DOOR",[1]="BUTTON",[2]="QUESTGIVER",[3]="CHEST",[4]="BINDER",[5]="GENERIC",[6]="TRAP",[7]="CHAIR",[8]="SPELL_FOCUS",[9]="TEXT",[10]="GOOBER",[11]="TRANSPORT",[12]="AREADAMAGE",[13]="CAMERA",[14]="MAP_OBJECT (WMO)",[15]="MAP_OBJ_TRANSPORT (WMO)",[16]="DUEL_ARBITER",[17]="FISHINGNODE",[18]="RITUAL",[19]="MAILBOX",[20]="DO_NOT_USE",[21]="GUARDPOST",[22]="SPELLCASTER",[23]="MEETINGSTONE",[24]="FLAGSTAND",[25]="FISHINGHOLE",[26]="FLAGDROP",[27]="MINI_GAME",[28]="DO_NOT_USE_2",[29]="CONTROL_ZONE",[30]="AURA_GENERATOR",[31]="DUNGEON_DIFFICULTY",[32]="BARBER_CHAIR",[33]="DESTRUCTIBLE_BUILDING (WMO)",[34]="GUILD_BANK",[35]="TRAPDOOR",[36]="NEW_FLAG",[37]="NEW_FLAG_DROP",[38]="GARRISON_BUILDING (WMO)",[39]="GARRISON_PLOT",[40]="CLIENT_CREATURE",[41]="CLIENT_ITEM",[42]="CAPTURE_POINT (WMO)",[43]="PHASEABLE_MO",[44]="GARRISON_MONUMENT",[45]="GARRISON_SHIPMENT",[46]="GARRISON_MONUMENT_PLAQUE",[47]="ITEM_FORGE",[48]="UI_LINK",[49]="KEYSTONE_RECEPTACLE",[50]="GATHERING_NODE",[51]="CHALLENGE_MODE_REWARD",[52]="MULTI",[53]="SIEGEABLE_MULTI",[54]="SIEGEABLE_MO (WMO)",[55]="PVP_REWARD",[56]="PLAYER_CHOICE_CHEST",[57]="LEGENDARY_FORGE",[58]="GARR_TALENT_TREE",[59]="WEEKLY_REWARD_CHEST",[60]="CLIENT_MODEL"}
+local ObjectAnims = {[0]="Stand", [145]="Spawn",[146]="Close",[147]="Closed",[148]="Open",[149]="Opened",[150]="Destroy",[157]="Despawn"}
 
 -------------------------------------------------------------------------------
 -- Simple Chat Functions
@@ -202,6 +203,93 @@ OPAddon_OnLoad:SetScript("OnEvent", function(self,event,name)
 	end
 end);
 
+--[[
+function OPObjectPreviewGenerateFrame()
+	OPPanelPopout.ObjPreview.Scene = CreateFrame("ModelScene", nil, OPPanelPopout.ObjPreview)
+	Mixin(OPPanelPopout.ObjPreview.Scene, ModelSceneMixin)
+	OPPanelPopout.ObjPreview.Scene:OnLoad()
+	OPPanelPopout.ObjPreview.Scene:SetSize(164,160)
+	OPPanelPopout.ObjPreview.Scene:SetPoint("BOTTOMLEFT", OPPanelPopout.ObjPreview, "BOTTOMLEFT", 8, 8)
+
+	OPPanelPopout.ObjPreview.Scene.Camera = OPPanelPopout.ObjPreview.Scene:CreateCameraFromScene(112)
+	OPPanelPopout.ObjPreview.Scene.Camera:SetTarget(0,0,0)
+	OPPanelPopout.ObjPreview.Scene.Camera:SetPitch(0)
+	OPPanelPopout.ObjPreview.Scene.Camera:SetMinZoomDistance(10)
+	OPPanelPopout.ObjPreview.Scene:SetCameraNearClip(0.01)
+	OPPanelPopout.ObjPreview.Scene:SetCameraFarClip(2^64)
+	OPPanelPopout.ObjPreview.Scene:SetScript("OnUpdate", function(self,elapsed)
+		self:OnUpdate(elapsed)
+		OPPanelPopout.ObjPreview.Scene.Camera:SetYaw(OPPanelPopout.ObjPreview.Scene.Camera:GetYaw() + elapsed / 10)
+	end)
+	
+	OPPanelPopout.ObjPreview.Scene.Actor = OPPanelPopout.ObjPreview.Scene:CreateActor("OPPrevierwerObject", ObjectMoverActorTemplate)
+	local actor = OPPanelPopout.ObjPreview.Scene.Actor
+	function actor:OnModelLoaded(self)
+		local x1, y1, z1, x2, y2, z2 = self:GetActiveBoundingBox()
+		if x2 == nil then return end
+		local lx = x2 - x1
+		local ly = y2 - y1
+		local lz = z2 - z1
+		local size = math.sqrt(lx ^ 2 + ly ^ 2 + lz ^ 2) * 1.5
+		local angle = math.max(lx, ly) < lz and 0 or 45 / 2
+		local camera = self:GetParent():GetActiveCamera()
+		--self:SetPitch(math.rad(45))
+		--camera:SetPitch(math.rad(angle))
+		camera:SetPitch(math.rad(90))
+		camera:SetTarget(0, 0, 0)
+		camera:SetMinZoomDistance(size)
+		camera:SetMaxZoomDistance(size)
+		camera:SetZoomDistance(size)
+		camera:SnapAllInterpolatedValues();
+	end
+end
+--]]
+
+
+function OPObjectPreviewerActor_OnModelLoaded(self)
+    local x1, y1, z1, x2, y2, z2 = self:GetActiveBoundingBox()
+    if x2 == nil then return end
+    local lx = x2 - x1
+    local ly = y2 - y1
+    local lz = z2 - z1
+    local size = math.sqrt(lx ^ 2 + ly ^ 2 + lz ^ 2) * 1.5
+    local angle = math.max(lx, ly) < lz and 45/3 or 45 / 2
+    local camera = self:GetParent():GetActiveCamera()
+	camera:SetPitch(math.rad(angle))
+    camera:SetTarget(0, 0, 0)
+    camera:SetMinZoomDistance(size)
+    camera:SetMaxZoomDistance(size)
+    camera:SetZoomDistance(size)
+    camera:SnapAllInterpolatedValues();
+end
+--]]
+
+function OPObjectPreviewer_OnLoad(self)
+	self.cameras = {};
+	self.actorTemplate = "ModelSceneActorTemplate";
+	self.tagToActor = {};
+	self.tagToCamera = {};
+
+	if self.reversedLighting then
+		local lightPosX, lightPosY, lightPosZ = self:GetLightPosition();
+		self:SetLightPosition(-lightPosX, -lightPosY, lightPosZ);
+
+		local lightDirX, lightDirY, lightDirZ = self:GetLightDirection();
+		self:SetLightDirection(-lightDirX, -lightDirY, lightDirZ);
+	end
+
+    self:SetCameraNearClip(0.01)
+    self:SetCameraFarClip(2 ^ 64)
+	self.Camera = self:CreateCameraFromScene(112)
+    self.Camera:SetPitch(0)
+    self.Actor = self:GetActorAtIndex(1)
+    self.Actor:SetUseCenterForOrigin(true, true, true)
+end
+
+function OPObjectPreviewer_OnUpdate(self,elapsed)
+		self:OnUpdate(elapsed)
+		self.Camera:SetYaw(OPPanelPopout.ObjPreview.Scene.Camera:GetYaw() + elapsed / 10)
+end
 
 -------------------------------------------------------------------------------
 -- Minimap Icon Handlers
@@ -445,15 +533,14 @@ end
 
 --Update Internal Dimensions for movement when used, factoring in scale, double and halve options
 function updateDimensions(val)
-	OPmoveModifier = 1	
 	if ScaleObject:GetChecked() == true and ScaleObject:IsEnabled() then
-		if val == "length" then if tonumber(OPLengthBox:GetText()) ~= nil then OPmoveLength = (tonumber(OPLengthBox:GetText())*tonumber(OPScaleBox:GetText())*OPmoveModifier) end end
-		if val == "width" then if tonumber(OPWidthBox:GetText()) ~= nil then OPmoveWidth = (tonumber(OPWidthBox:GetText())*tonumber(OPScaleBox:GetText())*OPmoveModifier) end end
-		if val == "height" then if tonumber(OPHeightBox:GetText()) ~= nil then OPmoveHeight = (tonumber(OPHeightBox:GetText())*tonumber(OPScaleBox:GetText())*OPmoveModifier) end end
+		if val == "length" then if tonumber(OPLengthBox:GetText()) ~= nil then OPmoveLength = (tonumber(OPLengthBox:GetText())*tonumber(OPScaleBox:GetText())) end end
+		if val == "width" then if tonumber(OPWidthBox:GetText()) ~= nil then OPmoveWidth = (tonumber(OPWidthBox:GetText())*tonumber(OPScaleBox:GetText())) end end
+		if val == "height" then if tonumber(OPHeightBox:GetText()) ~= nil then OPmoveHeight = (tonumber(OPHeightBox:GetText())*tonumber(OPScaleBox:GetText())) end end
 	else
-		if val == "length" then if tonumber(OPLengthBox:GetText()) ~= nil then OPmoveLength = tonumber(OPLengthBox:GetText())*OPmoveModifier end end
-		if val == "width" then if tonumber(OPWidthBox:GetText()) ~= nil then OPmoveWidth = tonumber(OPWidthBox:GetText())*OPmoveModifier end end
-		if val == "height" then if tonumber(OPHeightBox:GetText()) ~= nil then OPmoveHeight = tonumber(OPHeightBox:GetText())*OPmoveModifier end end
+		if val == "length" then if tonumber(OPLengthBox:GetText()) ~= nil then OPmoveLength = tonumber(OPLengthBox:GetText()) end end
+		if val == "width" then if tonumber(OPWidthBox:GetText()) ~= nil then OPmoveWidth = tonumber(OPWidthBox:GetText()) end end
+		if val == "height" then if tonumber(OPHeightBox:GetText()) ~= nil then OPmoveHeight = tonumber(OPHeightBox:GetText()) end end
 	end
 end
 
@@ -1381,7 +1468,16 @@ local function Addon_OnEvent(self, event, ...)
 				-- update extended info
 				OPPanelPopout.ObjName.Text:SetText(shortname)
 				OPPanelPopout.ObjEntry.Text:SetText(entry)
-				OPPanelPopout.ObjType.Text:SetText(ObjectTypes[tonumber(objType)])				
+				OPPanelPopout.ObjType.Text:SetText(objType.." - "..ObjectTypes[tonumber(objType)])
+				if not isWMO[tonumber(objType)] then
+					OPPanelPopout.ObjPreview.Scene.Actor:SetModelByFileID(filedataid)
+					OPPanelPopout.ObjPreview.Scene.Actor:Show()
+				else
+					OPPanelPopout.ObjPreview.Scene.Actor:SetModelByFileID(1)
+					OPPanelPopout.ObjPreview.Scene.Actor:Hide()
+				end
+				--OPPanelPopout.ObjState.Text:SetText(entry)
+				--OPPanelPopout.ObjAnim.Text:SetText(objType.." - "..ObjectTypes[tonumber(objType)])				
 				
 				-- Update Tints & Spell
 				--if OPTintAutoUpdateButton:GetChecked() then
@@ -1391,8 +1487,10 @@ local function Addon_OnEvent(self, event, ...)
 						OPOverlaySliderG:SetValue(green)
 						OPOverlaySliderB:SetValue(blue)
 						OPOverlaySliderT:SetValue(alpha)
-						OPOverlaySliderS:SetValue(100 - saturation)
-						dprint("Updating Overlay Sliders, saturation: "..saturation)
+						if saturation then
+							OPOverlaySliderS:SetValue(100 - saturation)
+							dprint("Updating Overlay Sliders, saturation: "..saturation)
+						end
 					end
 					
 					

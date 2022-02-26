@@ -1,10 +1,11 @@
 ObjectMoverChangelog = [[
-#v7.1.0 (January 7th, 2022)
+#v7.1.0 (February 26th, 2022)
 	
 	- UPDATED: Tint now supports the new |cffFFAAAA!go overlay|r system.
 	- - - NOTE: Tint is still supported - ObjectMover will use |cffFFAAAA!go tint|r system if Saturation is 0!
 	- ADDED: ObjectMover will now display the name of the object selected at the top of the Object Info panel.
-	- NEW: Manager Tab! This allows you quicker access to basic object controls & management, such as Select, Copy, Delete, and Group Controls!
+	- NEW: Manager Tab! This allows you quicker access to basic object controls & management, such as Select, Copy, Delete, and more. This area is still a heavy WIP and more features will be added later!
+	- NEW: Extended Information Panel! Click the 'i' icon in the top left to show a new pop-out menu with extended object information & a preview of the object selected. This area is still a WIP and some data will remain "No Data Available" until future support is added.
 
 ## _________________________________________________
 

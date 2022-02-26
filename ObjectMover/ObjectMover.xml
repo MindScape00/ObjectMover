@@ -22,6 +22,13 @@
 		<DisabledFont style="GameFontDisableSmall" />
 		<PushedTextOffset />
 	</Button>
+	<Actor name="ObjectMoverActorTemplate" mixin="ModelSceneActorMixin" virtual="true">
+        <Scripts>
+            <OnModelLoaded>
+				if self.OnModelLoaded then self:OnModelLoaded() end
+			</OnModelLoaded>
+        </Scripts>
+    </Actor>
 	<Frame name="OPMainFrame" hidden="true" enableMouse="true" movable="true" resizable="true" clampedToScreen="true" parent="UIParent" ignoreParentScale="true">
 		<Size x="355" y="355" />
 		<ResizeBounds>
@@ -4212,6 +4219,22 @@
 								<Color r="0" g="0" b="0" />
 							</Shadow>
 						</FontString>
+						<FontString parentKey="WIPAREA" text="This Area is a WIP! More Features to Come!" font="Fonts\FRIZQT__.TTF" wordwrap="true" maxlines="2">
+							<Size x="150" y="24" />
+							<Anchors>
+								<Anchor point="CENTER">
+									<Offset y="0" />
+								</Anchor>
+							</Anchors>
+							<FontHeight val="12" />
+							<Color r="1" g="1" b="1" />
+							<Shadow>
+								<Offset>
+									<AbsDimension x="1" y="-1" />
+								</Offset>
+								<Color r="0" g="0" b="0" />
+							</Shadow>
+						</FontString>
 					</Layer>
 				</Layers>
 				<Frames>
@@ -4243,7 +4266,7 @@
 							</Layer>
 						</Layers>
 						<Frames>
-							<Button parentKey="FaceButtonSelf" inherits="UIPanelButtonTemplate" text="M">
+							<Button parentKey="FaceButtonSelf" inherits="UIPanelButtonTemplate" text="C">
 								<Size x="18" y="16" />
 								<Anchors>
 									<Anchor point="center" relativeKey="$parent.FaceButtonsAnchor">
@@ -4395,16 +4418,17 @@
 							</Button>
 						</Frames>
 					</Frame>
+					<!--
 					<Frame parentKey="AnimDropdownAnchor">
 						<Size x="10" y="10"/>
 						<Anchors>
-							<Anchor point="TOPRIGHT">
-								<Offset x="-28" y="-50" />
+							<Anchor point="TOP">
+								<Offset x="0" y="-50" />
 							</Anchor>
 						</Anchors>
 						<Layers>
 							<Layer>
-								<FontString parentKey="Title" text="Face Object" font="Fonts\FRIZQT__.TTF">
+								<FontString parentKey="Title" text="Animation" font="Fonts\FRIZQT__.TTF">
 									<Size x="70" y="8" />
 									<Anchors>
 										<Anchor point="BOTTOM" relativePoint="TOP">
@@ -4423,6 +4447,7 @@
 							</Layer>
 						</Layers>
 					</Frame>
+					-->
 					<Button parentKey="SelectButton" inherits="UIPanelButtonTemplate" text="Select">
 						<Size x="72" y="24" />
 						<Anchors>
@@ -4492,7 +4517,7 @@
 						</Anchors>
 						<Scripts>
 							<OnClick>
-								OPManagerCMD("go copy")
+								OPManagerCMD("go copy f 0")
 							</OnClick>
 							<OnEnter>
 								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -4551,7 +4576,7 @@
 					</Button>
 				</Frames>
 			</Frame>
-			<Frame name="OPPanelPopout">
+			<Frame name="OPPanelPopout" hidden="true">
 				<Size x="180" y="345" />
 				<Anchors>
 					<Anchor point="RIGHT" relativePoint="LEFT">
@@ -4792,6 +4817,153 @@
 								</Line>
 							</Layer>
 						</Layers>
+					</Frame>
+					<Frame parentKey="ObjState">
+						<Size x="180" y="17"/>
+						<Anchors>
+							<Anchor relativeKey="$parent.ObjType" point="TOPLEFT" relativePoint="BOTTOMLEFT">
+								<Offset x="0" y="0" />
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer>
+								<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="State:">
+									<Anchors>
+										<Anchor point="TOPLEFT" x="8"/>
+									</Anchors>
+									<FontHeight val="10" />
+									<Color r="1" g="0.8196079" b="0" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+								<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="No Data Available" justifyH="RIGHT">
+									<Size y="10" />
+									<Anchors>
+										<Anchor relativeKey="$parent.Title" point="TOPLEFT" relativePoint="TOPRIGHT"/>
+										<Anchor relativeKey="$parent.Title" point="TOPRIGHT" relativePoint="TOPLEFT" x="164"/>
+									</Anchors>
+									<FontHeight val="10" />
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+								<Line name="Divider" thickness="1" >
+									<StartAnchor relativekey="$parent.Title" point="BOTTOMLEFT">
+										<Offset x="0" y="-4"/>
+									</StartAnchor>
+									<EndAnchor relativekey="$parent.Title" point="BOTTOMLEFT">
+										<Offset x="164" y="-4"/>
+									</EndAnchor>
+									<color r="0.66" g="0.66" b="0.66" a="1"/>
+								</Line>
+							</Layer>
+						</Layers>
+					</Frame>
+					<Frame parentKey="ObjAnim">
+						<Size x="180" y="17"/>
+						<Anchors>
+							<Anchor relativeKey="$parent.ObjState" point="TOPLEFT" relativePoint="BOTTOMLEFT">
+								<Offset x="0" y="0" />
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer>
+								<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="Anim:">
+									<Anchors>
+										<Anchor point="TOPLEFT" x="8"/>
+									</Anchors>
+									<FontHeight val="10" />
+									<Color r="1" g="0.8196079" b="0" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+								<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="No Data Available" justifyH="RIGHT">
+									<Size y="10" />
+									<Anchors>
+										<Anchor relativeKey="$parent.Title" point="TOPLEFT" relativePoint="TOPRIGHT"/>
+										<Anchor relativeKey="$parent.Title" point="TOPRIGHT" relativePoint="TOPLEFT" x="164"/>
+									</Anchors>
+									<FontHeight val="10" />
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+								<Line name="Divider" thickness="1" >
+									<StartAnchor relativekey="$parent.Title" point="BOTTOMLEFT">
+										<Offset x="0" y="-4"/>
+									</StartAnchor>
+									<EndAnchor relativekey="$parent.Title" point="BOTTOMLEFT">
+										<Offset x="164" y="-4"/>
+									</EndAnchor>
+									<color r="0.66" g="0.66" b="0.66" a="1"/>
+								</Line>
+							</Layer>
+						</Layers>
+					</Frame>
+					<Frame parentKey="ObjPreview">
+						<Size x="180" y="180"/>
+						<Anchors>
+							<Anchor point="BOTTOMLEFT">
+								<Offset x="0" y="0" />
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer>
+								<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="Preview:">
+									<Anchors>
+										<Anchor point="TOPLEFT" x="8"/>
+									</Anchors>
+									<FontHeight val="10" />
+									<Color r="1" g="0.8196079" b="0" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Frames>
+							<ModelScene parentKey="Scene" mixin="ModelSceneMixin">
+								<Size x="164" y="160"/>
+								<Anchors>
+									<Anchor point="BOTTOMLEFT" x="8" y="8"/>
+								</Anchors>
+								<Actors>
+									<Actor parentKey="Actor">
+										<Scripts>
+											<OnModelLoaded function="OPObjectPreviewerActor_OnModelLoaded"/>
+										</Scripts>
+									</Actor>
+								</Actors>
+								<Scripts>
+									<OnLoad inherit="prepend" function="OPObjectPreviewer_OnLoad"/>
+									<OnUpdate inherit="prepend" function="OPObjectPreviewer_OnUpdate"/>
+								</Scripts>
+							</ModelScene>
+						</Frames>
+						<!--
+						<Scripts>
+							<OnLoad function="OPObjectPreviewGenerateFrame"/>
+						</Scripts>
+						-->
 					</Frame>
 				</Frames>
 			</Frame>
@@ -5238,13 +5410,6 @@
 		</Scripts>
 		<HighlightTexture file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight" alphaMode="ADD" />
 	</Button>
-	<Actor name="ObjectMoverActorTemplate" mixin="ModelSceneActorMixin" virtual="true">
-        <Scripts>
-            <OnModelLoaded>
-				if self.OnModelLoaded then self:OnModelLoaded() end
-			</OnModelLoaded>
-        </Scripts>
-    </Actor>
 	<Frame name="OPNewOptionsFrame" hidden="true" enableMouse="true" moveable="true" clampedToScreen="true" parent="UIParent">
 		<Size x="500" y="600" />
 		<Anchors>
