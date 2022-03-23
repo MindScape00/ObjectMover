@@ -1,4 +1,10 @@
 ObjectMoverChangelog = [[
+#v7.1.1 (March 26th, 2022)
+	
+	- Rotate Sliders now use Client-Side rotation until you let go, then it saves.
+
+## _________________________________________________
+
 #v7.1.0 (February 26th, 2022)
 	
 	- UPDATED: Tint now supports the new |cffFFAAAA!go overlay|r system.

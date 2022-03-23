@@ -842,17 +842,22 @@ local function updateSpellButton()
 	end
 end
 
-function OPRotateObject()
+function OPRotateObject(sendToServer)
 	--if RotateClarifier == false then
 		RotateClarifier = true
 	--end
 	local RotationX = OPRotationSliderX:GetValue()
 	local RotationY = OPRotationSliderY:GetValue()
 	local RotationZ = OPRotationSliderZ:GetValue()
+	local localGUID = tonumber(OPLastSelectedObjectData[1])
 	if RotationX < 0 then RotationX = 0; dprint("RotX < 0, Made 0"); end
 	if RotationY < 0 then RotationY = 0; dprint("RotY < 0, Made 0"); end
 	if RotationZ < 0 then RotationZ = 0; dprint("RotZ < 0, Made 0"); end
-	cmd("go rot "..RotationX.." "..RotationY.." "..RotationZ)
+	dprint("C_Epsilon.RotateObject("..localGUID..","..RotationX..","..RotationY..","..RotationZ..")")
+	C_Epsilon.RotateObject(localGUID ,RotationX, RotationY, RotationZ)
+	if sendToServer then
+		cmd("go rot "..RotationX.." "..RotationY.." "..RotationZ)
+	end	
 end
 
 function roundToNthDecimal(num, n)
