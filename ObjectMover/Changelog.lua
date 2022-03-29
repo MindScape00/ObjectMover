@@ -2,6 +2,8 @@ ObjectMoverChangelog = [[
 #v7.1.1 (March 26th, 2022)
 	
 	- Rotate Sliders now use Client-Side rotation until you let go, then it saves.
+	- You can now toggle the mouse-over Tooltips in the ObjectMover 'Options' tab (right-click the ObjectMover Icon)
+	- Speaking of icons: ObjectMover now has a new Minimap icon, made by Tia!! Look for the new Blue & Gold icon. Thanks T! <3
 
 ## _________________________________________________
 

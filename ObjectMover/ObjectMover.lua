@@ -78,6 +78,7 @@ function loadMasterTable()
 	if isNotDefined(OPMasterTable.Options["locked"]) then OPMasterTable.Options["locked"] = false end
 	if isNotDefined(OPMasterTable.Options["fadePanel"]) then OPMasterTable.Options["fadePanel"] = true end
 	if isNotDefined(OPMasterTable.Options["autoShow"]) then OPMasterTable.Options["autoShow"] = false end
+	if isNotDefined(OPMasterTable.Options["showTooltips"]) then OPMasterTable.Options["showTooltips"] = true end
 	if not OPMasterTable.ParamPresetKeys then OPMasterTable.ParamPresetKeys = {"Building Tile","Fine Positioning"} end
 	if not OPMasterTable.ParamPresetContent then OPMasterTable.ParamPresetContent = {
 		["Building Tile"] = {
@@ -116,12 +117,6 @@ OPFramesAreLoaded = false
 FrameLoadingPoints = 0
 OPSaveType = nil
 ObjectSelectLineCount = 3
-
---[[
-function ClientShowRotate(object,roll,pitch,yaw)
-	object:C_Epsilon.RotateObject(roll,pitch,yaw)
-end
---]]
 
 function OPInitializeLoading()
 	FrameLoadingPoints = FrameLoadingPoints+1
@@ -853,10 +848,12 @@ function OPRotateObject(sendToServer)
 	if RotationX < 0 then RotationX = 0; dprint("RotX < 0, Made 0"); end
 	if RotationY < 0 then RotationY = 0; dprint("RotY < 0, Made 0"); end
 	if RotationZ < 0 then RotationZ = 0; dprint("RotZ < 0, Made 0"); end
-	dprint("C_Epsilon.RotateObject("..localGUID..","..RotationX..","..RotationY..","..RotationZ..")")
-	C_Epsilon.RotateObject(localGUID ,RotationX, RotationY, RotationZ)
+	--C_Epsilon.RotateObject(localGUID ,RotationX, RotationY, RotationZ)
 	if sendToServer then
 		cmd("go rot "..RotationX.." "..RotationY.." "..RotationZ)
+	else
+		--C_Epsilon.RotateObject(localGUID ,RotationX, RotationY, RotationZ)
+		dprint("C_Epsilon.RotateObject("..localGUID..","..RotationX..","..RotationY..","..RotationZ..")")
 	end	
 end
 
@@ -1072,17 +1069,19 @@ hooksecurefunc("UIDropDownMenu_CreateFrames", createFramesHook)
 	local paramPresetDropSelect = CreateFrame("Frame", "paramPresetDropDownMenu", OPPanel2, "UIDropDownMenuTemplate")
 	paramPresetDropSelect:SetPoint("TOP", OPParamSaveButton, "BOTTOM", 2, -2)
 	paramPresetDropSelect:SetScript("OnEnter",function()
-		GameTooltip:SetOwner(paramPresetDropSelect, "ANCHOR_LEFT")
-		paramPresetDropSelect.Timer = C_Timer.NewTimer(0.5,function()
-			GameTooltip:SetText("Select a previously saved parameter pre-set to load.", nil, nil, nil, nil, true)
-			GameTooltip:AddLine(" ")
-			GameTooltip:AddLine("Right-Click a saved Pre-set to Delete it. You must do this twice to confirm deletion to avoid mis-clicks.",1,1,1,true)
-			GameTooltip:Show()
-			end)
+		if OPMasterTable.Options["showTooltips"] == true then
+			GameTooltip:SetOwner(paramPresetDropSelect, "ANCHOR_LEFT")
+			paramPresetDropSelect.Timer = C_Timer.NewTimer(0.5,function()
+				GameTooltip:SetText("Select a previously saved parameter pre-set to load.", nil, nil, nil, nil, true)
+				GameTooltip:AddLine(" ")
+				GameTooltip:AddLine("Right-Click a saved Pre-set to Delete it. You must do this twice to confirm deletion to avoid mis-clicks.",1,1,1,true)
+				GameTooltip:Show()
+				end)
+		end
 	end)
 	paramPresetDropSelect:SetScript("OnLeave",function()
 		GameTooltip_Hide()
-		paramPresetDropSelect.Timer:Cancel()
+		if paramPresetDropSelect.Timer then paramPresetDropSelect.Timer:Cancel() end
 	end)
 	
 	local function ParamPresetOnClick(self)
@@ -1137,17 +1136,19 @@ hooksecurefunc("UIDropDownMenu_CreateFrames", createFramesHook)
 	local rotPresetDropSelect = CreateFrame("Frame", "rotPresetDropDownMenu", OPPanel4Rotation, "UIDropDownMenuTemplate")
 	rotPresetDropSelect:SetPoint("LEFT", OPRotSaveButton, "RIGHT", -15, -1)
 	rotPresetDropSelect:SetScript("OnEnter",function()
-		GameTooltip:SetOwner(rotPresetDropSelect, "ANCHOR_LEFT")
-		rotPresetDropSelect.Timer = C_Timer.NewTimer(0.5,function()
-			GameTooltip:SetText("Select a previously saved rotation pre-set to load.", nil, nil, nil, nil, true)
-			GameTooltip:AddLine(" ")
-			GameTooltip:AddLine("Right-Click a saved Pre-set to Delete it. You must do this twice to confirm deletion to avoid mis-clicks.",1,1,1,true)
-			GameTooltip:Show()
-			end)
+		if OPMasterTable.Options["showTooltips"] == true then
+			GameTooltip:SetOwner(rotPresetDropSelect, "ANCHOR_LEFT")
+			rotPresetDropSelect.Timer = C_Timer.NewTimer(0.5,function()
+				GameTooltip:SetText("Select a previously saved rotation pre-set to load.", nil, nil, nil, nil, true)
+				GameTooltip:AddLine(" ")
+				GameTooltip:AddLine("Right-Click a saved Pre-set to Delete it. You must do this twice to confirm deletion to avoid mis-clicks.",1,1,1,true)
+				GameTooltip:Show()
+				end)
+		end
 	end)
 	rotPresetDropSelect:SetScript("OnLeave",function()
 		GameTooltip_Hide()
-		rotPresetDropSelect.Timer:Cancel()
+		if rotPresetDropSelect.Timer then rotPresetDropSelect.Timer:Cancel() end
 	end)
 	
 	local function RotPresetOnClick(self)
@@ -1169,7 +1170,7 @@ hooksecurefunc("UIDropDownMenu_CreateFrames", createFramesHook)
 				dprint("Tried to load Rot Pre-set: "..self.value)
 				dprint(origx.." | "..origy.." | "..origz)
 				
-				OPRotateObject();
+				OPRotateObject(true);
 				OPIMFUCKINGROTATINGDONTSPAMME = true
 				OPClearRotateChatFilter()
 				--dprint("Loaded the same as whatever it is currently, so we're gonna apply the rotation anyways!")
