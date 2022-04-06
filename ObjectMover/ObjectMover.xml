@@ -4717,525 +4717,6 @@
 					</Button>
 				</Frames>
 			</Frame>
-			<Frame name="OPPanelPopout" hidden="true" movable="true" clampedToScreen="true">
-				<Size x="180" y="345" />
-				<Anchors>
-					<Anchor point="RIGHT" relativePoint="LEFT">
-						<Offset x="0" y="0" />
-					</Anchor>
-				</Anchors>
-				<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-					<BackgroundInsets>
-						<AbsInset left="4" right="4" top="4" bottom="4" />
-					</BackgroundInsets>
-					<TileSize>
-						<AbsValue val="16" />
-					</TileSize>
-					<EdgeSize>
-						<AbsValue val="16" />
-					</EdgeSize>
-					<Color r="0" g="0" b="0" a="0.5"/>
-					<BorderColor r="0.75" g="0.75" b="0.75"/>
-				</Backdrop>
-				<Layers>
-					<Layer>
-						<FontString parentKey="Title" text="Selected Object Info" font="Fonts\FRIZQT__.TTF">
-							<Size x="150" y="12" />
-							<Anchors>
-								<Anchor point="TOP">
-									<Offset y="-6" />
-								</Anchor>
-							</Anchors>
-							<FontHeight val="12" />
-							<Color r="1" g="0.8196079" b="0" />
-							<Shadow>
-								<Offset>
-									<AbsDimension x="1" y="-1" />
-								</Offset>
-								<Color r="0" g="0" b="0" />
-							</Shadow>
-						</FontString>
-					</Layer>
-				</Layers>
-				<Frames>
-					<Frame parentKey="ObjName">
-						<Size x="180" y="37"/>
-						<Anchors>
-							<Anchor point="TOPLEFT">
-								<Offset x="0" y="-24" />
-							</Anchor>
-						</Anchors>
-						<Layers>
-							<Layer>
-								<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="Object Name:">
-									<Anchors>
-										<Anchor point="TOPLEFT">
-											<Offset x="8" y="0" />
-										</Anchor>
-									</Anchors>
-									<FontHeight val="10" />
-									<Color r="1" g="0.8196079" b="0" />
-									<Shadow>
-										<Offset>
-											<AbsDimension x="1" y="-1" />
-										</Offset>
-										<Color r="0" g="0" b="0" />
-									</Shadow>
-								</FontString>
-								<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="No Object Selected" wordwrap="true" nonspacewrap="true" maxlines="2" justifyH="RIGHT">
-									<Size x="164" y="16" />
-									<Anchors>
-										<Anchor relativeKey="$parent.Title" point="TOPLEFT" relativePoint="BOTTOMLEFT">
-											<Offset x="0" y="-3" />
-										</Anchor>
-									</Anchors>
-									<FontHeight val="8" />
-									<Color r="1" g="1" b="1" />
-									<Shadow>
-										<Offset>
-											<AbsDimension x="1" y="-1" />
-										</Offset>
-										<Color r="0" g="0" b="0" />
-									</Shadow>
-								</FontString>
-								<Line name="Divider" thickness="1" >
-									<StartAnchor relativekey="$parent.Text" point="BOTTOMLEFT">
-										<Offset x="0" y="-4"/>
-									</StartAnchor>
-									<EndAnchor relativekey="$parent.Text" point="BOTTOMLEFT">
-										<Offset x="164" y="-4"/>
-									</EndAnchor>
-									<color r="0.66" g="0.66" b="0.66" a="1"/>
-								</Line>
-							</Layer>
-						</Layers>
-					</Frame>
-					<Frame parentKey="ObjEntry">
-						<Size x="180" y="17"/>
-						<Anchors>
-							<Anchor relativeKey="$parent.ObjName" point="TOPLEFT" relativePoint="BOTTOMLEFT">
-								<Offset x="0" y="0" />
-							</Anchor>
-						</Anchors>
-						<Layers>
-							<Layer>
-								<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="Entry:">
-									<Anchors>
-										<Anchor point="TOPLEFT">
-											<Offset x="8" y="0" />
-										</Anchor>
-									</Anchors>
-									<FontHeight val="10" />
-									<Color r="1" g="0.8196079" b="0" />
-									<Shadow>
-										<Offset>
-											<AbsDimension x="1" y="-1" />
-										</Offset>
-										<Color r="0" g="0" b="0" />
-									</Shadow>
-								</FontString>
-								<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="" justifyH="RIGHT">
-									<Size x="130" y="10" />
-									<Anchors>
-										<Anchor relativeKey="$parent.Title" point="TOPLEFT" relativePoint="TOPRIGHT"/>
-										<Anchor relativeKey="$parent.Title" point="TOPRIGHT" relativePoint="TOPLEFT" x="164"/>
-									</Anchors>
-									<FontHeight val="10" />
-									<Color r="1" g="1" b="1" />
-									<Shadow>
-										<Offset>
-											<AbsDimension x="1" y="-1" />
-										</Offset>
-										<Color r="0" g="0" b="0" />
-									</Shadow>
-								</FontString>
-								<Line name="Divider" thickness="1" >
-									<StartAnchor relativekey="$parent.Title" point="BOTTOMLEFT">
-										<Offset x="0" y="-4"/>
-									</StartAnchor>
-									<EndAnchor relativekey="$parent.Title" point="BOTTOMLEFT">
-										<Offset x="164" y="-4"/>
-									</EndAnchor>
-									<color r="0.66" g="0.66" b="0.66" a="1"/>
-								</Line>
-							</Layer>
-						</Layers>
-					</Frame>
-					<Frame parentKey="ObjDisplay">
-						<Size x="180" y="17"/>
-						<Anchors>
-							<Anchor relativeKey="$parent.ObjEntry" point="TOPLEFT" relativePoint="BOTTOMLEFT">
-								<Offset x="0" y="0" />
-							</Anchor>
-						</Anchors>
-						<Layers>
-							<Layer>
-								<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="DisplayID:">
-									<Anchors>
-										<Anchor point="TOPLEFT" x="8"/>
-									</Anchors>
-									<FontHeight val="10" />
-									<Color r="1" g="0.8196079" b="0" />
-									<Shadow>
-										<Offset>
-											<AbsDimension x="1" y="-1" />
-										</Offset>
-										<Color r="0" g="0" b="0" />
-									</Shadow>
-								</FontString>
-								<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="No Data Available" justifyH="RIGHT">
-									<Size y="10" />
-									<Anchors>
-										<Anchor relativeKey="$parent.Title" point="TOPLEFT" relativePoint="TOPRIGHT"/>
-										<Anchor relativeKey="$parent.Title" point="TOPRIGHT" relativePoint="TOPLEFT" x="164"/>
-									</Anchors>
-									<FontHeight val="10" />
-									<Color r="1" g="1" b="1" />
-									<Shadow>
-										<Offset>
-											<AbsDimension x="1" y="-1" />
-										</Offset>
-										<Color r="0" g="0" b="0" />
-									</Shadow>
-								</FontString>
-								<Line name="Divider" thickness="1" >
-									<StartAnchor relativekey="$parent.Title" point="BOTTOMLEFT">
-										<Offset x="0" y="-4"/>
-									</StartAnchor>
-									<EndAnchor relativekey="$parent.Title" point="BOTTOMLEFT">
-										<Offset x="164" y="-4"/>
-									</EndAnchor>
-									<color r="0.66" g="0.66" b="0.66" a="1"/>
-								</Line>
-							</Layer>
-						</Layers>
-					</Frame>
-					<Frame parentKey="ObjType">
-						<Size x="180" y="17"/>
-						<Anchors>
-							<Anchor relativeKey="$parent.ObjDisplay" point="TOPLEFT" relativePoint="BOTTOMLEFT">
-								<Offset x="0" y="0" />
-							</Anchor>
-						</Anchors>
-						<Layers>
-							<Layer>
-								<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="Type:">
-									<Anchors>
-										<Anchor point="TOPLEFT" x="8"/>
-									</Anchors>
-									<FontHeight val="10" />
-									<Color r="1" g="0.8196079" b="0" />
-									<Shadow>
-										<Offset>
-											<AbsDimension x="1" y="-1" />
-										</Offset>
-										<Color r="0" g="0" b="0" />
-									</Shadow>
-								</FontString>
-								<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="No Data Available" justifyH="RIGHT">
-									<Size y="10" />
-									<Anchors>
-										<Anchor relativeKey="$parent.Title" point="TOPLEFT" relativePoint="TOPRIGHT"/>
-										<Anchor relativeKey="$parent.Title" point="TOPRIGHT" relativePoint="TOPLEFT" x="164"/>
-									</Anchors>
-									<FontHeight val="10" />
-									<Color r="1" g="1" b="1" />
-									<Shadow>
-										<Offset>
-											<AbsDimension x="1" y="-1" />
-										</Offset>
-										<Color r="0" g="0" b="0" />
-									</Shadow>
-								</FontString>
-								<Line name="Divider" thickness="1" >
-									<StartAnchor relativekey="$parent.Title" point="BOTTOMLEFT">
-										<Offset x="0" y="-4"/>
-									</StartAnchor>
-									<EndAnchor relativekey="$parent.Title" point="BOTTOMLEFT">
-										<Offset x="164" y="-4"/>
-									</EndAnchor>
-									<color r="0.66" g="0.66" b="0.66" a="1"/>
-								</Line>
-							</Layer>
-						</Layers>
-					</Frame>
-					<Frame parentKey="ObjState">
-						<Size x="180" y="17"/>
-						<Anchors>
-							<Anchor relativeKey="$parent.ObjType" point="TOPLEFT" relativePoint="BOTTOMLEFT">
-								<Offset x="0" y="0" />
-							</Anchor>
-						</Anchors>
-						<Layers>
-							<Layer>
-								<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="State:">
-									<Anchors>
-										<Anchor point="TOPLEFT" x="8"/>
-									</Anchors>
-									<FontHeight val="10" />
-									<Color r="1" g="0.8196079" b="0" />
-									<Shadow>
-										<Offset>
-											<AbsDimension x="1" y="-1" />
-										</Offset>
-										<Color r="0" g="0" b="0" />
-									</Shadow>
-								</FontString>
-								<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="No Data Available" justifyH="RIGHT">
-									<Size y="10" />
-									<Anchors>
-										<Anchor relativeKey="$parent.Title" point="TOPLEFT" relativePoint="TOPRIGHT"/>
-										<Anchor relativeKey="$parent.Title" point="TOPRIGHT" relativePoint="TOPLEFT" x="164"/>
-									</Anchors>
-									<FontHeight val="10" />
-									<Color r="1" g="1" b="1" />
-									<Shadow>
-										<Offset>
-											<AbsDimension x="1" y="-1" />
-										</Offset>
-										<Color r="0" g="0" b="0" />
-									</Shadow>
-								</FontString>
-								<Line name="Divider" thickness="1" >
-									<StartAnchor relativekey="$parent.Title" point="BOTTOMLEFT">
-										<Offset x="0" y="-4"/>
-									</StartAnchor>
-									<EndAnchor relativekey="$parent.Title" point="BOTTOMLEFT">
-										<Offset x="164" y="-4"/>
-									</EndAnchor>
-									<color r="0.66" g="0.66" b="0.66" a="1"/>
-								</Line>
-							</Layer>
-						</Layers>
-					</Frame>
-					<Frame parentKey="ObjAnim">
-						<Size x="180" y="17"/>
-						<Anchors>
-							<Anchor relativeKey="$parent.ObjState" point="TOPLEFT" relativePoint="BOTTOMLEFT">
-								<Offset x="0" y="0" />
-							</Anchor>
-						</Anchors>
-						<Layers>
-							<Layer>
-								<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="Anim:">
-									<Anchors>
-										<Anchor point="TOPLEFT" x="8"/>
-									</Anchors>
-									<FontHeight val="10" />
-									<Color r="1" g="0.8196079" b="0" />
-									<Shadow>
-										<Offset>
-											<AbsDimension x="1" y="-1" />
-										</Offset>
-										<Color r="0" g="0" b="0" />
-									</Shadow>
-								</FontString>
-								<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="No Data Available" justifyH="RIGHT">
-									<Size y="10" />
-									<Anchors>
-										<Anchor relativeKey="$parent.Title" point="TOPLEFT" relativePoint="TOPRIGHT"/>
-										<Anchor relativeKey="$parent.Title" point="TOPRIGHT" relativePoint="TOPLEFT" x="164"/>
-									</Anchors>
-									<FontHeight val="10" />
-									<Color r="1" g="1" b="1" />
-									<Shadow>
-										<Offset>
-											<AbsDimension x="1" y="-1" />
-										</Offset>
-										<Color r="0" g="0" b="0" />
-									</Shadow>
-								</FontString>
-								<Line name="Divider" thickness="1" >
-									<StartAnchor relativekey="$parent.Title" point="BOTTOMLEFT">
-										<Offset x="0" y="-4"/>
-									</StartAnchor>
-									<EndAnchor relativekey="$parent.Title" point="BOTTOMLEFT">
-										<Offset x="164" y="-4"/>
-									</EndAnchor>
-									<color r="0.66" g="0.66" b="0.66" a="1"/>
-								</Line>
-							</Layer>
-						</Layers>
-					</Frame>
-					<Frame parentKey="ObjScale">
-						<Size x="180" y="17"/>
-						<Anchors>
-							<Anchor relativeKey="$parent.ObjAnim" point="TOPLEFT" relativePoint="BOTTOMLEFT">
-								<Offset x="0" y="0" />
-							</Anchor>
-						</Anchors>
-						<Layers>
-							<Layer>
-								<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="Scale:">
-									<Anchors>
-										<Anchor point="TOPLEFT" x="8"/>
-									</Anchors>
-									<FontHeight val="10" />
-									<Color r="1" g="0.8196079" b="0" />
-									<Shadow>
-										<Offset>
-											<AbsDimension x="1" y="-1" />
-										</Offset>
-										<Color r="0" g="0" b="0" />
-									</Shadow>
-								</FontString>
-								<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="No Data Available" justifyH="RIGHT">
-									<Size y="10" />
-									<Anchors>
-										<Anchor relativeKey="$parent.Title" point="TOPLEFT" relativePoint="TOPRIGHT"/>
-										<Anchor relativeKey="$parent.Title" point="TOPRIGHT" relativePoint="TOPLEFT" x="164"/>
-									</Anchors>
-									<FontHeight val="10" />
-									<Color r="1" g="1" b="1" />
-									<Shadow>
-										<Offset>
-											<AbsDimension x="1" y="-1" />
-										</Offset>
-										<Color r="0" g="0" b="0" />
-									</Shadow>
-								</FontString>
-								<Line name="Divider" thickness="1" >
-									<StartAnchor relativekey="$parent.Title" point="BOTTOMLEFT">
-										<Offset x="0" y="-4"/>
-									</StartAnchor>
-									<EndAnchor relativekey="$parent.Title" point="BOTTOMLEFT">
-										<Offset x="164" y="-4"/>
-									</EndAnchor>
-									<color r="0.66" g="0.66" b="0.66" a="1"/>
-								</Line>
-							</Layer>
-						</Layers>
-					</Frame>
-					<Frame parentKey="ObjDimensions" enableMouse="true">
-						<Size x="180" y="17"/>
-						<Anchors>
-							<Anchor relativeKey="$parent.ObjScale" point="TOPLEFT" relativePoint="BOTTOMLEFT">
-								<Offset x="0" y="0" />
-							</Anchor>
-						</Anchors>
-						<Layers>
-							<Layer>
-								<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="Dimensions (LxWxH):">
-									<Anchors>
-										<Anchor point="TOPLEFT" x="8"/>
-									</Anchors>
-									<FontHeight val="10" />
-									<Color r="1" g="0.8196079" b="0" />
-									<Shadow>
-										<Offset>
-											<AbsDimension x="1" y="-1" />
-										</Offset>
-										<Color r="0" g="0" b="0" />
-									</Shadow>
-								</FontString>
-								<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="No Data Available" justifyH="RIGHT">
-									<Size y="10" />
-									<Anchors>
-										<Anchor relativeKey="$parent.Title" point="TOPLEFT" relativePoint="BOTTOMLEFT"/>
-										<Anchor relativeKey="$parent.Title" point="TOPRIGHT" relativePoint="BOTTOMLEFT" x="164"/>
-									</Anchors>
-									<FontHeight val="10" />
-									<Color r="1" g="1" b="1" />
-									<Shadow>
-										<Offset>
-											<AbsDimension x="1" y="-1" />
-										</Offset>
-										<Color r="0" g="0" b="0" />
-									</Shadow>
-								</FontString>
-								<Line name="Divider" thickness="1" >
-									<StartAnchor relativekey="$parent.Text" point="BOTTOMLEFT">
-										<Offset x="0" y="-4"/>
-									</StartAnchor>
-									<EndAnchor relativekey="$parent.Text" point="BOTTOMLEFT">
-										<Offset x="164" y="-4"/>
-									</EndAnchor>
-									<color r="0.66" g="0.66" b="0.66" a="1"/>
-								</Line>
-							</Layer>
-						</Layers>
-						<Scripts>
-							<OnEnter>
-								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-								self.Timer = C_Timer.NewTimer(0.5,function()
-									GameTooltip:SetText("Dimensions:", nil, nil, nil, nil, true)
-									GameTooltip:AddLine(" ")
-									GameTooltip:AddLine("X: "..(OPSelectedObjectDimX or "N/A"),1,1,1,true)
-									GameTooltip:AddLine("Y: "..(OPSelectedObjectDimY or "N/A"),1,1,1,true)
-									GameTooltip:AddLine("Z: "..(OPSelectedObjectDimZ or "N/A"),1,1,1,true)
-									GameTooltip:Show()
-								end)
-							</OnEnter>
-							<OnLeave>
-								GameTooltip_Hide()
-								if self.Timer then self.Timer:Cancel() end
-							</OnLeave>
-						</Scripts>
-					</Frame>
-					<Frame parentKey="ObjPreview">
-						<Size x="180" y="160"/>
-						<Anchors>
-							<Anchor point="BOTTOMLEFT">
-								<Offset x="0" y="0" />
-							</Anchor>
-						</Anchors>
-						<Layers>
-							<Layer>
-								<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="Preview:">
-									<Anchors>
-										<Anchor point="TOPLEFT" x="8" y="-4"/>
-									</Anchors>
-									<FontHeight val="10" />
-									<Color r="1" g="0.8196079" b="0" />
-									<Shadow>
-										<Offset>
-											<AbsDimension x="1" y="-1" />
-										</Offset>
-										<Color r="0" g="0" b="0" />
-									</Shadow>
-								</FontString>
-							</Layer>
-						</Layers>
-						<Frames>
-							<ModelScene parentKey="Scene" mixin="ModelSceneMixin" enableMouse="true">
-								<Size x="170" y="154"/>
-								<Anchors>
-									<Anchor point="BOTTOMLEFT" x="5" y="4"/>
-								</Anchors>
-								<Actors>
-									<Actor parentKey="Actor">
-										<Scripts>
-											<OnModelLoaded function="OPObjectPreviewerActor_OnModelLoaded"/>
-										</Scripts>
-									</Actor>
-								</Actors>
-								<Scripts>
-									<OnLoad inherit="prepend" function="OPObjectPreviewer_OnLoad"/>
-									<OnUpdate inherit="prepend" function="OPObjectPreviewer_OnUpdate"/>
-									<OnMouseWheel inherit="prepend" function="OPObjectPreviewer_OnMouseWheel"/>
-									<OnMouseUp inherit="prepend" function="OPObjectPreviewer_OnClick"/>
-								</Scripts>
-							</ModelScene>
-						</Frames>
-						<!--
-						<Scripts>
-							<OnLoad function="OPObjectPreviewGenerateFrame"/>
-						</Scripts>
-						-->
-					</Frame>
-				</Frames>
-				<Scripts>
-					<OnLoad>
-						self:RegisterForDrag("LeftButton");
-					</OnLoad>
-					<OnDragStart>
-						if not OPMasterTable.Options["locked"] then
-							self:StartMoving();
-						end
-					</OnDragStart>
-					<OnDragStop>self:StopMovingOrSizing();</OnDragStop>
-				</Scripts>
-			</Frame>
 			<Button name="$parentTab1" inherits="CharacterFrameTabButtonTemplate" id="1" text="Rotation">
 				<Anchors>
 					<Anchor point="CENTER" relativePoint="BOTTOMLEFT">
@@ -5480,6 +4961,583 @@
 				end
 				self:SetHeight(355*n)
 			</OnSizeChanged>
+		</Scripts>
+	</Frame>
+	<Frame name="OPPanelPopout" hidden="true" movable="true" clampedToScreen="true">
+		<Size x="180" y="345" />
+		<Anchors>
+			<Anchor point="RIGHT" relativeTo="OPMainFrame" relativePoint="LEFT">
+				<Offset x="0" y="0" />
+			</Anchor>
+		</Anchors>
+		<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+			<BackgroundInsets>
+				<AbsInset left="4" right="4" top="4" bottom="4" />
+			</BackgroundInsets>
+			<TileSize>
+				<AbsValue val="16" />
+			</TileSize>
+			<EdgeSize>
+				<AbsValue val="16" />
+			</EdgeSize>
+			<Color r="0" g="0" b="0" a="0.5"/>
+			<BorderColor r="0.75" g="0.75" b="0.75"/>
+		</Backdrop>
+		<Layers>
+			<Layer>
+				<FontString parentKey="Title" text="Selected Object Info" font="Fonts\FRIZQT__.TTF">
+					<Size x="150" y="12" />
+					<Anchors>
+						<Anchor point="TOP">
+							<Offset y="-6" />
+						</Anchor>
+					</Anchors>
+					<FontHeight val="12" />
+					<Color r="1" g="0.8196079" b="0" />
+					<Shadow>
+						<Offset>
+							<AbsDimension x="1" y="-1" />
+						</Offset>
+						<Color r="0" g="0" b="0" />
+					</Shadow>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button parentKey="CloseButton" inherits="UIPanelCloseButton" text="Button1">
+				<Size x="25" y="25" />
+				<Anchors>
+					<Anchor point="TOPRIGHT">
+						<Offset x="2" y="2" />
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						HideParentPanel(self);
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Frame parentKey="ObjName">
+				<Size x="180" y="37"/>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="0" y="-24" />
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer>
+						<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="Object Name:">
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset x="8" y="0" />
+								</Anchor>
+							</Anchors>
+							<FontHeight val="10" />
+							<Color r="1" g="0.8196079" b="0" />
+							<Shadow>
+								<Offset>
+									<AbsDimension x="1" y="-1" />
+								</Offset>
+								<Color r="0" g="0" b="0" />
+							</Shadow>
+						</FontString>
+						<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="No Object Selected" wordwrap="true" nonspacewrap="true" maxlines="2" justifyH="RIGHT">
+							<Size x="164" y="16" />
+							<Anchors>
+								<Anchor relativeKey="$parent.Title" point="TOPLEFT" relativePoint="BOTTOMLEFT">
+									<Offset x="0" y="-3" />
+								</Anchor>
+							</Anchors>
+							<FontHeight val="8" />
+							<Color r="1" g="1" b="1" />
+							<Shadow>
+								<Offset>
+									<AbsDimension x="1" y="-1" />
+								</Offset>
+								<Color r="0" g="0" b="0" />
+							</Shadow>
+						</FontString>
+						<Line name="Divider" thickness="1" >
+							<StartAnchor relativekey="$parent.Text" point="BOTTOMLEFT">
+								<Offset x="0" y="-4"/>
+							</StartAnchor>
+							<EndAnchor relativekey="$parent.Text" point="BOTTOMLEFT">
+								<Offset x="164" y="-4"/>
+							</EndAnchor>
+							<color r="0.66" g="0.66" b="0.66" a="1"/>
+						</Line>
+					</Layer>
+				</Layers>
+			</Frame>
+			<Frame parentKey="ObjEntry">
+				<Size x="180" y="17"/>
+				<Anchors>
+					<Anchor relativeKey="$parent.ObjName" point="TOPLEFT" relativePoint="BOTTOMLEFT">
+						<Offset x="0" y="0" />
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer>
+						<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="Entry:">
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset x="8" y="0" />
+								</Anchor>
+							</Anchors>
+							<FontHeight val="10" />
+							<Color r="1" g="0.8196079" b="0" />
+							<Shadow>
+								<Offset>
+									<AbsDimension x="1" y="-1" />
+								</Offset>
+								<Color r="0" g="0" b="0" />
+							</Shadow>
+						</FontString>
+						<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="" justifyH="RIGHT">
+							<Size x="130" y="10" />
+							<Anchors>
+								<Anchor relativeKey="$parent.Title" point="TOPLEFT" relativePoint="TOPRIGHT"/>
+								<Anchor relativeKey="$parent.Title" point="TOPRIGHT" relativePoint="TOPLEFT" x="164"/>
+							</Anchors>
+							<FontHeight val="10" />
+							<Color r="1" g="1" b="1" />
+							<Shadow>
+								<Offset>
+									<AbsDimension x="1" y="-1" />
+								</Offset>
+								<Color r="0" g="0" b="0" />
+							</Shadow>
+						</FontString>
+						<Line name="Divider" thickness="1" >
+							<StartAnchor relativekey="$parent.Title" point="BOTTOMLEFT">
+								<Offset x="0" y="-4"/>
+							</StartAnchor>
+							<EndAnchor relativekey="$parent.Title" point="BOTTOMLEFT">
+								<Offset x="164" y="-4"/>
+							</EndAnchor>
+							<color r="0.66" g="0.66" b="0.66" a="1"/>
+						</Line>
+					</Layer>
+				</Layers>
+			</Frame>
+			<Frame parentKey="ObjDisplay">
+				<Size x="180" y="17"/>
+				<Anchors>
+					<Anchor relativeKey="$parent.ObjEntry" point="TOPLEFT" relativePoint="BOTTOMLEFT">
+						<Offset x="0" y="0" />
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer>
+						<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="DisplayID:">
+							<Anchors>
+								<Anchor point="TOPLEFT" x="8"/>
+							</Anchors>
+							<FontHeight val="10" />
+							<Color r="1" g="0.8196079" b="0" />
+							<Shadow>
+								<Offset>
+									<AbsDimension x="1" y="-1" />
+								</Offset>
+								<Color r="0" g="0" b="0" />
+							</Shadow>
+						</FontString>
+						<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="No Data Available" justifyH="RIGHT">
+							<Size y="10" />
+							<Anchors>
+								<Anchor relativeKey="$parent.Title" point="TOPLEFT" relativePoint="TOPRIGHT"/>
+								<Anchor relativeKey="$parent.Title" point="TOPRIGHT" relativePoint="TOPLEFT" x="164"/>
+							</Anchors>
+							<FontHeight val="10" />
+							<Color r="1" g="1" b="1" />
+							<Shadow>
+								<Offset>
+									<AbsDimension x="1" y="-1" />
+								</Offset>
+								<Color r="0" g="0" b="0" />
+							</Shadow>
+						</FontString>
+						<Line name="Divider" thickness="1" >
+							<StartAnchor relativekey="$parent.Title" point="BOTTOMLEFT">
+								<Offset x="0" y="-4"/>
+							</StartAnchor>
+							<EndAnchor relativekey="$parent.Title" point="BOTTOMLEFT">
+								<Offset x="164" y="-4"/>
+							</EndAnchor>
+							<color r="0.66" g="0.66" b="0.66" a="1"/>
+						</Line>
+					</Layer>
+				</Layers>
+			</Frame>
+			<Frame parentKey="ObjType">
+				<Size x="180" y="17"/>
+				<Anchors>
+					<Anchor relativeKey="$parent.ObjDisplay" point="TOPLEFT" relativePoint="BOTTOMLEFT">
+						<Offset x="0" y="0" />
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer>
+						<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="Type:">
+							<Anchors>
+								<Anchor point="TOPLEFT" x="8"/>
+							</Anchors>
+							<FontHeight val="10" />
+							<Color r="1" g="0.8196079" b="0" />
+							<Shadow>
+								<Offset>
+									<AbsDimension x="1" y="-1" />
+								</Offset>
+								<Color r="0" g="0" b="0" />
+							</Shadow>
+						</FontString>
+						<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="No Data Available" justifyH="RIGHT">
+							<Size y="10" />
+							<Anchors>
+								<Anchor relativeKey="$parent.Title" point="TOPLEFT" relativePoint="TOPRIGHT"/>
+								<Anchor relativeKey="$parent.Title" point="TOPRIGHT" relativePoint="TOPLEFT" x="164"/>
+							</Anchors>
+							<FontHeight val="10" />
+							<Color r="1" g="1" b="1" />
+							<Shadow>
+								<Offset>
+									<AbsDimension x="1" y="-1" />
+								</Offset>
+								<Color r="0" g="0" b="0" />
+							</Shadow>
+						</FontString>
+						<Line name="Divider" thickness="1" >
+							<StartAnchor relativekey="$parent.Title" point="BOTTOMLEFT">
+								<Offset x="0" y="-4"/>
+							</StartAnchor>
+							<EndAnchor relativekey="$parent.Title" point="BOTTOMLEFT">
+								<Offset x="164" y="-4"/>
+							</EndAnchor>
+							<color r="0.66" g="0.66" b="0.66" a="1"/>
+						</Line>
+					</Layer>
+				</Layers>
+			</Frame>
+			<Frame parentKey="ObjState">
+				<Size x="180" y="17"/>
+				<Anchors>
+					<Anchor relativeKey="$parent.ObjType" point="TOPLEFT" relativePoint="BOTTOMLEFT">
+						<Offset x="0" y="0" />
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer>
+						<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="State:">
+							<Anchors>
+								<Anchor point="TOPLEFT" x="8"/>
+							</Anchors>
+							<FontHeight val="10" />
+							<Color r="1" g="0.8196079" b="0" />
+							<Shadow>
+								<Offset>
+									<AbsDimension x="1" y="-1" />
+								</Offset>
+								<Color r="0" g="0" b="0" />
+							</Shadow>
+						</FontString>
+						<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="No Data Available" justifyH="RIGHT">
+							<Size y="10" />
+							<Anchors>
+								<Anchor relativeKey="$parent.Title" point="TOPLEFT" relativePoint="TOPRIGHT"/>
+								<Anchor relativeKey="$parent.Title" point="TOPRIGHT" relativePoint="TOPLEFT" x="164"/>
+							</Anchors>
+							<FontHeight val="10" />
+							<Color r="1" g="1" b="1" />
+							<Shadow>
+								<Offset>
+									<AbsDimension x="1" y="-1" />
+								</Offset>
+								<Color r="0" g="0" b="0" />
+							</Shadow>
+						</FontString>
+						<Line name="Divider" thickness="1" >
+							<StartAnchor relativekey="$parent.Title" point="BOTTOMLEFT">
+								<Offset x="0" y="-4"/>
+							</StartAnchor>
+							<EndAnchor relativekey="$parent.Title" point="BOTTOMLEFT">
+								<Offset x="164" y="-4"/>
+							</EndAnchor>
+							<color r="0.66" g="0.66" b="0.66" a="1"/>
+						</Line>
+					</Layer>
+				</Layers>
+			</Frame>
+			<Frame parentKey="ObjAnim">
+				<Size x="180" y="17"/>
+				<Anchors>
+					<Anchor relativeKey="$parent.ObjState" point="TOPLEFT" relativePoint="BOTTOMLEFT">
+						<Offset x="0" y="0" />
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer>
+						<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="Anim:">
+							<Anchors>
+								<Anchor point="TOPLEFT" x="8"/>
+							</Anchors>
+							<FontHeight val="10" />
+							<Color r="1" g="0.8196079" b="0" />
+							<Shadow>
+								<Offset>
+									<AbsDimension x="1" y="-1" />
+								</Offset>
+								<Color r="0" g="0" b="0" />
+							</Shadow>
+						</FontString>
+						<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="No Data Available" justifyH="RIGHT">
+							<Size y="10" />
+							<Anchors>
+								<Anchor relativeKey="$parent.Title" point="TOPLEFT" relativePoint="TOPRIGHT"/>
+								<Anchor relativeKey="$parent.Title" point="TOPRIGHT" relativePoint="TOPLEFT" x="164"/>
+							</Anchors>
+							<FontHeight val="10" />
+							<Color r="1" g="1" b="1" />
+							<Shadow>
+								<Offset>
+									<AbsDimension x="1" y="-1" />
+								</Offset>
+								<Color r="0" g="0" b="0" />
+							</Shadow>
+						</FontString>
+						<Line name="Divider" thickness="1" >
+							<StartAnchor relativekey="$parent.Title" point="BOTTOMLEFT">
+								<Offset x="0" y="-4"/>
+							</StartAnchor>
+							<EndAnchor relativekey="$parent.Title" point="BOTTOMLEFT">
+								<Offset x="164" y="-4"/>
+							</EndAnchor>
+							<color r="0.66" g="0.66" b="0.66" a="1"/>
+						</Line>
+					</Layer>
+				</Layers>
+			</Frame>
+			<Frame parentKey="ObjScale">
+				<Size x="180" y="17"/>
+				<Anchors>
+					<Anchor relativeKey="$parent.ObjAnim" point="TOPLEFT" relativePoint="BOTTOMLEFT">
+						<Offset x="0" y="0" />
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer>
+						<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="Scale:">
+							<Anchors>
+								<Anchor point="TOPLEFT" x="8"/>
+							</Anchors>
+							<FontHeight val="10" />
+							<Color r="1" g="0.8196079" b="0" />
+							<Shadow>
+								<Offset>
+									<AbsDimension x="1" y="-1" />
+								</Offset>
+								<Color r="0" g="0" b="0" />
+							</Shadow>
+						</FontString>
+						<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="No Data Available" justifyH="RIGHT">
+							<Size y="10" />
+							<Anchors>
+								<Anchor relativeKey="$parent.Title" point="TOPLEFT" relativePoint="TOPRIGHT"/>
+								<Anchor relativeKey="$parent.Title" point="TOPRIGHT" relativePoint="TOPLEFT" x="164"/>
+							</Anchors>
+							<FontHeight val="10" />
+							<Color r="1" g="1" b="1" />
+							<Shadow>
+								<Offset>
+									<AbsDimension x="1" y="-1" />
+								</Offset>
+								<Color r="0" g="0" b="0" />
+							</Shadow>
+						</FontString>
+						<Line name="Divider" thickness="1" >
+							<StartAnchor relativekey="$parent.Title" point="BOTTOMLEFT">
+								<Offset x="0" y="-4"/>
+							</StartAnchor>
+							<EndAnchor relativekey="$parent.Title" point="BOTTOMLEFT">
+								<Offset x="164" y="-4"/>
+							</EndAnchor>
+							<color r="0.66" g="0.66" b="0.66" a="1"/>
+						</Line>
+					</Layer>
+				</Layers>
+			</Frame>
+			<Frame parentKey="ObjDimensions" enableMouse="true">
+				<Size x="180" y="17"/>
+				<Anchors>
+					<Anchor relativeKey="$parent.ObjScale" point="TOPLEFT" relativePoint="BOTTOMLEFT">
+						<Offset x="0" y="0" />
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer>
+						<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="Dimensions (LxWxH):">
+							<Anchors>
+								<Anchor point="TOPLEFT" x="8"/>
+							</Anchors>
+							<FontHeight val="10" />
+							<Color r="1" g="0.8196079" b="0" />
+							<Shadow>
+								<Offset>
+									<AbsDimension x="1" y="-1" />
+								</Offset>
+								<Color r="0" g="0" b="0" />
+							</Shadow>
+						</FontString>
+						<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="No Data Available" justifyH="RIGHT">
+							<Size y="10" />
+							<Anchors>
+								<Anchor relativeKey="$parent.Title" point="TOPLEFT" relativePoint="BOTTOMLEFT"/>
+								<Anchor relativeKey="$parent.Title" point="TOPRIGHT" relativePoint="BOTTOMLEFT" x="164"/>
+							</Anchors>
+							<FontHeight val="10" />
+							<Color r="1" g="1" b="1" />
+							<Shadow>
+								<Offset>
+									<AbsDimension x="1" y="-1" />
+								</Offset>
+								<Color r="0" g="0" b="0" />
+							</Shadow>
+						</FontString>
+						<Line name="Divider" thickness="1" >
+							<StartAnchor relativekey="$parent.Text" point="BOTTOMLEFT">
+								<Offset x="0" y="-4"/>
+							</StartAnchor>
+							<EndAnchor relativekey="$parent.Text" point="BOTTOMLEFT">
+								<Offset x="164" y="-4"/>
+							</EndAnchor>
+							<color r="0.66" g="0.66" b="0.66" a="1"/>
+						</Line>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnEnter>
+						GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+						self.Timer = C_Timer.NewTimer(0.5,function()
+							GameTooltip:SetText("Dimensions:", nil, nil, nil, nil, true)
+							GameTooltip:AddLine(" ")
+							GameTooltip:AddLine("X: "..(OPSelectedObjectDimX or "N/A"),1,1,1,true)
+							GameTooltip:AddLine("Y: "..(OPSelectedObjectDimY or "N/A"),1,1,1,true)
+							GameTooltip:AddLine("Z: "..(OPSelectedObjectDimZ or "N/A"),1,1,1,true)
+							GameTooltip:Show()
+						end)
+					</OnEnter>
+					<OnLeave>
+						GameTooltip_Hide()
+						if self.Timer then self.Timer:Cancel() end
+					</OnLeave>
+				</Scripts>
+			</Frame>
+			<Frame parentKey="ObjPreview">
+				<Size x="180" y="160"/>
+				<Anchors>
+					<Anchor point="BOTTOMLEFT">
+						<Offset x="0" y="0" />
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer>
+						<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="Preview:">
+							<Anchors>
+								<Anchor point="TOPLEFT" x="8" y="-4"/>
+							</Anchors>
+							<FontHeight val="10" />
+							<Color r="1" g="0.8196079" b="0" />
+							<Shadow>
+								<Offset>
+									<AbsDimension x="1" y="-1" />
+								</Offset>
+								<Color r="0" g="0" b="0" />
+							</Shadow>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Frames>
+					<ModelScene parentKey="Scene" mixin="ModelSceneMixin" enableMouse="true">
+						<Size x="170" y="154"/>
+						<Anchors>
+							<Anchor point="BOTTOMLEFT" x="5" y="4"/>
+						</Anchors>
+						<Actors>
+							<Actor parentKey="Actor">
+								<Scripts>
+									<OnModelLoaded function="OPObjectPreviewerActor_OnModelLoaded"/>
+								</Scripts>
+							</Actor>
+						</Actors>
+						<Scripts>
+							<OnLoad inherit="prepend" function="OPObjectPreviewer_OnLoad"/>
+							<OnUpdate inherit="prepend" function="OPObjectPreviewer_OnUpdate"/>
+							<OnMouseWheel inherit="prepend" function="OPObjectPreviewer_OnMouseWheel"/>
+							<OnMouseUp inherit="prepend" function="OPObjectPreviewer_OnClick"/>
+						</Scripts>
+					</ModelScene>
+				</Frames>
+				<!--
+				<Scripts>
+					<OnLoad function="OPObjectPreviewGenerateFrame"/>
+				</Scripts>
+				-->
+			</Frame>
+			<Button parentKey="ResizeButton" enableMouse="true" text="Resize" hidden="false" registerForClicks="RightButtonUp">
+				<Size>
+					<AbsDimension x="16" y="16"/>
+				</Size>
+				<NormalTexture file="Interface\ChatFrame\UI-ChatIM-SizeGrabber-Up"/>
+				<PushedTexture file="Interface\ChatFrame\UI-ChatIM-SizeGrabber-Down"/>
+				<HighlightTexture file="Interface\ChatFrame\UI-ChatIM-SizeGrabber-Highlight" alphaMode="ADD"/>
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT">
+						<Offset x="-4" y="5" />
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						if button == "RightButton" then
+							self:GetParent():SetWidth(355)
+						end
+					</OnClick>
+					<OnMouseDown>
+						local parent = self:GetParent()
+						self.isScaling = true
+						parent:StartSizing("BOTTOMRIGHT")
+					</OnMouseDown>
+					<OnMouseUp>
+						local parent = self:GetParent()
+						self.isScaling = false
+						parent:StopMovingOrSizing()
+					</OnMouseUp>
+					<OnEnter>
+					if OPMasterTable.Options["showTooltips"] == true then
+						GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+						self.Timer = C_Timer.NewTimer(0.5,function()
+							GameTooltip:SetText("Drag to resize the UI.", nil, nil, nil, nil, true)
+							GameTooltip:AddLine(" ")
+							GameTooltip:AddLine("Right Click to reset the size to default.",1,1,1,true)
+							GameTooltip:Show()
+						end)
+					end
+					</OnEnter>
+					<OnLeave>
+						GameTooltip_Hide()
+						if self.Timer then self.Timer:Cancel() end
+					</OnLeave>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnLoad>
+				self:RegisterForDrag("LeftButton");
+			</OnLoad>
+			<OnDragStart>
+				if not OPMasterTable.Options["locked"] then
+					self:StartMoving();
+				end
+			</OnDragStart>
+			<OnDragStop>self:StopMovingOrSizing();</OnDragStop>
 		</Scripts>
 	</Frame>
 	<Frame name="OPMainSaveFrame" frameStrata="DIALOG" hidden="true" enableMouse="true" clampedToScreen="true">
