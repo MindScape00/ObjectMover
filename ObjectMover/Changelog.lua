@@ -1,9 +1,14 @@
 ObjectMoverChangelog = [[
 #v7.1.1 (March 26th, 2022)
 	
-	- Rotate Sliders now use Client-Side rotation until you let go, then it saves.
+	- Rotate Sliders now use Client-Side rotation until you let go, then it saves - others will only see the final rotation after it saves.
 	- You can now toggle the mouse-over Tooltips in the ObjectMover 'Options' tab (right-click the ObjectMover Icon)
 	- Speaking of icons: ObjectMover now has a new Minimap icon, made by Tia!! Look for the new Blue & Gold icon. Thanks T! <3
+	- Extended Information (i) panel renamed to "Selected Object Info" to better describe what it shows. 
+	- - This panel can now be moved independent of the main "mover" panel. This will later be re-sizeable & showable by itself also.
+	- - Added more object data to the Selected Object Info panel (Scale & Object Dimensions).
+	- - - Object Dimensions will show a pop-up of the non-rounded dimensions if you hover over it. Does not turn off with the Tooltip toggle.
+	- - Object Preview is now able to be zoomed using the mouse-wheel.
 
 ## _________________________________________________
 

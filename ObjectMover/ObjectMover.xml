@@ -427,7 +427,7 @@
 							if OPMasterTable.Options["showTooltips"] == true then
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
 								self.Timer = C_Timer.NewTimer(0.5,function()
-									GameTooltip:SetText("Shows an extended panel for Object Information.", nil, nil, nil, nil, true)
+									GameTooltip:SetText("Shows an extended panel for Object Information on your currently selected object.", nil, nil, nil, nil, true)
 									GameTooltip:Show()
 								end)
 							end
@@ -439,7 +439,6 @@
 							<OnClick>
 								if OPPanelPopout:IsShown() then
 									OPPanelPopout:Hide()
-									-- TO DO: Add a saved variable if it should be shown from last session
 								else
 									OPPanelPopout:Show()
 								end
@@ -481,7 +480,7 @@
 								<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="Object ID:">
 									<Anchors>
 										<Anchor point="RIGHT" relativePoint="LEFT">
-											<Offset x="-3" />
+											<Offset x="-1" />
 										</Anchor>
 									</Anchors>
 									<FontHeight val="10" />
@@ -566,10 +565,10 @@
 						</Backdrop>
 						<Layers>
 							<Layer>
-								<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="Length:">
+								<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="Length (L):">
 									<Anchors>
 										<Anchor point="RIGHT" relativePoint="LEFT">
-											<Offset x="-3" />
+											<Offset x="-1" />
 										</Anchor>
 									</Anchors>
 									<FontHeight val="10" />
@@ -656,10 +655,10 @@
 						</Backdrop>
 						<Layers>
 							<Layer>
-								<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="Width:">
+								<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="Width (W):">
 									<Anchors>
 										<Anchor point="RIGHT" relativePoint="LEFT">
-											<Offset x="-3" />
+											<Offset x="-1" />
 										</Anchor>
 									</Anchors>
 									<FontHeight val="10" />
@@ -742,10 +741,10 @@
 						</Backdrop>
 						<Layers>
 							<Layer>
-								<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="Height:">
+								<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="Height (H):">
 									<Anchors>
 										<Anchor point="RIGHT" relativePoint="LEFT">
-											<Offset x="-3" />
+											<Offset x="-1" />
 										</Anchor>
 									</Anchors>
 									<FontHeight val="10" />
@@ -835,7 +834,7 @@
 								<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="Scale:">
 									<Anchors>
 										<Anchor point="RIGHT" relativePoint="LEFT">
-											<Offset x="-3" />
+											<Offset x="-1" />
 										</Anchor>
 									</Anchors>
 									<FontHeight val="10" />
@@ -4718,7 +4717,7 @@
 					</Button>
 				</Frames>
 			</Frame>
-			<Frame name="OPPanelPopout" hidden="true">
+			<Frame name="OPPanelPopout" hidden="true" movable="true" clampedToScreen="true">
 				<Size x="180" y="345" />
 				<Anchors>
 					<Anchor point="RIGHT" relativePoint="LEFT">
@@ -4740,7 +4739,7 @@
 				</Backdrop>
 				<Layers>
 					<Layer>
-						<FontString parentKey="Title" text="Extended Information" font="Fonts\FRIZQT__.TTF">
+						<FontString parentKey="Title" text="Selected Object Info" font="Fonts\FRIZQT__.TTF">
 							<Size x="150" y="12" />
 							<Anchors>
 								<Anchor point="TOP">
@@ -5058,8 +5057,123 @@
 							</Layer>
 						</Layers>
 					</Frame>
+					<Frame parentKey="ObjScale">
+						<Size x="180" y="17"/>
+						<Anchors>
+							<Anchor relativeKey="$parent.ObjAnim" point="TOPLEFT" relativePoint="BOTTOMLEFT">
+								<Offset x="0" y="0" />
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer>
+								<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="Scale:">
+									<Anchors>
+										<Anchor point="TOPLEFT" x="8"/>
+									</Anchors>
+									<FontHeight val="10" />
+									<Color r="1" g="0.8196079" b="0" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+								<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="No Data Available" justifyH="RIGHT">
+									<Size y="10" />
+									<Anchors>
+										<Anchor relativeKey="$parent.Title" point="TOPLEFT" relativePoint="TOPRIGHT"/>
+										<Anchor relativeKey="$parent.Title" point="TOPRIGHT" relativePoint="TOPLEFT" x="164"/>
+									</Anchors>
+									<FontHeight val="10" />
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+								<Line name="Divider" thickness="1" >
+									<StartAnchor relativekey="$parent.Title" point="BOTTOMLEFT">
+										<Offset x="0" y="-4"/>
+									</StartAnchor>
+									<EndAnchor relativekey="$parent.Title" point="BOTTOMLEFT">
+										<Offset x="164" y="-4"/>
+									</EndAnchor>
+									<color r="0.66" g="0.66" b="0.66" a="1"/>
+								</Line>
+							</Layer>
+						</Layers>
+					</Frame>
+					<Frame parentKey="ObjDimensions" enableMouse="true">
+						<Size x="180" y="17"/>
+						<Anchors>
+							<Anchor relativeKey="$parent.ObjScale" point="TOPLEFT" relativePoint="BOTTOMLEFT">
+								<Offset x="0" y="0" />
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer>
+								<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="Dimensions (LxWxH):">
+									<Anchors>
+										<Anchor point="TOPLEFT" x="8"/>
+									</Anchors>
+									<FontHeight val="10" />
+									<Color r="1" g="0.8196079" b="0" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+								<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="No Data Available" justifyH="RIGHT">
+									<Size y="10" />
+									<Anchors>
+										<Anchor relativeKey="$parent.Title" point="TOPLEFT" relativePoint="BOTTOMLEFT"/>
+										<Anchor relativeKey="$parent.Title" point="TOPRIGHT" relativePoint="BOTTOMLEFT" x="164"/>
+									</Anchors>
+									<FontHeight val="10" />
+									<Color r="1" g="1" b="1" />
+									<Shadow>
+										<Offset>
+											<AbsDimension x="1" y="-1" />
+										</Offset>
+										<Color r="0" g="0" b="0" />
+									</Shadow>
+								</FontString>
+								<Line name="Divider" thickness="1" >
+									<StartAnchor relativekey="$parent.Text" point="BOTTOMLEFT">
+										<Offset x="0" y="-4"/>
+									</StartAnchor>
+									<EndAnchor relativekey="$parent.Text" point="BOTTOMLEFT">
+										<Offset x="164" y="-4"/>
+									</EndAnchor>
+									<color r="0.66" g="0.66" b="0.66" a="1"/>
+								</Line>
+							</Layer>
+						</Layers>
+						<Scripts>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+								self.Timer = C_Timer.NewTimer(0.5,function()
+									GameTooltip:SetText("Dimensions:", nil, nil, nil, nil, true)
+									GameTooltip:AddLine(" ")
+									GameTooltip:AddLine("X: "..(OPSelectedObjectDimX or "N/A"),1,1,1,true)
+									GameTooltip:AddLine("Y: "..(OPSelectedObjectDimY or "N/A"),1,1,1,true)
+									GameTooltip:AddLine("Z: "..(OPSelectedObjectDimZ or "N/A"),1,1,1,true)
+									GameTooltip:Show()
+								end)
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								if self.Timer then self.Timer:Cancel() end
+							</OnLeave>
+						</Scripts>
+					</Frame>
 					<Frame parentKey="ObjPreview">
-						<Size x="180" y="180"/>
+						<Size x="180" y="160"/>
 						<Anchors>
 							<Anchor point="BOTTOMLEFT">
 								<Offset x="0" y="0" />
@@ -5069,7 +5183,7 @@
 							<Layer>
 								<FontString parentKey="Title" font="Fonts\FRIZQT__.TTF" text="Preview:">
 									<Anchors>
-										<Anchor point="TOPLEFT" x="8"/>
+										<Anchor point="TOPLEFT" x="8" y="-4"/>
 									</Anchors>
 									<FontHeight val="10" />
 									<Color r="1" g="0.8196079" b="0" />
@@ -5083,10 +5197,10 @@
 							</Layer>
 						</Layers>
 						<Frames>
-							<ModelScene parentKey="Scene" mixin="ModelSceneMixin">
-								<Size x="164" y="160"/>
+							<ModelScene parentKey="Scene" mixin="ModelSceneMixin" enableMouse="true">
+								<Size x="170" y="154"/>
 								<Anchors>
-									<Anchor point="BOTTOMLEFT" x="8" y="8"/>
+									<Anchor point="BOTTOMLEFT" x="5" y="4"/>
 								</Anchors>
 								<Actors>
 									<Actor parentKey="Actor">
@@ -5098,6 +5212,8 @@
 								<Scripts>
 									<OnLoad inherit="prepend" function="OPObjectPreviewer_OnLoad"/>
 									<OnUpdate inherit="prepend" function="OPObjectPreviewer_OnUpdate"/>
+									<OnMouseWheel inherit="prepend" function="OPObjectPreviewer_OnMouseWheel"/>
+									<OnMouseUp inherit="prepend" function="OPObjectPreviewer_OnClick"/>
 								</Scripts>
 							</ModelScene>
 						</Frames>
@@ -5108,6 +5224,17 @@
 						-->
 					</Frame>
 				</Frames>
+				<Scripts>
+					<OnLoad>
+						self:RegisterForDrag("LeftButton");
+					</OnLoad>
+					<OnDragStart>
+						if not OPMasterTable.Options["locked"] then
+							self:StartMoving();
+						end
+					</OnDragStart>
+					<OnDragStop>self:StopMovingOrSizing();</OnDragStop>
+				</Scripts>
 			</Frame>
 			<Button name="$parentTab1" inherits="CharacterFrameTabButtonTemplate" id="1" text="Rotation">
 				<Anchors>
@@ -5561,7 +5688,7 @@
 		</Scripts>
 		<HighlightTexture file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight" alphaMode="ADD" />
 	</Button>
-	<Frame name="OPNewOptionsFrame" hidden="true" enableMouse="true" moveable="true" clampedToScreen="true" parent="UIParent">
+	<Frame name="OPNewOptionsFrame" hidden="true" enableMouse="true" movable="true" clampedToScreen="true" parent="UIParent">
 		<Size x="500" y="600" />
 		<Anchors>
 			<Anchor point="CENTER"/>
@@ -5625,6 +5752,63 @@
 							</Layer>
 						</Layers>
 						<Frames>
+							<CheckButton name="OPDebugModeToggleButton">
+								<Size x="24" y="24" />
+								<Anchors>
+									<Anchor point="BOTTOMRIGHT">
+										<Offset x="24" y="-1" />
+									</Anchor>
+								</Anchors>
+								<Layers>
+									<Layer>
+										<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="DEBUG">
+											<Anchors>
+												<Anchor point="RIGHT" relativePoint="LEFT">
+													<Offset x="0.5" y="0.5" />
+												</Anchor>
+											</Anchors>
+											<FontHeight val="8" />
+											<Color r="1" g="1" b="1" />
+											<Shadow>
+												<Offset>
+													<AbsDimension x="1" y="-1" />
+												</Offset>
+												<Color r="0" g="0" b="0" />
+											</Shadow>
+										</FontString>
+									</Layer>
+								</Layers>
+								<Scripts>
+									<OnEnter>
+										GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+										self.Timer = C_Timer.NewTimer(0.5,function()
+											GameTooltip:SetText("Toggle DEBUG mode.", nil, nil, nil, nil, true)
+											GameTooltip:AddLine(" ")
+											GameTooltip:AddLine("Keep this off unless you really need it, otherwise you'll get hella chat spam..",1,1,1,true)
+											GameTooltip:Show()
+										end)
+									</OnEnter>
+									<OnLeave>
+										GameTooltip_Hide()
+										if self.Timer then self.Timer:Cancel() end
+									</OnLeave>
+									<OnClick>
+										if self:GetChecked() == true then
+											OPMasterTable.Options["debug"] = true
+											--self:SetChecked(false)
+										else
+											OPMasterTable.Options["debug"] = false
+											--self:SetChecked(true)
+										end
+									</OnClick>
+									<OnShow>if OPMasterTable.Options["debug"] then self:SetChecked(true) end</OnShow>
+								</Scripts>
+								<NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
+								<PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
+								<HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD" />
+								<CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
+								<DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled" />
+							</CheckButton>
 							<CheckButton name="OPShowTooltipsToggleButton">
 								<Size x="24" y="24" />
 								<Anchors>

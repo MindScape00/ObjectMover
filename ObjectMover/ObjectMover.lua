@@ -252,10 +252,23 @@ function OPObjectPreviewerActor_OnModelLoaded(self)
     local camera = self:GetParent():GetActiveCamera()
 	camera:SetPitch(math.rad(angle))
     camera:SetTarget(0, 0, 0)
-    camera:SetMinZoomDistance(size)
-    camera:SetMaxZoomDistance(size)
-    camera:SetZoomDistance(size)
+    camera:SetMinZoomDistance(size*0.5)
+    camera:SetMaxZoomDistance(size*2)
+    camera:SetZoomDistance(size*0.9)
     camera:SnapAllInterpolatedValues();
+	
+	-- Generating Bounding Box Sizes for the PopOut Panel Info
+	if self:GetModelFileID() == 1 then
+		OPSelectedObjectDimX = nil
+		OPSelectedObjectDimY = nil
+		OPSelectedObjectDimZ = nil
+	else
+		local dimX = roundToNthDecimal(abs(lx),4); local dimY = roundToNthDecimal(abs(ly),4); local dimZ = roundToNthDecimal(abs(lz),4)
+		OPPanelPopout.ObjDimensions.Text:SetText(dimX.."*"..dimY.."*"..dimZ)
+		OPSelectedObjectDimX = abs(lx)
+		OPSelectedObjectDimY = abs(ly)
+		OPSelectedObjectDimZ = abs(lz)
+	end
 end
 --]]
 
@@ -282,8 +295,26 @@ function OPObjectPreviewer_OnLoad(self)
 end
 
 function OPObjectPreviewer_OnUpdate(self,elapsed)
-		self:OnUpdate(elapsed)
-		self.Camera:SetYaw(OPPanelPopout.ObjPreview.Scene.Camera:GetYaw() + elapsed / 10)
+	self:OnUpdate(elapsed)
+	self.Camera:SetYaw(OPPanelPopout.ObjPreview.Scene.Camera:GetYaw() + elapsed / 10)
+end
+
+function OPObjectPreviewer_OnMouseWheel(self,spin)
+	if spin == 1 then
+		dprint("Object Preivew - Zoom In!")
+		local camera = self:GetActiveCamera()
+		camera:SetZoomDistance(camera:GetZoomDistance()-0.25)
+	elseif spin == -1 then
+		dprint("Object Preivew - Zoom Out!")
+		local camera = self:GetActiveCamera()
+		camera:SetZoomDistance(camera:GetZoomDistance()+0.25)
+	else
+		dprint("Object Preivew - No Valid Mousewheel direction detected")
+	end
+end
+
+function OPObjectPreviewer_OnClick(self,button)
+	-- nothing right now, let's add some fun stuff later to manipulate the camera angle? idk
 end
 
 -------------------------------------------------------------------------------
@@ -1474,13 +1505,16 @@ local function Addon_OnEvent(self, event, ...)
 				-- update extended info
 				OPPanelPopout.ObjName.Text:SetText(shortname)
 				OPPanelPopout.ObjEntry.Text:SetText(entry)
+				OPPanelPopout.ObjScale.Text:SetText(scale)
 				OPPanelPopout.ObjType.Text:SetText(objType.." - "..ObjectTypes[tonumber(objType)])
 				if not isWMO[tonumber(objType)] then
+					OPPanelPopout.ObjDimensions.Text:SetText("Loading...")
 					OPPanelPopout.ObjPreview.Scene.Actor:SetModelByFileID(filedataid)
 					OPPanelPopout.ObjPreview.Scene.Actor:Show()
 				else
 					OPPanelPopout.ObjPreview.Scene.Actor:SetModelByFileID(1)
 					OPPanelPopout.ObjPreview.Scene.Actor:Hide()
+					OPPanelPopout.ObjDimensions.Text:SetText("No Data for WMOs")
 				end
 				--OPPanelPopout.ObjState.Text:SetText(entry)
 				--OPPanelPopout.ObjAnim.Text:SetText(objType.." - "..ObjectTypes[tonumber(objType)])				
