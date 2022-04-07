@@ -5,7 +5,7 @@
 - Pop-out Pane with Object Preview for M2, object type (M2 vs WMO), detected dimensions**, name, scale**, etc, Rotation info**, etc.
 	- Started - needs more data collected to display.
 	- Add saving of shown state to keep it shown on reload / relog.
-	- SEPARATE THIS FROM THE MAIN ADDON PANEL SO IT CAN BE TOGGLED ON W/O MOVER - will likely needs it's own scaling button & frame..
+	- Fix Resizer
 
 - Teleporter Manager buttons
 	- "Add Tele" -> Does ".go tele on" -> 

@@ -78,6 +78,8 @@ function loadMasterTable()
 	if isNotDefined(OPMasterTable.Options["locked"]) then OPMasterTable.Options["locked"] = false end
 	if isNotDefined(OPMasterTable.Options["fadePanel"]) then OPMasterTable.Options["fadePanel"] = true end
 	if isNotDefined(OPMasterTable.Options["autoShow"]) then OPMasterTable.Options["autoShow"] = false end
+	if isNotDefined(OPMasterTable.Options["autoShowPopout"]) then OPMasterTable.Options["autoShowPopout"] = false end
+	if isNotDefined(OPMasterTable.Options["wasPopoutShown"]) then OPMasterTable.Options["wasPopoutShown"] = false end
 	if isNotDefined(OPMasterTable.Options["showTooltips"]) then OPMasterTable.Options["showTooltips"] = true end
 	if not OPMasterTable.ParamPresetKeys then OPMasterTable.ParamPresetKeys = {"Building Tile","Fine Positioning"} end
 	if not OPMasterTable.ParamPresetContent then OPMasterTable.ParamPresetContent = {
@@ -145,7 +147,8 @@ OPAddon_OnLoad:SetScript("OnEvent", function(self,event,name)
 			OPPanel4Manager:Hide();
 			OPMainFrame:Hide();
 			if OPMasterTable.Options["autoShow"] then OPMainFrame:Show() end
-			
+			if OPMasterTable.Options["autoShowPopout"] then OPPanelPopout:Show() end
+			if OPMasterTable.Options["wasPopoutShown"] == 1 then OPPanelPopout:Show() end
 		end)
 		
 		-- Adjust Radial Offset for Minimap Icon for alternate UI Overhaul Addons
@@ -188,7 +191,9 @@ OPAddon_OnLoad:SetScript("OnEvent", function(self,event,name)
 			GameTooltip:AddLine("/om - Toggle UI",1,1,1,true)
 			GameTooltip:AddLine("/omdebug - Toggle Debug",1,1,1,true)
 			GameTooltip:AddLine(" ")
-			GameTooltip:AddLine("Right-Click for Options, Changelog, and the Help Manual!",1,1,1,true)
+			GameTooltip:AddLine("|cffFFD700Left-Click|r to toggle the main UI!",1,1,1,true)
+			GameTooltip:AddLine("|cffFFD700Middle-Click|r to toggle the Selected Object panel!",1,1,1,true)
+			GameTooltip:AddLine("|cffFFD700Right-Click|r for Options, Changelog, and the Help Manual!",1,1,1,true)
 			GameTooltip:AddLine(" ")
 			GameTooltip:AddLine("Mouse over most UI Elements to see tooltips for help! (Like this one!)",0.9,0.75,0.75,true)
 			GameTooltip:AddDoubleLine(" ", addonName.." v"..addonVersion, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8);

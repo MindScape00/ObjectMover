@@ -423,11 +423,16 @@
 							</Anchor>
 						</Anchors>
 						<Scripts>
+							<OnLoad>
+								self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+							</OnLoad>
 							<OnEnter>
 							if OPMasterTable.Options["showTooltips"] == true then
 								GameTooltip:SetOwner(self, "ANCHOR_LEFT")
 								self.Timer = C_Timer.NewTimer(0.5,function()
-									GameTooltip:SetText("Shows an extended panel for Object Information on your currently selected object.", nil, nil, nil, nil, true)
+									GameTooltip:SetText("Shows an extended panel with Currently Selected Object Information.", nil, nil, nil, nil, true)
+									GameTooltip:AddLine(" ")
+									GameTooltip:AddLine("Right Click to reset that panel's size.",1,1,1,true)
 									GameTooltip:Show()
 								end)
 							end
@@ -437,10 +442,14 @@
 								if self.Timer then self.Timer:Cancel() end
 							</OnLeave>
 							<OnClick>
-								if OPPanelPopout:IsShown() then
-									OPPanelPopout:Hide()
-								else
-									OPPanelPopout:Show()
+								if button == "LeftButton" then
+									if OPPanelPopout:IsShown() then
+										OPPanelPopout:Hide()
+									else
+										OPPanelPopout:Show()
+									end
+								elseif button == "RightButton" then
+									OPPanelPopout:SetWidth(185)
 								end
 							</OnClick>
 						</Scripts>
@@ -4904,14 +4913,18 @@
 						end
 					</OnClick>
 					<OnMouseDown>
-						local parent = self:GetParent()
-						self.isScaling = true
-						parent:StartSizing("BOTTOMRIGHT")
+						if button == "LeftButton" then
+							local parent = self:GetParent()
+							self.isScaling = true
+							parent:StartSizing("BOTTOMRIGHT")
+						end
 					</OnMouseDown>
 					<OnMouseUp>
-						local parent = self:GetParent()
-						self.isScaling = false
-						parent:StopMovingOrSizing()
+						if button == "LeftButton" then
+							local parent = self:GetParent()
+							self.isScaling = false
+							parent:StopMovingOrSizing()
+						end
 					</OnMouseUp>
 					<OnEnter>
 					if OPMasterTable.Options["showTooltips"] == true then
@@ -4963,8 +4976,12 @@
 			</OnSizeChanged>
 		</Scripts>
 	</Frame>
-	<Frame name="OPPanelPopout" hidden="true" movable="true" clampedToScreen="true">
+	<Frame name="OPPanelPopout" hidden="true" movable="true" resizable="true" clampedToScreen="true" parent="UIParent" ignoreParentScale="true">
 		<Size x="180" y="345" />
+		<ResizeBounds>
+			<minResize x="90" y="172"/>
+			<maxResize x="355" y="650"/>
+		</ResizeBounds>
 		<Anchors>
 			<Anchor point="RIGHT" relativeTo="OPMainFrame" relativePoint="LEFT">
 				<Offset x="0" y="0" />
@@ -5482,7 +5499,7 @@
 				</Scripts>
 				-->
 			</Frame>
-			<Button parentKey="ResizeButton" enableMouse="true" text="Resize" hidden="false" registerForClicks="RightButtonUp">
+			<Button parentKey="ResizeButton" frameStrata="HIGH" enableMouse="true" text="Resize" hidden="false" registerForClicks="RightButtonUp">
 				<Size>
 					<AbsDimension x="16" y="16"/>
 				</Size>
@@ -5491,24 +5508,28 @@
 				<HighlightTexture file="Interface\ChatFrame\UI-ChatIM-SizeGrabber-Highlight" alphaMode="ADD"/>
 				<Anchors>
 					<Anchor point="BOTTOMRIGHT">
-						<Offset x="-4" y="5" />
+						<Offset x="-1" y="1" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
 					<OnClick>
 						if button == "RightButton" then
-							self:GetParent():SetWidth(355)
+							self:GetParent():SetWidth(185)
 						end
 					</OnClick>
 					<OnMouseDown>
-						local parent = self:GetParent()
-						self.isScaling = true
-						parent:StartSizing("BOTTOMRIGHT")
+						if button == "LeftButton" then
+							local parent = self:GetParent()
+							self.isScaling = true
+							parent:StartSizing("BOTTOMRIGHT")
+						end
 					</OnMouseDown>
 					<OnMouseUp>
+					if button == "LeftButton" then
 						local parent = self:GetParent()
 						self.isScaling = false
 						parent:StopMovingOrSizing()
+					end
 					</OnMouseUp>
 					<OnEnter>
 					if OPMasterTable.Options["showTooltips"] == true then
@@ -5532,12 +5553,29 @@
 			<OnLoad>
 				self:RegisterForDrag("LeftButton");
 			</OnLoad>
+			<OnShow>
+				if self:GetHeight() > UIParent:GetHeight() then self:SetWidth(max(180,UIParent:GetHeight()*0.52)) end
+				OPMasterTable.Options["wasPopoutShown"] = true
+			</OnShow>
+			<OnHide>
+				OPMasterTable.Options["wasPopoutShown"] = false
+			</OnHide>
 			<OnDragStart>
 				if not OPMasterTable.Options["locked"] then
 					self:StartMoving();
 				end
 			</OnDragStart>
 			<OnDragStop>self:StopMovingOrSizing();</OnDragStop>
+			<OnSizeChanged>
+				local n = self:GetWidth()
+				local n = n / 180
+				local childrens = {self:GetChildren()}
+				for _,child in ipairs(childrens) do
+					if child ~= 1 then child:SetScale(n) end
+					self.Title:SetScale(n)
+				end
+				self:SetHeight(345*n)
+			</OnSizeChanged>
 		</Scripts>
 	</Frame>
 	<Frame name="OPMainSaveFrame" frameStrata="DIALOG" hidden="true" enableMouse="true" clampedToScreen="true">
@@ -5683,15 +5721,15 @@
 		</Anchors>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<Texture name="ObjectManipulator_MinimapButton_Icon" file="Interface/AddOns/ObjectMover/Media/EpsilonRingMindscape.blp">
+				<Texture name="ObjectManipulator_MinimapButton_Icon" file="Interface/AddOns/ObjectMover/Media/ObjectMoverIcon.blp">
 				<!-- Original Icon: Interface/ICONS/INV_Misc_Gear_01 -->
 					<Size>
-						<AbsDimension x="26" y="26" />
+						<AbsDimension x="27" y="27" />
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
 							<Offset>
-								<AbsDimension x="7" y="-6" />
+								<AbsDimension x="4" y="-3" />
 							</Offset>
 						</Anchor>
 					</Anchors>
@@ -5712,7 +5750,7 @@
 		</Layers>
 		<Scripts>
 			<OnLoad>
-				self:RegisterForClicks("LeftButtonUp","RightButtonUp")
+				self:RegisterForClicks("LeftButtonUp","RightButtonUp","MiddleButtonUp")
 				self:RegisterForDrag("LeftButton","RightButton")
 				
 				local cowbell  = OMUICowbellTest or CreateFrame("Frame", "OMUICowbellTest", UIParent)
@@ -5739,8 +5777,14 @@
 			<OnClick>
 				if button == "RightButton" then 
 					if not OPNewOptionsFrame:IsShown() then OPNewOptionsFrame:Show() else OPNewOptionsFrame:Hide() end
-				else
+				elseif button == "LeftButton" then
 					SlashCmdList.SHOWCLOSE()
+				elseif button == "MiddleButton" then
+					if OPPanelPopout:IsShown() then
+						OPPanelPopout:Hide()
+					else
+						OPPanelPopout:Show()
+					end
 				end
 			</OnClick>
 		</Scripts>
@@ -5917,6 +5961,59 @@
 										end
 									</OnClick>
 									<OnShow>if OPMasterTable.Options["showTooltips"] then self:SetChecked(true) end</OnShow>
+								</Scripts>
+								<NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
+								<PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
+								<HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD" />
+								<CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
+								<DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled" />
+							</CheckButton>
+							<CheckButton name="OPAutoshowPopoutToggleButton">
+								<Size x="24" y="24" />
+								<Anchors>
+									<Anchor point="TOPLEFT" relativeTo="OPShowTooltipsToggleButton" relativePoint="BOTTOMLEFT">
+										<Offset x="0" y="-4" />
+									</Anchor>
+								</Anchors>
+								<Layers>
+									<Layer>
+										<FontString parentKey="Text" font="Fonts\FRIZQT__.TTF" text="AutoShow Selected Object (i) Popout">
+											<Anchors>
+												<Anchor point="LEFT" relativePoint="RIGHT">
+													<Offset x="0.5" y="0.5" />
+												</Anchor>
+											</Anchors>
+											<FontHeight val="12" />
+											<Color r="1" g="1" b="1" />
+											<Shadow>
+												<Offset>
+													<AbsDimension x="1" y="-1" />
+												</Offset>
+												<Color r="0" g="0" b="0" />
+											</Shadow>
+										</FontString>
+									</Layer>
+								</Layers>
+								<Scripts>
+									<OnEnter>
+										GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+										self.Timer = C_Timer.NewTimer(0.5,function()
+											GameTooltip:SetText("AutoShow the Selected Object Popout Panel when Loading.", nil, nil, nil, nil, true)
+											GameTooltip:Show()
+										end)
+									</OnEnter>
+									<OnLeave>
+										GameTooltip_Hide()
+										if self.Timer then self.Timer:Cancel() end
+									</OnLeave>
+									<OnClick>
+										if self:GetChecked() == true then
+											OPMasterTable.Options["autoShowPopout"] = true
+										else
+											OPMasterTable.Options["autoShowPopout"] = false
+										end
+									</OnClick>
+									<OnShow>if OPMasterTable.Options["autoShowPopout"] then self:SetChecked(true) end</OnShow>
 								</Scripts>
 								<NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
 								<PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
