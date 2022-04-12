@@ -1509,6 +1509,11 @@ local function Addon_OnEvent(self, event, ...)
 				
 				-- update extended info
 				OPPanelPopout.ObjName.Text:SetText(shortname)
+				local fontName,fontHeight,fontFlags = OPPanelPopout.ObjName.Text:GetFont()
+				OPPanelPopout.ObjName.Text:SetFont(fontName, 10, fontFlags)
+				if OPPanelPopout.ObjName.Text:GetNumLines() > 2 then
+					OPPanelPopout.ObjName.Text:SetFont(fontName, 8, fontFlags)
+				end
 				OPPanelPopout.ObjEntry.Text:SetText(entry)
 				OPPanelPopout.ObjScale.Text:SetText(scale)
 				OPPanelPopout.ObjType.Text:SetText(objType.." - "..ObjectTypes[tonumber(objType)])

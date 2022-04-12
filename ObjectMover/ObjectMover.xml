@@ -5065,7 +5065,7 @@
 									<Offset x="0" y="-3" />
 								</Anchor>
 							</Anchors>
-							<FontHeight val="8" />
+							<FontHeight val="10" />
 							<Color r="1" g="1" b="1" />
 							<Shadow>
 								<Offset>
