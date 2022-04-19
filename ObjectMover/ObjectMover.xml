@@ -1842,6 +1842,7 @@
 					</Frame>
 				</Frames>
 			</Frame>
+<!--
 			<Frame name="OPPanel4Tint" hidden="true">
 				<Size x="335" y="132" />
 				<Anchors>
@@ -2538,10 +2539,8 @@
 							<OnClick>
 								if self:GetChecked() == true then
 									OPMasterTable.Options["autoUpdateTint"] = true
-									--self:SetChecked(false)
 								else
 									OPMasterTable.Options["autoUpdateTint"] = false
-									--self:SetChecked(true)
 								end
 							</OnClick>
 							<OnShow>if OPMasterTable.Options["autoUpdateTint"] then self:SetChecked(true) end</OnShow>
@@ -2554,6 +2553,7 @@
 					</CheckButton>
 				</Frames>
 			</Frame>
+-->
 			<Frame name="OPPanel4Overlay" hidden="false">
 				<Size x="335" y="132" />
 				<Anchors>

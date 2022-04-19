@@ -261,7 +261,7 @@ local function BitPack(pack, rhs)
 end
 
 local function getSpellVisualKitByValues(tintType,r,g,b,a,s)
-	local useNewSystem = 0
+	local useNewSystem = true
 	
 	if tonumber(a) == 100 then return; end -- if set to fully transparent, we will ignore and show the base object.
 	local r = tonumber(r)
@@ -817,66 +817,6 @@ function EnableBoxes(Box1, Box2)
 	end
 end
 
-
--- Tinting Stuff
-
-function OPTintSlider_OnValueChanged(self,value,byUser)
-	if byUser then
-		if value ~= self.Text:GetText() then
-			OPTintObject();
-		end
-	end
-	self.Text:SetText(self:GetValue())
-end
-
-function OPTintObject()
-	if OPFramesAreLoaded then
-		local r = OPTintSliderR:GetValue()
-		local g = OPTintSliderG:GetValue()
-		local b = OPTintSliderB:GetValue()
-		local t = OPTintSliderT:GetValue()
-		--addFilter("Removed GameObject .*\'s tint.")
-		if isGroupSelected then cmdPref = "go group" else cmdPref = "go" end
-		cmd(cmdPref.." tint "..r.." "..g.." "..b.." "..t)
-	end
-end
-
-function OPUpdateTints(restore)
-	if restore and restore ~= "APPLY" then
-		local r,g,b,a = unpack(restore)
-		OPTintSliderR:SetValue(r*100)
-		OPTintSliderG:SetValue(g*100)
-		OPTintSliderB:SetValue(b*100)
-		OPTintSliderT:SetValue(a*100)
-		OPTintIsControllingColorPicker = false
-	else
-		local r,g,b = ColorPickerFrame:GetColorRGB()
-		OPTintSliderR:SetValue(r*100)
-		OPTintSliderG:SetValue(g*100)
-		OPTintSliderB:SetValue(b*100)
-	end
-	if restore == "APPLY" then
-		OPTintObject()
-	end
-end
-
-function OPUpdateTintsApply()
-	if OPTintIsControllingColorPicker then
-		OPUpdateTints("APPLY")
-		OPTintIsControllingColorPicker = false
-	end
-end
-
-function OPResetTint(applyAfter)
-	OPTintSliderR:SetValue(100)
-	OPTintSliderG:SetValue(100)
-	OPTintSliderB:SetValue(100)
-	OPTintSliderT:SetValue(0)
-	if applyAfter then
-		OPTintObject();
-	end
-end
-
 -- Overlay Stuff
 
 function OPOverlaySlider_OnValueChanged(self,value,byUser)
@@ -902,7 +842,7 @@ function OPOverlayObject()
 		--addFilter("Removed GameObject .*\'s Overlay.")
 		if isGroupSelected then cmdPref = "go group" else cmdPref = "go" end
 		if s == 0 then 
-			cmd(cmdPref.." tint "..r.." "..g.." "..b.." "..t)
+			cmd(cmdPref.." tint "..r.." "..g.." "..b.." "..s.." "..t)
 		else
 			cmd(cmdPref.." overlay "..r.." "..g.." "..b.." "..s.." "..t)
 		end
@@ -1486,36 +1426,6 @@ local function OMChatFilter(Self,Event,Message)
 		--]]
 	end
 	
-	-- Auto Update Tint --
-	if OPTintAutoUpdateButton:GetChecked() then
-		if OPTintDragging ~= true then
-			--[[
-			if clearmsg:find("Removed GameObject.*'s tint") then
-				OPResetTint();
-			elseif clearmsg:find("Removed GameObject.*'s spell") then
-				OPObjectSpell = nil
-				updateSpellButton()
-			elseif clearmsg:find("Set GameObject.* to .* tint .*") or clearmsg:find("GameObject group.*now uses tint") then
-				local r, g, b, a = clearmsg:match("tint (%d+) (%d+) (%d+) %(transparency (%d+)%)")
-				OPTintSliderR:SetValue(r)
-				OPTintSliderG:SetValue(g)
-				OPTintSliderB:SetValue(b)
-				OPTintSliderT:SetValue(a)
-				dprint("R:"..r.." G:"..g.." B:"..b.." T:"..a)
-			elseif clearmsg:find("Set GameObject.* to .* spell effect") or clearmsg:find("GameObject group.*uses spell effect") then
-				OPObjectSpell = clearmsg:match("spell effect (%d+)")
-				updateSpellButton()
-				dprint("OPObjectSpell set: "..OPObjectSpell)
-			end
-			--]]
-		else
-			if clearmsg:find("Removed GameObject.*'s tint") or clearmsg:find("Removed GameObject.*'s spell") or clearmsg:find("Set GameObject.* to .* tint .*") or clearmsg:find("GameObject group.*now uses tint") then
-				if OPShowMessagesToggle:GetChecked() ~= true then
-					return true;
-				end
-			end
-		end
-	end
 	
 	------------------------------------------------
 	
