@@ -245,6 +245,65 @@ function OPObjectPreviewGenerateFrame()
 end
 --]]
 
+local bitPackerValue
+local function BitPack(pack, rhs)
+
+    if pack == 0 then
+        pack = rhs;
+		bitPackerValue = pack;
+        return pack;
+	else
+		pack = bitPackerValue * rhs
+		bitPackerValue = pack;
+        return pack;
+	end
+
+end
+
+local function getSpellVisualKitByValues(tintType,r,g,b,a,s)
+	local useNewSystem = 0
+	
+	if tonumber(a) == 100 then return; end -- if set to fully transparent, we will ignore and show the base object.
+	local r = tonumber(r)
+	local g = tonumber(g)
+	local b = tonumber(b)
+	local a = tonumber(a)
+	local s = tonumber(s)
+	
+	local colorIncrement = 5
+	local transparencyIncrement = 20
+	local saturationIncrement = 20
+	
+	local ColourSteps = (100 / colorIncrement) + 1;
+    local SaturationSteps = (100 / saturationIncrement) + 1;		
+	
+	local startingID = 100000	
+	if useNewSystem then
+		startingID = 100001 -- Tint SpellVisual Start ID
+	end
+	if tonumber(tintType) == 2 then 
+		-- adjust starting ID if Overlay
+		startingID = 331526; -- Overlay SpellVisual Start ID 
+	end
+	
+	local spellVisualID = startingID
+		print(spellVisualID)
+	bitPackerValue = 0
+	spellVisualID = spellVisualID + (r/colorIncrement) -- R color incement...?
+			print(spellVisualID)
+	spellVisualID = spellVisualID + ((g/colorIncrement) * BitPack(bitPackerValue, ColourSteps)) -- G color incement...?
+		print(spellVisualID)
+	spellVisualID = spellVisualID + ((b/colorIncrement) * BitPack(bitPackerValue, ColourSteps)) -- B color incement...?
+		print(spellVisualID)
+	spellVisualID = spellVisualID + ((SaturationSteps - (s/saturationIncrement)) * BitPack(bitPackerValue, ColourSteps)) -- Saturation color incement...?
+		print(spellVisualID)
+	spellVisualID = spellVisualID + ((a/transparencyIncrement) * BitPack(bitPackerValue, SaturationSteps)) -- Alpha color incement...?
+		print(spellVisualID)
+		
+	local spellVisualKitID = spellVisualID+30000
+		print(spellVisualKitID)
+	return (spellVisualKitID);
+end
 
 function OPObjectPreviewerActor_OnModelLoaded(self)
     local x1, y1, z1, x2, y2, z2 = self:GetActiveBoundingBox()
@@ -273,6 +332,16 @@ function OPObjectPreviewerActor_OnModelLoaded(self)
 		OPSelectedObjectDimX = abs(lx)
 		OPSelectedObjectDimY = abs(ly)
 		OPSelectedObjectDimZ = abs(lz)
+	end
+	
+	if tonumber(OPLastSelectedObjectData[12]) ~= 0 then -- if it has a tint set, let's calculate the spell visual kit for it
+		local tintType = OPLastSelectedObjectData[12]
+		local r = OPLastSelectedObjectData[13]
+		local g = OPLastSelectedObjectData[14]
+		local b = OPLastSelectedObjectData[15]
+		local a = OPLastSelectedObjectData[16]
+		local s = OPLastSelectedObjectData[21]
+		self:SetSpellVisualKit(getSpellVisualKitByValues(tintType,r,g,b,a,s))
 	end
 end
 --]]
@@ -320,6 +389,21 @@ end
 
 function OPObjectPreviewer_OnClick(self,button)
 	-- nothing right now, let's add some fun stuff later to manipulate the camera angle? idk
+end
+
+function OPManager_VisibilityDropdown_OnClick(self)
+	local menuList = {
+		{ text = "Select an Option", isTitle = true},
+		{ text = "Option 1", func = function() print("You've chosen option 1"); end },
+		{ text = "Option 2", func = function() print("You've chosen option 2"); end },
+		{ text = "More Options", hasArrow = true,
+			menuList = {
+				{ text = "Option 3", func = function() print("You've chosen option 3"); end }
+			} 
+		}
+	}
+	EasyMenu(menuList, OPManagerVisibilityMenu, CURSOR, 0, 0);
+	print("Showing Menu?")
 end
 
 -------------------------------------------------------------------------------
@@ -864,11 +948,12 @@ end
 -- Spell Button Stuff
 
 local function updateSpellButton()
+	local fontName,fontHeight,fontFlags = OPOverlaySpellButton.Text:GetFont()
 	if OPObjectSpell and OPObjectSpell ~= "" and tonumber(OPObjectSpell) ~= 0 then
-		OPOverlaySpellButton.Text:SetFont("Fonts\\FRIZQT__.TTF", 8)
+		OPOverlaySpellButton.Text:SetFont(fontName, 8, fontFlags)
 		OPOverlaySpellButton.Text:SetText("Spell\n("..OPObjectSpell..")")
 	else
-		OPOverlaySpellButton.Text:SetFont("Fonts\\FRIZQT__.TTF", 10)
+		OPOverlaySpellButton.Text:SetFont(fontName, 10, fontFlags)
 		OPOverlaySpellButton.Text:SetText("Spell")
 	end
 end
@@ -959,6 +1044,12 @@ StaticPopupDialogs["OP_TINTS_SPELL"] = {
 	hideOnEscape = true,
 	hasEditBox = true,
 }
+
+----------- Management Tab
+-- Visiblity Button
+function OPSetObjVis(num)
+	cmd("go set vis "..num)
+end
 
 -------------------------------------------------------------------------------
 -- Save / Load Pre-set System
@@ -1505,20 +1596,30 @@ local function Addon_OnEvent(self, event, ...)
 				dprint("Shortname: "..shortname)
 				OPPanel2.SelectedObjName:SetText(shortname)
 				OPPanel4Manager.SelectedObjName:SetText(shortname)
+				local fontName,fontHeight,fontFlags = OPPanel4Manager.SelectedObjName:GetFont()
+				OPPanel4Manager.SelectedObjName:SetFont(fontName, 10, fontFlags)
+				while OPPanel4Manager.SelectedObjName:GetStringWidth() > OPPanel4Manager:GetWidth()-5 do
+					local fontName,fontHeight,fontFlags = OPPanel4Manager.SelectedObjName:GetFont()
+					OPPanel4Manager.SelectedObjName:SetFont(fontName, fontHeight-1, fontFlags)
+					dprint("Setting Manager Object Text Font Size: "..fontHeight-1)
+				end
 				--OPPanel4Manager.GroupLeaderIndicator.Entry:SetText(groupLeader)
 				
 				-- update extended info
 				OPPanelPopout.ObjName.Text:SetText(shortname)
 				local fontName,fontHeight,fontFlags = OPPanelPopout.ObjName.Text:GetFont()
 				OPPanelPopout.ObjName.Text:SetFont(fontName, 10, fontFlags)
-				if OPPanelPopout.ObjName.Text:GetNumLines() > 2 then
-					OPPanelPopout.ObjName.Text:SetFont(fontName, 8, fontFlags)
+				while OPPanelPopout.ObjName.Text:GetNumLines() > 2 do
+					local fontName,fontHeight,fontFlags = OPPanelPopout.ObjName.Text:GetFont()
+					OPPanelPopout.ObjName.Text:SetFont(fontName, fontHeight-1, fontFlags)
+					dprint("Setting Selected Object Panel Object Name Font Size: "..fontHeight-1)
 				end
 				OPPanelPopout.ObjEntry.Text:SetText(entry)
 				OPPanelPopout.ObjScale.Text:SetText(scale)
 				OPPanelPopout.ObjType.Text:SetText(objType.." - "..ObjectTypes[tonumber(objType)])
 				if not isWMO[tonumber(objType)] then
 					OPPanelPopout.ObjDimensions.Text:SetText("Loading...")
+					OPPanelPopout.ObjPreview.Scene.Actor:SetSpellVisualKit()
 					OPPanelPopout.ObjPreview.Scene.Actor:SetModelByFileID(filedataid)
 					OPPanelPopout.ObjPreview.Scene.Actor:Show()
 				else

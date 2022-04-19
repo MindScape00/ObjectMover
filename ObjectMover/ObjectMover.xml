@@ -4336,7 +4336,7 @@
 				<Layers>
 					<Layer>
 						<FontString parentKey="SelectedObjName" text="No Object Selected" font="Fonts\FRIZQT__.TTF">
-							<Size x="335" y="12" />
+							<Size y="12" />
 							<Anchors>
 								<Anchor point="TOP">
 									<Offset y="-6" />
@@ -4724,6 +4724,25 @@
 						<HighlightFont style="GameFontHighlightSmall" />
 						<DisabledFont style="GameFontDisableSmall" />
 					</Button>
+					<!--
+					<Button name="OPManagerVisibilityMenu" parentKey="VisiblityDropdown" inherits="UIDropDownMenuTemplate" text="Visibility">
+						<Size x="72" y="24" />
+						<Anchors>
+							<Anchor point="BOTTOMRIGHT">
+								<Offset x="0" y="-3" />
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick function="OPManager_VisibilityDropdown_OnClick"/>
+						</Scripts>
+						<ButtonText parentKey="Text">
+							<FontHeight val="10" />
+						</ButtonText>
+						<NormalFont style="GameFontNormalSmall" />
+						<HighlightFont style="GameFontHighlightSmall" />
+						<DisabledFont style="GameFontDisableSmall" />
+					</Button>
+					-->
 				</Frames>
 			</Frame>
 			<Button name="$parentTab1" inherits="CharacterFrameTabButtonTemplate" id="1" text="Rotation">
