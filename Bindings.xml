@@ -1,0 +1,58 @@
+<Bindings>
+	<Binding category="Object Mover" name="Forward" header="OBJECTMANIP">
+			CheckIfValid(OPLengthBox, true, OPForward)
+	</Binding>
+	<Binding category="Object Mover" name="Backward">
+			CheckIfValid(OPLengthBox, true, OPBackward)
+	</Binding>
+	<Binding category="Object Mover" name="Left">
+			CheckIfValid(OPWidthBox, true, OPLeft)
+	</Binding>
+	<Binding category="Object Mover" name="Right">
+			CheckIfValid(OPWidthBox, true, OPRight)
+	</Binding>
+	<Binding category="Object Mover" name="Up">
+			CheckIfValid(OPHeightBox, true, OPUp)
+	</Binding>
+	<Binding category="Object Mover" name="Down">
+			CheckIfValid(OPHeightBox, true, OPDown)
+	</Binding>
+	<Binding category="Object Mover" name="Get Object ID">
+			OPGetObject()
+	</Binding>
+	<Binding category="Object Mover" name="Teleport to Object">
+			OPTeletoObject()
+	</Binding>
+	<Binding category="Object Mover" name="Spawn Object">
+			OPSpawn()
+	</Binding>
+	<Binding category="Object Mover" name="Toggle Spawn on Move">
+			if SpawnonMoveButton:GetChecked() == true then
+				SpawnonMoveButton:SetChecked(false)
+				OPMasterTable.Options["SpawnOnMove"] = false
+			else
+				SpawnonMoveButton:SetChecked(true)
+				OPMasterTable.Options["SpawnOnMove"] = true
+			end
+	</Binding>
+	<Binding category="Object Mover" name="Toggle Move Object">
+			if OPMoveObjectInstead:GetChecked() == true then
+				OPMoveObjectInstead:SetChecked(false)
+				OPMasterTable.Options["MoveObject"] = false
+				RelativeToPlayerToggle:Disable()
+			else
+				OPMoveObjectInstead:SetChecked(true)
+				OPMasterTable.Options["MoveObject"] = true
+				RelativeToPlayerToggle:Enable()
+			end
+	</Binding>
+	<Binding category="Object Mover" name="Toggle Move Relative to Player">
+			if RelativeToPlayerToggle:GetChecked() == true then
+				RelativeToPlayerToggle:SetChecked(false)
+				OPMasterTable.Options["RelativeToPlayer"] = false
+			else
+				RelativeToPlayerToggle:SetChecked(true)
+				OPMasterTable.Options["RelativeToPlayer"] = true
+			end
+	</Binding>
+</Bindings>

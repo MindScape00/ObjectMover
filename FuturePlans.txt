@@ -1,0 +1,16 @@
+- Further localization Support
+- Modify Rotation to use Client-Side preview until done rotation, then fully set the object
+- Fix Rotation Sliders to only update if newVal ~= lastVal (See Tint Slider for example) (( I THINK I DID THIS ALREADY?? ))
+
+- Pop-out Pane with Object Preview for M2, object type (M2 vs WMO), detected dimensions**, name, scale**, etc, Rotation info**, etc.
+	- Started - needs more data collected to display.
+
+- Teleporter Manager buttons
+	- "Add Tele" -> Does ".go tele on" -> 
+- Anim dropdown
+- Group management
+- Create Bluebrint button (Pop-up with name entry box)
+- Spawn Bluebrint Button (This will 100% need pagination of the loading since people can have hundreds of blueprints - may need a custom pop-up menu that's scrollable with infinite buttons?)
+- Visibility drop-down
+
+
