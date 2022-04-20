@@ -1424,7 +1424,7 @@
 							<Size x="145" y="12" />
 							<Anchors>
 								<Anchor point="TOP">
-									<Offset y="-4" />
+									<Offset y="-5" />
 								</Anchor>
 							</Anchors>
 							<FontHeight val="12" />
