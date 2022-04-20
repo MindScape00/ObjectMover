@@ -279,10 +279,10 @@ local function getSpellVisualKitByValues(tintType,r,g,b,a,s)
 	spellVisualID = spellVisualID + (bStepped * ColourSteps^2);
 	spellVisualID = spellVisualID + ((SaturationSteps - sStepped) * ColourSteps^3);
 	spellVisualID = spellVisualID + (aStepped * ((ColourSteps^3) * SaturationSteps));
-	print("SpellVisualID: "..spellVisualID)
+		dprint("SpellVisualID: "..spellVisualID)
 		
 	local spellVisualKitID = spellVisualID+30000
-		print("SpellVisualKitID: "..spellVisualKitID)
+		dprint("SpellVisualKitID: "..spellVisualKitID)
 	return (spellVisualKitID);
 end
 
