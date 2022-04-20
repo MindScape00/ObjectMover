@@ -96,7 +96,7 @@ See [https://forums.epsilonwow.net/topic/467-addon-objectmover/](https://forums.
 ObjectMoverHelpManual = [[
 # Object Mover Manual
 
-## Object Info
+## Spawn/Move Info
 
 ### Parameters:
 |cffFFCC00 - Object ID|r - This is where you would fill in the ID of the Object you want to spawn. Only single objects are supported here, not Blueprints.
@@ -111,6 +111,7 @@ ObjectMoverHelpManual = [[
 |cffFFCC00 - Load|r - Loads a previously saved pre-set. |cffFFAAAARight-Click|r a pre-set to delete it.
 |cffFFCC00 - Auto Update|r - Updates Object ID, Length/Width/Height, and Scale info when selecting an object. Note that Length/Width/Height will only update when selecting an |cffFFAAAAM2 object|r, not a WMO.
 |cffFFCC00 - Spawn|r - Spawns the currently selected object. Automatically scales it if Scale is set & checked.
+|cffFFCC00 - (i) Button|r - Shows the "Selected Object Info" Pop-out (see below for more info).
 
 ## _________________________________________________
 
@@ -126,16 +127,16 @@ ObjectMoverHelpManual = [[
 
 ## Options
 
-|cffFFCC00 - Move Object|r - Move the selected Game Object instead of yourself.
-|cffFFCC00 - Spawn on Move|r - Spawns an object each time you move - not recommended in |cffFFAAAAMove Object|r mode.
-|cffFFCC00 - Move Relative|r - Moves the object relative to the direction YOU are facing instead of the direction the object is facing. Only works in |cffFFAAAAMove Object|r mode. 
+|cffFFCC00 - Move Player|r - Move the Player Character instead of your selected object/group.
+|cffFFCC00 - Spawn on Move|r - Spawns an object each time you move - Only available in |cffFFAAAAMove Player|r mode.
+|cffFFCC00 - Move Relative|r - Moves the object relative to the direction YOU are facing instead of the direction the object is facing. Not usable in |cffFFAAAAMove Player|r mode. 
 |cffFFCC00 - Auto Show|r - Always Show the ObjectMover UI when first loading in.
 |cffFFCC00 - Fade Out|r - Fade the UI out when not currently moused over.
 |cffFFCC00 - Messages|r - Show Rotation & Tint messages in chat. This will spam your chat.
 
 ## _________________________________________________
 
-## Rotation
+## Rotation Tab
 
 ### Sliders
 
@@ -155,15 +156,36 @@ These will automatically apply to the object as you drag the sliders:
 
 ## _________________________________________________
 
-## Tint
+## Tint/Overlay Tab
 
 |cffFFCC00 - Red/Green/Blue|r - Adjust the tint colors of an object.
 |cffFFCC00 - Transparency|r - Adjust the transparency of an object.
-|cffFFCC00 - Saturation|r - Adjust the color overlay saturation (strength) on an object. Setting to 0 will apply the color as a Tint instead of an Overlay.
+|cffFFCC00 - Saturation|r - Adjust the color saturation (strength) on an object.
 |cffFFCC00 - Color Picker|r - Open a color wheel to select a color & saturation from there.
 |cffFFCC00 - Apply|r - Apply the current color to the selected object. |cffFFAAAARight-Click|r to remove/reset the tint on an object.
 |cffFFCC00 - Spell|r - Apply a spell as a visual effect on an object. |cffFFAAAARight-Click|r to remove/reset the spells on an object.
 |cffFFCC00 - Auto Update|r - Updates the sliders & spell button to match an object when selected.
+|cffFFCC00 - Use Overlay|r - Use Overlay as your coloring method. Overlay has a shine, and better replaces the color to a more consistent coloring.
+
+## _________________________________________________
+
+## Manager Tab
+
+|cffFFCC00 - Select|r - Select the nearest object.
+|cffFFCC00 - Unselect|r - Unselect an object. No object will be selected after.
+|cffFFCC00 - Copy|r - Copies the current object ontop of itself.
+|cffFFCC00 - Delete|r - Delete the selected object. You must |cffFFAAAARight-Click|r this button for it to work.
+|cffFFCC00 - Visibility|r - Open a dropdown to select from pre-set visibility options, or select |cffFFAAAACustom|r to enter your own number. Max of 533, or -1 for permanent (~3000).
+|cffFFCC00 - Animation|r - Open a dropdown to select from the most common object animations, or select |cffFFAAAACustom|r to enter your any number.
+|cffFFCC00 - Face Object|r - Use these buttons to quickly face an object in cardinal directions |cffFFAAAA[North (N), East (E), South (S), West(W)]|r, or face the direction your character is facing |cffFFAAAA(C)|r.
+
+## _________________________________________________
+
+## "Selected Object Info" Pop-out
+|cffFFCC00 - This pop-out panel shows data on your currently selected object.|r - All data is fairly self-explanatory, but a few have extra functions:
+|cffFFCC00 - Dimensions|r - Dimensions are rounded to the nearest 4 decimal places so they fit in the box. |cffFFAAAAHover your mouse|r over them for a tooltip with their full un-rounded* dimensions. Only works for M2 objects, not WMO objects.
+|cffFFCC00 - Preview|r - Only shows previews for M2 objects, not WMO objects. 
+|cffFFAAAAScroll|r to zoom in & out. |cffFFAAAAHold shift|r to zoom faster. #ZoomZoom
 
 ]]
 --[[ Blank Space for Tabbing : Copy this : ' ' ]]

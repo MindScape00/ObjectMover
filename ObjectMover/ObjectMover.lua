@@ -361,20 +361,20 @@ function OPObjectPreviewer_OnUpdate(self,elapsed)
 end
 
 function OPObjectPreviewer_OnMouseWheel(self,spin)
+	local speed = 0.25
+	if IsShiftKeyDown() then speed = 3 end
 	if spin == 1 then
-		dprint("Object Preivew - Zoom In!")
 		local camera = self:GetActiveCamera()
-		camera:SetZoomDistance(camera:GetZoomDistance()-0.25)
+		camera:SetZoomDistance(camera:GetZoomDistance()-speed)
 	elseif spin == -1 then
-		dprint("Object Preivew - Zoom Out!")
 		local camera = self:GetActiveCamera()
-		camera:SetZoomDistance(camera:GetZoomDistance()+0.25)
+		camera:SetZoomDistance(camera:GetZoomDistance()+speed)
 	else
 		dprint("Object Preivew - No Valid Mousewheel direction detected")
 	end
 end
 
-function OPObjectPreviewer_OnClick(self,button)
+function OPObjectPreviewer_OnClick(self,button,down)
 	-- nothing right now, let's add some fun stuff later to manipulate the camera angle? idk
 end
 

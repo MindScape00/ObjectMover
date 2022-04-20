@@ -5587,7 +5587,10 @@
 				PanelTemplates_SetTab(OPNewOptionsFrame, 1);
 				OPNewOptionsFrame.MainArea.NewOptions:Show();
 				tinsert(UISpecialFrames, self:GetName());
+				self:RegisterForDrag("LeftButton");
 			</OnLoad>
+			<OnDragStart>self:StartMoving();</OnDragStart>
+			<OnDragStop>self:StopMovingOrSizing();</OnDragStop>
 		</Scripts>
 	</Frame>
 </Ui>
