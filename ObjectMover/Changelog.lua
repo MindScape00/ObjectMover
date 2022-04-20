@@ -1,14 +1,26 @@
 ObjectMoverChangelog = [[
-#v7.1.1 (March 26th, 2022)
+#v7.2.0 (May?? 1st, 2022)
 	
-	- Rotate Sliders now use Client-Side rotation until you let go, then it saves - others will only see the final rotation after it saves.
-	- You can now toggle the mouse-over Tooltips in the ObjectMover 'Options' tab (right-click the ObjectMover Icon)
-	- Speaking of icons: ObjectMover now has a new Minimap icon, made by Tia!! Look for the new Blue & Gold icon. Thanks T! <3
-	- Extended Information (i) panel renamed to "Selected Object Info" to better describe what it shows. 
-	- - This panel can now be moved independent of the main "mover" panel. This will later be re-sizeable & showable by itself also.
-	- - Added more object data to the Selected Object Info panel (Scale & Object Dimensions).
-	- - - Object Dimensions will show a pop-up of the non-rounded dimensions if you hover over it. Does not turn off with the Tooltip toggle.
-	- - Object Preview is now able to be zoomed using the mouse-wheel.
+	- NEW: You can now toggle the mouse-over Tooltips in the ObjectMover 'Options' tab (right-click the ObjectMover Icon)
+	- UPDATED: Rotate Sliders now use Client-Side rotation until you let go, then it saves - others will only see the final rotation after it saves.
+	- UPDATED: Speaking of icons: ObjectMover now has a new Minimap icon, made by Tia!! Look for the new Blue & Gold icon. Thanks T! <3
+	- UPDATED: Extended Information (i) panel renamed to "Selected Object Info" to better describe what it shows. 
+	   - This panel can now be separated from the main panel by dragging
+	   from the title. You can also resize it on it's own.
+	   - This panel can be toggled to auto-show on login in the 'Options' tab.
+	   - Added more object data to the Selected Object Info panel (Scale &
+	   Object Dimensions).
+	      - Object Dimensions will show a pop-up of the non-rounded
+	         dimensions if you hover over it. Does not turn off with the
+	         Tooltip toggle.
+	   - Object Preview is now able to be zoomed using the mouse-wheel.
+	      Hold Shift to zoom faster.
+	   - Object Preview now shows the tint & transparency of a selected
+	      object. 
+	      - If an object is completely transparent, it will show the
+	         non-transparent object so you can see what's selected!
+	- CHANGED: Tint & Overlay pannel now let's you better control if you're using Tint or Overlay - this comes on the heels of Tint now supporting Saturation as well!
+	- CHANGED: Move Object has been replaced with Move Player. It made no sense that OBJECTMOVER moved PLAYERS by default, not objects. This is corrected. Thank you everyone asking "Why is object mover moving my character and not the object?" in discord for pointing out this logical flaw.
 
 ## _________________________________________________
 
@@ -154,3 +166,4 @@ These will automatically apply to the object as you drag the sliders:
 |cffFFCC00 - Auto Update|r - Updates the sliders & spell button to match an object when selected.
 
 ]]
+--[[ Blank Space for Tabbing : Copy this : ' ' ]]

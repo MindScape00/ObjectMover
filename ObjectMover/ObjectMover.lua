@@ -81,6 +81,8 @@ function loadMasterTable()
 	if isNotDefined(OPMasterTable.Options["autoShowPopout"]) then OPMasterTable.Options["autoShowPopout"] = false end
 	if isNotDefined(OPMasterTable.Options["wasPopoutShown"]) then OPMasterTable.Options["wasPopoutShown"] = false end
 	if isNotDefined(OPMasterTable.Options["showTooltips"]) then OPMasterTable.Options["showTooltips"] = true end
+	if isNotDefined(OPMasterTable.Options["MovePlayer"]) then OPMasterTable.Options["MovePlayer"] = false end
+	if isNotDefined(OPMasterTable.Options["useOverlayMethod"]) then OPMasterTable.Options["useOverlayMethod"] = true end
 	if not OPMasterTable.ParamPresetKeys then OPMasterTable.ParamPresetKeys = {"Building Tile","Fine Positioning"} end
 	if not OPMasterTable.ParamPresetContent then OPMasterTable.ParamPresetContent = {
 		["Building Tile"] = {
@@ -245,37 +247,22 @@ function OPObjectPreviewGenerateFrame()
 end
 --]]
 
-local bitPackerValue
-local function BitPack(pack, rhs)
-
-    if pack == 0 then
-        pack = rhs;
-		bitPackerValue = pack;
-        return pack;
-	else
-		pack = bitPackerValue * rhs
-		bitPackerValue = pack;
-        return pack;
-	end
-
-end
-
 local function getSpellVisualKitByValues(tintType,r,g,b,a,s)
 	local useNewSystem = true
-	
-	if tonumber(a) == 100 then return; end -- if set to fully transparent, we will ignore and show the base object.
-	local r = tonumber(r)
-	local g = tonumber(g)
-	local b = tonumber(b)
-	local a = tonumber(a)
-	local s = tonumber(s)
 	
 	local colorIncrement = 5
 	local transparencyIncrement = 20
 	local saturationIncrement = 20
 	
+	if tonumber(a) == 100 then return; end -- if set to fully transparent, we will ignore and show the base object.
+	local rStepped = tonumber(r)/colorIncrement
+	local gStepped = tonumber(g)/colorIncrement
+	local bStepped = tonumber(b)/colorIncrement
+	local aStepped = tonumber(a)/transparencyIncrement
+	local sStepped = tonumber(s)/saturationIncrement
+	
 	local ColourSteps = (100 / colorIncrement) + 1;
-    local SaturationSteps = (100 / saturationIncrement) + 1;		
+    local SaturationSteps = (100 / saturationIncrement);		
 	
 	local startingID = 100000	
 	if useNewSystem then
@@ -285,23 +272,17 @@ local function getSpellVisualKitByValues(tintType,r,g,b,a,s)
 		-- adjust starting ID if Overlay
 		startingID = 331526; -- Overlay SpellVisual Start ID 
 	end
-	
-	local spellVisualID = startingID
-		print(spellVisualID)
-	bitPackerValue = 0
-	spellVisualID = spellVisualID + (r/colorIncrement) -- R color incement...?
-			print(spellVisualID)
-	spellVisualID = spellVisualID + ((g/colorIncrement) * BitPack(bitPackerValue, ColourSteps)) -- G color incement...?
-		print(spellVisualID)
-	spellVisualID = spellVisualID + ((b/colorIncrement) * BitPack(bitPackerValue, ColourSteps)) -- B color incement...?
-		print(spellVisualID)
-	spellVisualID = spellVisualID + ((SaturationSteps - (s/saturationIncrement)) * BitPack(bitPackerValue, ColourSteps)) -- Saturation color incement...?
-		print(spellVisualID)
-	spellVisualID = spellVisualID + ((a/transparencyIncrement) * BitPack(bitPackerValue, SaturationSteps)) -- Alpha color incement...?
-		print(spellVisualID)
+
+	spellVisualID = startingID
+	spellVisualID = spellVisualID + (rStepped)
+	spellVisualID = spellVisualID + (gStepped * ColourSteps);
+	spellVisualID = spellVisualID + (bStepped * ColourSteps^2);
+	spellVisualID = spellVisualID + ((SaturationSteps - sStepped) * ColourSteps^3);
+	spellVisualID = spellVisualID + (aStepped * ((ColourSteps^3) * SaturationSteps));
+	print("SpellVisualID: "..spellVisualID)
 		
 	local spellVisualKitID = spellVisualID+30000
-		print(spellVisualKitID)
+		print("SpellVisualKitID: "..spellVisualKitID)
 	return (spellVisualKitID);
 end
 
@@ -342,6 +323,12 @@ function OPObjectPreviewerActor_OnModelLoaded(self)
 		local a = OPLastSelectedObjectData[16]
 		local s = OPLastSelectedObjectData[21]
 		self:SetSpellVisualKit(getSpellVisualKitByValues(tintType,r,g,b,a,s))
+		if tonumber(a) == 100 then 
+			self:SetAlpha(1)
+		else
+			local frameA = (100-a)/100
+			self:SetAlpha(frameA)
+		end
 	end
 end
 --]]
@@ -391,20 +378,6 @@ function OPObjectPreviewer_OnClick(self,button)
 	-- nothing right now, let's add some fun stuff later to manipulate the camera angle? idk
 end
 
-function OPManager_VisibilityDropdown_OnClick(self)
-	local menuList = {
-		{ text = "Select an Option", isTitle = true},
-		{ text = "Option 1", func = function() print("You've chosen option 1"); end },
-		{ text = "Option 2", func = function() print("You've chosen option 2"); end },
-		{ text = "More Options", hasArrow = true,
-			menuList = {
-				{ text = "Option 3", func = function() print("You've chosen option 3"); end }
-			} 
-		}
-	}
-	EasyMenu(menuList, OPManagerVisibilityMenu, CURSOR, 0, 0);
-	print("Showing Menu?")
-end
 
 -------------------------------------------------------------------------------
 -- Minimap Icon Handlers
@@ -662,7 +635,7 @@ end
 function OPForward()
 	updateDimensions("length")
 	if OPmoveLength and OPmoveLength ~= "" and OPmoveLength ~= 0 and OPmoveLength ~= nil then
-		if OPMoveObjectInstead:GetChecked() then
+		if not OPMovePlayerInstead:GetChecked() then
 			if isGroupSelected then cmdPref = "go group" else cmdPref = "go" end
 			if RelativeToPlayerToggle:GetChecked() then
 				cmd(cmdPref.." relative forward "..OPmoveLength)
@@ -672,7 +645,7 @@ function OPForward()
 		else
 			cmd("gps for "..OPmoveLength)
 		end
-		if SpawnonMoveButton:GetChecked() == true and not OPMoveObjectInstead:GetChecked() then
+		if SpawnonMoveButton:GetChecked() and OPMovePlayerInstead:GetChecked() then
 			OPSpawn()
 		end
 		dprint("Moving "..OPmoveLength.." units forward.")
@@ -684,7 +657,7 @@ end
 function OPBackward()
 	updateDimensions("length")
 	if OPmoveLength and OPmoveLength ~= "" and OPmoveLength ~= 0 and OPmoveLength ~= nil then
-		if OPMoveObjectInstead:GetChecked() == true then
+		if not OPMovePlayerInstead:GetChecked() then
 			if isGroupSelected then cmdPref = "go group" else cmdPref = "go" end
 			if RelativeToPlayerToggle:GetChecked() then
 				cmd(cmdPref.." relative back "..OPmoveLength)
@@ -694,7 +667,7 @@ function OPBackward()
 		else
 			cmd("gps back "..OPmoveLength)
 		end
-		if SpawnonMoveButton:GetChecked() == true and not OPMoveObjectInstead:GetChecked() then
+		if SpawnonMoveButton:GetChecked() and OPMovePlayerInstead:GetChecked() then
 			OPSpawn()
 		end
 		dprint("Moving "..OPmoveLength.." units backwards.")
@@ -706,7 +679,7 @@ end
 function OPLeft()
 	updateDimensions("width")
 	if OPmoveWidth and OPmoveWidth ~= "" and OPmoveWidth ~= 0 and OPmoveWidth ~= nil then
-		if OPMoveObjectInstead:GetChecked() == true then
+		if not OPMovePlayerInstead:GetChecked() then
 			if isGroupSelected then cmdPref = "go group" else cmdPref = "go" end
 			if RelativeToPlayerToggle:GetChecked() then
 				cmd(cmdPref.." relative left "..OPmoveWidth)
@@ -716,7 +689,7 @@ function OPLeft()
 		else
 			cmd("gps left "..OPmoveWidth)
 		end
-		if SpawnonMoveButton:GetChecked() == true and not OPMoveObjectInstead:GetChecked() then
+		if SpawnonMoveButton:GetChecked() and OPMovePlayerInstead:GetChecked() then
 			OPSpawn()
 		end
 		dprint("Moving "..OPmoveWidth.." units left.")
@@ -728,7 +701,7 @@ end
 function OPRight()
 	updateDimensions("width")
 	if OPmoveWidth and OPmoveWidth ~= "" and OPmoveWidth ~= 0 and OPmoveWidth ~= nil then
-		if OPMoveObjectInstead:GetChecked() == true then
+		if not OPMovePlayerInstead:GetChecked() then
 			if isGroupSelected then cmdPref = "go group" else cmdPref = "go" end
 			if RelativeToPlayerToggle:GetChecked() then
 				cmd(cmdPref.." relative right "..OPmoveWidth)
@@ -738,7 +711,7 @@ function OPRight()
 		else
 			cmd("gps right "..OPmoveWidth)
 		end
-		if SpawnonMoveButton:GetChecked() == true and not OPMoveObjectInstead:GetChecked() then
+		if SpawnonMoveButton:GetChecked() and OPMovePlayerInstead:GetChecked() then
 			OPSpawn()
 		end
 		dprint("Moving "..OPmoveWidth.." units right.")
@@ -750,13 +723,13 @@ end
 function OPUp()
 	updateDimensions("height")
 	if OPmoveHeight and OPmoveHeight ~= "" and OPmoveHeight ~= 0 and OPmoveHeight ~= nil then
-		if OPMoveObjectInstead:GetChecked() == true then
+		if not OPMovePlayerInstead:GetChecked() then
 			if isGroupSelected then cmdPref = "go group" else cmdPref = "go" end
 			cmd(cmdPref.." move up "..OPmoveHeight)
 		else
 			cmd("gps up "..OPmoveHeight)
 		end
-		if SpawnonMoveButton:GetChecked() == true and not OPMoveObjectInstead:GetChecked() then
+		if SpawnonMoveButton:GetChecked() and OPMovePlayerInstead:GetChecked() then
 			OPSpawn()
 		end
 		dprint("Moving "..OPmoveHeight.." units up.")
@@ -768,13 +741,13 @@ end
 function OPDown()
 	updateDimensions("height")
 	if OPmoveHeight and OPmoveHeight ~= "" and OPmoveHeight ~= 0 and OPmoveHeight ~= nil then
-		if OPMoveObjectInstead:GetChecked() == true then
+		if not OPMovePlayerInstead:GetChecked() then
 			if isGroupSelected then cmdPref = "go group" else cmdPref = "go" end
 			cmd(cmdPref.." move down "..OPmoveHeight)
 		else
 			cmd("gps down "..OPmoveHeight)
 		end
-		if SpawnonMoveButton:GetChecked() == true and not OPMoveObjectInstead:GetChecked() then
+		if SpawnonMoveButton:GetChecked() and OPMovePlayerInstead:GetChecked() then
 			OPSpawn()
 		end
 		dprint("Moving "..OPmoveHeight.." units down.")
@@ -839,12 +812,11 @@ function OPOverlayObject()
 		local b = OPOverlaySliderB:GetValue()
 		local t = OPOverlaySliderT:GetValue()
 		local s = 100-OPOverlaySliderS:GetValue()
-		--addFilter("Removed GameObject .*\'s Overlay.")
 		if isGroupSelected then cmdPref = "go group" else cmdPref = "go" end
-		if s == 0 then 
-			cmd(cmdPref.." tint "..r.." "..g.." "..b.." "..s.." "..t)
-		else
+		if OPMasterTable.Options["useOverlayMethod"] == true then 
 			cmd(cmdPref.." overlay "..r.." "..g.." "..b.." "..s.." "..t)
+		else
+			cmd(cmdPref.." tint "..r.." "..g.." "..b.." "..s.." "..t)
 		end
 	end
 end
@@ -985,10 +957,113 @@ StaticPopupDialogs["OP_TINTS_SPELL"] = {
 	hasEditBox = true,
 }
 
+StaticPopupDialogs["OP_OBJ_VISIBILITY"] = {
+	text = "Visibility",
+	button1 = APPLY,
+	button2 = CANCEL,
+	OnAccept = function( self )
+		local numberFromUser = self.editBox:GetText()
+		if isGroupSelected then cmdPref = "go group" else cmdPref = "go set" end
+		local cmdName = "vis"
+		if tonumber(numberFromUser) ~= nil then
+			if tonumber(numberFromUser) > 0 then
+				cmd(cmdPref.." "..cmdName.." "..numberFromUser)
+			else
+				cmd(cmdPref.." "..cmdName.." 0")
+			end
+		else
+			cmd(cmdPref.." "..cmdName.." 0")
+		end
+	end,
+	EditBoxOnTextChanged = function(self)
+		if self:GetText() ~= "" then
+			self:GetParent().button1:SetText(APPLY)
+		else
+			self:GetParent().button1:SetText(REMOVE)
+		end
+	end,
+	EditBoxOnEnterPressed = function(self)
+		self:GetParent().button1:Click("LeftButton")
+	end,
+	EditBoxOnEscapePressed = function(self)
+		self:GetParent().button2:Click("LeftButton")
+	end,
+	OnShow = function(self)
+		if self.editBox:GetText() ~= "" then
+			self.button1:SetText(APPLY)
+		else
+			self.button1:SetText(REMOVE)
+		end
+		self.editBox:SetNumeric(true)
+	end,
+	OnHide = function(self)
+		self.editBox:SetText("")
+	end,
+	enterClicksFirstButton = true,
+	timeout = 0,
+	whileDead = true,
+	hideOnEscape = true,
+	hasEditBox = true,
+}
+StaticPopupDialogs["OP_OBJ_ANIMATION"] = {
+	text = "Animation",
+	button1 = APPLY,
+	button2 = CANCEL,
+	OnAccept = function( self )
+		local numberFromUser = self.editBox:GetText()
+		cmdPref = "go"
+		local cmdName = "anim"
+		if tonumber(numberFromUser) ~= nil then
+			if tonumber(numberFromUser) > 0 then
+				cmd(cmdPref.." "..cmdName.." "..numberFromUser)
+			else
+				cmd(cmdPref.." "..cmdName.." 0")
+			end
+		else
+			cmd(cmdPref.." "..cmdName.." 0")
+		end
+	end,
+	EditBoxOnTextChanged = function(self)
+		if self:GetText() ~= "" then
+			self:GetParent().button1:SetText(APPLY)
+		else
+			self:GetParent().button1:SetText(REMOVE)
+		end
+	end,
+	EditBoxOnEnterPressed = function(self)
+		self:GetParent().button1:Click("LeftButton")
+	end,
+	EditBoxOnEscapePressed = function(self)
+		self:GetParent().button2:Click("LeftButton")
+	end,
+	OnShow = function(self)
+		if self.editBox:GetText() ~= "" then
+			self.button1:SetText(APPLY)
+		else
+			self.button1:SetText(REMOVE)
+		end
+		self.editBox:SetNumeric(true)
+	end,
+	OnHide = function(self)
+		self.editBox:SetText("")
+	end,
+	enterClicksFirstButton = true,
+	timeout = 0,
+	whileDead = true,
+	hideOnEscape = true,
+	hasEditBox = true,
+}
+
 ----------- Management Tab
 -- Visiblity Button
 function OPSetObjVis(num)
-	cmd("go set vis "..num)
+	if isGroupSelected then cmdPref = "go group" else cmdPref = "go set" end
+	cmd(cmdPref.." vis "..num)
+end
+
+-- Anim Button
+function OPSetObjAnim(num)
+	cmd("go anim "..num)
 end
 
 -------------------------------------------------------------------------------
@@ -1119,8 +1194,6 @@ end
 
 -- DropDown Load Boxes
 
-function OPCreateLoadDropDownMenus()
-	
 local function createFramesHook(numLevels, numButtons)
 	for level = 1, numLevels do
 		for i = 1, numButtons do
@@ -1131,6 +1204,41 @@ end
 
 createFramesHook(UIDROPDOWNMENU_MAXLEVELS, UIDROPDOWNMENU_MAXBUTTONS)
 hooksecurefunc("UIDropDownMenu_CreateFrames", createFramesHook)
+
+function OP_genStaticDropdownChild( parent, dropdownName, staticList, title, width )
+
+	if not parent or not dropdownName or not staticList then return end;
+	if not title then title = "Select" end
+	if not width then width = 55 end
+	local newDropdown = CreateFrame("Frame", dropdownName, parent, "UIDropDownMenuTemplate")
+	newDropdown:SetPoint("CENTER")
+		
+	local function newDropdown_Initialize( dropdownName, level )
+		for index,value in ipairs(_G[parent:GetName()].staticList) do
+		--for index = 1, #dropdownName.staticList do
+			if (value.text) then
+				value.index = index;
+				UIDropDownMenu_AddButton( value, level );
+			end
+		end
+	end
+	
+	UIDropDownMenu_Initialize(newDropdown, newDropdown_Initialize, "nope", nil, staticList)
+	UIDropDownMenu_SetWidth(newDropdown, width);
+	UIDropDownMenu_SetButtonWidth(newDropdown, width+15)
+	UIDropDownMenu_SetSelectedID(newDropdown, 0)
+	UIDropDownMenu_JustifyText(newDropdown, "LEFT")
+	UIDropDownMenu_SetText(newDropdown, title)
+	_G[dropdownName.."Text"]:SetFontObject("GameFontWhiteTiny2")
+	_G[dropdownName.."Text"]:SetWidth(width-15)
+	local fontName,fontHeight,fontFlags = _G[dropdownName.."Text"]:GetFont()
+	_G[dropdownName.."Text"]:SetFont(fontName, 6)
+	
+	newDropdown:GetParent():SetWidth(newDropdown:GetWidth())
+	newDropdown:GetParent():SetHeight(newDropdown:GetHeight())	
+end
+
+function OPCreateLoadDropDownMenus()
 	
 	--Param Loading
 	local paramPresetDropSelect = CreateFrame("Frame", "paramPresetDropDownMenu", OPPanel2, "UIDropDownMenuTemplate")
@@ -1259,7 +1367,6 @@ hooksecurefunc("UIDropDownMenu_CreateFrames", createFramesHook)
 	end
 	UIDropDownMenu_Initialize(rotPresetDropSelect, rotPresetInitialize)
 	UIDropDownMenu_SetWidth(rotPresetDropSelect, 65)
-	--UIDropDownMenu_SetHeight(rotPresetDropSelect, 24)
 	UIDropDownMenu_SetButtonWidth(rotPresetDropSelect, 80)
 	UIDropDownMenu_SetSelectedID(rotPresetDropSelect, 0)
 	UIDropDownMenu_JustifyText(rotPresetDropSelect, "LEFT")
@@ -1267,7 +1374,6 @@ hooksecurefunc("UIDropDownMenu_CreateFrames", createFramesHook)
 	rotPresetDropDownMenuText:SetFontObject("GameFontWhiteTiny2")
 	local fontName,fontHeight,fontFlags = rotPresetDropDownMenuText:GetFont()
 	rotPresetDropDownMenuText:SetFont(fontName, 6)
-	--rotPresetDropSelect:SetHeight(24)
 end
 
 
@@ -1530,6 +1636,7 @@ local function Addon_OnEvent(self, event, ...)
 				if not isWMO[tonumber(objType)] then
 					OPPanelPopout.ObjDimensions.Text:SetText("Loading...")
 					OPPanelPopout.ObjPreview.Scene.Actor:SetSpellVisualKit()
+					OPPanelPopout.ObjPreview.Scene.Actor:SetAlpha(1)
 					OPPanelPopout.ObjPreview.Scene.Actor:SetModelByFileID(filedataid)
 					OPPanelPopout.ObjPreview.Scene.Actor:Show()
 				else
