@@ -20,6 +20,18 @@ local isWMO = {[14] = true, [15] = true, [33] = true, [38] = true, [43] = true, 
 local ObjectTypes = {[0]="DOOR",[1]="BUTTON",[2]="QUESTGIVER",[3]="CHEST",[4]="BINDER",[5]="GENERIC",[6]="TRAP",[7]="CHAIR",[8]="SPELL_FOCUS",[9]="TEXT",[10]="GOOBER",[11]="TRANSPORT",[12]="AREADAMAGE",[13]="CAMERA",[14]="MAP_OBJECT (WMO)",[15]="MAP_OBJ_TRANSPORT (WMO)",[16]="DUEL_ARBITER",[17]="FISHINGNODE",[18]="RITUAL",[19]="MAILBOX",[20]="DO_NOT_USE",[21]="GUARDPOST",[22]="SPELLCASTER",[23]="MEETINGSTONE",[24]="FLAGSTAND",[25]="FISHINGHOLE",[26]="FLAGDROP",[27]="MINI_GAME",[28]="DO_NOT_USE_2",[29]="CONTROL_ZONE",[30]="AURA_GENERATOR",[31]="DUNGEON_DIFFICULTY",[32]="BARBER_CHAIR",[33]="DESTRUCTIBLE_BUILDING (WMO)",[34]="GUILD_BANK",[35]="TRAPDOOR",[36]="NEW_FLAG",[37]="NEW_FLAG_DROP",[38]="GARRISON_BUILDING (WMO)",[39]="GARRISON_PLOT",[40]="CLIENT_CREATURE",[41]="CLIENT_ITEM",[42]="CAPTURE_POINT (WMO)",[43]="PHASEABLE_MO",[44]="GARRISON_MONUMENT",[45]="GARRISON_SHIPMENT",[46]="GARRISON_MONUMENT_PLAQUE",[47]="ITEM_FORGE",[48]="UI_LINK",[49]="KEYSTONE_RECEPTACLE",[50]="GATHERING_NODE",[51]="CHALLENGE_MODE_REWARD",[52]="MULTI",[53]="SIEGEABLE_MULTI",[54]="SIEGEABLE_MO (WMO)",[55]="PVP_REWARD",[56]="PLAYER_CHOICE_CHEST",[57]="LEGENDARY_FORGE",[58]="GARR_TALENT_TREE",[59]="WEEKLY_REWARD_CHEST",[60]="CLIENT_MODEL"}
 local ObjectAnims = {[0]="Stand", [145]="Spawn",[146]="Close",[147]="Closed",[148]="Open",[149]="Opened",[150]="Destroy",[157]="Despawn"}
 
+local wordGenNumMap = {"10001083","10001086","10001081","10001082","10001089","10001085","10001079","10001087","10001088","10001084"}
+local wordGenSymMap = {
+	[33] = "10001067", -- !
+	[47] = "10001068", -- /
+	[38] = "10001069", -- &
+	[45] = "10001071", -- -
+	[43] = "10001075", -- +
+	[58] = "10001076", -- :
+	[63] = "10001077", -- ?
+	[59] = "10001078", -- ;
+}
+
 -------------------------------------------------------------------------------
 -- Simple Chat Functions
 -------------------------------------------------------------------------------
@@ -1043,6 +1055,89 @@ StaticPopupDialogs["OP_OBJ_ANIMATION"] = {
 			self.button1:SetText(REMOVE)
 		end
 		self.editBox:SetNumeric(true)
+	end,
+	OnHide = function(self)
+		self.editBox:SetText("")
+	end,
+	enterClicksFirstButton = true,
+	timeout = 0,
+	whileDead = true,
+	hideOnEscape = true,
+	hasEditBox = true,
+}
+
+StaticPopupDialogs["OP_TOOLS_WORDGEN"] = {
+	text = "Word Generator",
+	button1 = START,
+	button2 = CANCEL,
+	OnAccept = function( self )
+		local word = string.upper(self.editBox:GetText())
+		local startingLetterID = 64 -- FIX THIS TO FIRST LETTER ID
+		local letterWidth = 0.75
+		local groupLeaderID
+		for i = 1,#word do 
+			local letterID = string.byte(word,i)
+			if letterID >= 65 and letterID <= 90 then -- Letter
+				letterID = letterID - 65 -- offset to A == 0
+				letterID = letterID + startingLetterID
+				if i == 1 then
+					cmd("go spawn "..letterID)
+					groupLeaderID = false
+					--while not groupLeaderID do
+						--if OPLastSelectedObjectData[1] then groupLeaderID = OPLastSelectedObjectData[1]; dprint("Got Group Leader ID for WordGen") end
+					--end
+				else
+					C_Timer.After(0.5, function()
+						if not groupLeaderID then groupLeaderID = OPLastSelectedObjectData[1] end
+						C_Timer.After(0.5, function()
+							cmd("go spawn "..letterID.." move left "..letterWidth*(i-1))
+							cmd("go group add "..groupLeaderID)
+						end)
+					end)
+				end
+			elseif letterID >= 48 and letterID <= 57 then -- Number
+				letterID = letterID - 47 -- offset to 0 == 1
+				letterID = wordGenNumMap[letterID]
+				if i == 1 then
+					cmd("go spawn "..letterID)
+					groupLeaderID = false
+				else
+					C_Timer.After(0.5, function()
+						if not groupLeaderID then groupLeaderID = OPLastSelectedObjectData[1] end
+						C_Timer.After(0.5, function()
+							cmd("go spawn "..letterID.." move left "..letterWidth*(i-1))
+							cmd("go group add "..groupLeaderID)
+						end)
+					end)
+				end
+			elseif wordGenSymMap[letterID] then -- if supported symbol
+				letterID = wordGenSymMap[letterID]
+				if i == 1 then
+					cmd("go spawn "..letterID)
+					groupLeaderID = false
+				else
+					C_Timer.After(0.5, function()
+						if not groupLeaderID then groupLeaderID = OPLastSelectedObjectData[1] end
+						C_Timer.After(0.5, function()
+							cmd("go spawn "..letterID.." move left "..letterWidth*(i-1))
+							cmd("go group add "..groupLeaderID)
+						end)
+					end)
+				end
+			else -- unsupported or space
+				dprint("Character not Supported, or Space, Skipped with Blank Space")
+			end
+		end
+	end,
+	EditBoxOnEnterPressed = function(self)
+		self:GetParent().button1:Click("LeftButton")
+	end,
+	EditBoxOnEscapePressed = function(self)
+		self:GetParent().button2:Click("LeftButton")
+	end,
+	OnShow = function(self)
+		self.editBox:SetText("")
+		self.editBox:SetNumeric(false)
 	end,
 	OnHide = function(self)
 		self.editBox:SetText("")
