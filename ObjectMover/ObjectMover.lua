@@ -11,7 +11,7 @@
 local MYADDON, MyAddOn = ...
 local addonVersion, addonAuthor, addonName = GetAddOnMetadata(MYADDON, "Version"), GetAddOnMetadata(MYADDON, "Author"), GetAddOnMetadata(MYADDON, "Title")
 
-local OPmoveLength, OPmoveWidth, OPmoveHeight, MessageCount, ObjectClarifier, SpawnClarifier, ScaleClarifier, RotateClarifier, OPObjectSpell, cmdPref, isGroupSelected, m = 0, 0, 0, 0, false, false, false, false, nil, "go", nil, nil
+local OPmoveLength, OPmoveWidth, OPmoveHeight, MessageCount, ObjectClarifier, SpawnClarifier, ScaleClarifier, RotateClarifier, OPObjectSpell, cmdPref, isGroupSelected, m, rateLimited = 0, 0, 0, 0, false, false, false, false, nil, "go", nil, nil, false
 BINDING_HEADER_OBJECTMANIP, SLASH_SHOWCLOSE1, SLASH_SHOWCLOSE2, SLASH_SHOWCLOSE3 = "Object Mover", "/obj", "/om", "/op"
 
 local addonPrefix = "EPISLON_OBJ_INFO"
@@ -20,8 +20,18 @@ local isWMO = {[14] = true, [15] = true, [33] = true, [38] = true, [43] = true, 
 local ObjectTypes = {[0]="DOOR",[1]="BUTTON",[2]="QUESTGIVER",[3]="CHEST",[4]="BINDER",[5]="GENERIC",[6]="TRAP",[7]="CHAIR",[8]="SPELL_FOCUS",[9]="TEXT",[10]="GOOBER",[11]="TRANSPORT",[12]="AREADAMAGE",[13]="CAMERA",[14]="MAP_OBJECT (WMO)",[15]="MAP_OBJ_TRANSPORT (WMO)",[16]="DUEL_ARBITER",[17]="FISHINGNODE",[18]="RITUAL",[19]="MAILBOX",[20]="DO_NOT_USE",[21]="GUARDPOST",[22]="SPELLCASTER",[23]="MEETINGSTONE",[24]="FLAGSTAND",[25]="FISHINGHOLE",[26]="FLAGDROP",[27]="MINI_GAME",[28]="DO_NOT_USE_2",[29]="CONTROL_ZONE",[30]="AURA_GENERATOR",[31]="DUNGEON_DIFFICULTY",[32]="BARBER_CHAIR",[33]="DESTRUCTIBLE_BUILDING (WMO)",[34]="GUILD_BANK",[35]="TRAPDOOR",[36]="NEW_FLAG",[37]="NEW_FLAG_DROP",[38]="GARRISON_BUILDING (WMO)",[39]="GARRISON_PLOT",[40]="CLIENT_CREATURE",[41]="CLIENT_ITEM",[42]="CAPTURE_POINT (WMO)",[43]="PHASEABLE_MO",[44]="GARRISON_MONUMENT",[45]="GARRISON_SHIPMENT",[46]="GARRISON_MONUMENT_PLAQUE",[47]="ITEM_FORGE",[48]="UI_LINK",[49]="KEYSTONE_RECEPTACLE",[50]="GATHERING_NODE",[51]="CHALLENGE_MODE_REWARD",[52]="MULTI",[53]="SIEGEABLE_MULTI",[54]="SIEGEABLE_MO (WMO)",[55]="PVP_REWARD",[56]="PLAYER_CHOICE_CHEST",[57]="LEGENDARY_FORGE",[58]="GARR_TALENT_TREE",[59]="WEEKLY_REWARD_CHEST",[60]="CLIENT_MODEL"}
 local ObjectAnims = {[0]="Stand", [145]="Spawn",[146]="Close",[147]="Closed",[148]="Open",[149]="Opened",[150]="Destroy",[157]="Despawn"}
 
-local wordGenNumMap = {"10001083","10001086","10001081","10001082","10001089","10001085","10001079","10001087","10001088","10001084"}
-local wordGenSymMap = {
+local wordGenCharMap = {
+	[48] = "10001083",     --0
+	[49] = "10001086",     --1
+	[50] = "10001081",     --2
+	[51] = "10001082",     --3
+	[52] = "10001089",     --4
+	[53] = "10001085",     --5
+	[54] = "10001079",     --6
+	[55] = "10001087",     --7
+	[56] = "10001088",     --8
+	[57] = "10001084",     --9
+	
 	[33] = "10001067", -- !
 	[47] = "10001068", -- /
 	[38] = "10001069", -- &
@@ -30,26 +40,18 @@ local wordGenSymMap = {
 	[58] = "10001076", -- :
 	[63] = "10001077", -- ?
 	[59] = "10001078", -- ;
+	[124] = "10001073", -- | -> sword replacement
+	[60] = "0", -- <
+	[62] = "0", -- >
+	
 }
 
 -------------------------------------------------------------------------------
--- Simple Chat Functions
+-- Simple Chat & Print Functions
 -------------------------------------------------------------------------------
-
-local function cmd(text)
-  SendChatMessage("."..text, "GUILD");
-end
-
-function OPManagerCMD(text)
-	cmd(text)
-end
 
 local function cprint(text)
 	print("|cffFFD700ObjectMover: "..(text and text or "ERROR").."|r")
-end
-
-function OPManagerPrint(text)
-	cprint(text)
 end
 
 local function dprint(text, force, rest)
@@ -71,6 +73,26 @@ local function eprint(text,rest)
 	else
 		print("|cffFFD700 ObjectMover @ ERROR: "..text.." | "..rest.." |r")
 		print(debugstack(2))
+	end
+end
+
+local function cmd(text)
+  SendChatMessage("."..text, "GUILD");
+  dprint("Sending Command: "..text)
+end
+
+function OPManagerPrint(text)
+	cprint(text)
+end
+
+function OPManagerCMD(mainCom, text, groupCheck)
+	if groupCheck then
+		if isGroupSelected then mainCom = "go group" else mainCom = "go" end
+	end
+	if mainCom and text then
+		cmd(mainCom.." "..text)
+	else
+		cmd(mainCom)
 	end
 end
 
@@ -562,17 +584,17 @@ function updateGroupSelected(status)
 	if isGroupSelected == true then
 		OPRotationSliderX:Disable()
 		OPRotationSliderY:Disable()
-		OPRotationSliderZ:Disable()
+		--OPRotationSliderZ:Disable()
 		OPRotationEditBoxX:Disable()
 		OPRotationEditBoxY:Disable()
 		OPRotationEditBoxZ:Disable()
 		rotPresetDropDownMenuButton:Disable()
 		OPRotationEditBoxX:SetTextColor(0.5,0.5,0.5)
 		OPRotationEditBoxY:SetTextColor(0.5,0.5,0.5)
-		OPRotationEditBoxZ:SetTextColor(0.5,0.5,0.5)
+		--OPRotationEditBoxZ:SetTextColor(0.5,0.5,0.5)
 		OPRotationSliderXTitle:SetTextColor(0.5,0.5,0.5)
 		OPRotationSliderYTitle:SetTextColor(0.5,0.5,0.5)
-		OPRotationSliderZTitle:SetTextColor(0.5,0.5,0.5)
+		--OPRotationSliderZTitle:SetTextColor(0.5,0.5,0.5)
 	else
 		OPRotationSliderX:Enable()
 		OPRotationSliderY:Enable()
@@ -886,20 +908,33 @@ function OPRotateObject(sendToServer)
 	--if RotateClarifier == false then
 		RotateClarifier = true
 	--end
-	local RotationX = OPRotationSliderX:GetValue()
-	local RotationY = OPRotationSliderY:GetValue()
-	local RotationZ = OPRotationSliderZ:GetValue()
-	local localGUID = tonumber(OPLastSelectedObjectData[1])
-	if RotationX < 0 then RotationX = 0; dprint("RotX < 0, Made 0"); end
-	if RotationY < 0 then RotationY = 0; dprint("RotY < 0, Made 0"); end
-	if RotationZ < 0 then RotationZ = 0; dprint("RotZ < 0, Made 0"); end
-	--C_Epsilon.RotateObject(localGUID ,RotationX, RotationY, RotationZ)
-	if sendToServer then
-		cmd("go rot "..RotationX.." "..RotationY.." "..RotationZ)
+	if isGroupSelected then 
+		if rateLimited == true then return; end
+		local RotationZ1 = OPRotationSliderZ:GetValue()
+		local RotationZ2 = tonumber(OPLastSelectedGroupRotZ) or tonumber(OPLastSelectedObjectData[11])
+		if RotationZ2 < 0 then RotationZ2 = RotationZ2+360 elseif RotationZ2 > 360 then RotationZ2 = RotationZ2-360 end
+		local newRotZ = RotationZ1 - RotationZ2
+		cmd("go group turn "..newRotZ)
+		print("Rotating by newRotZ - "..newRotZ.." ("..RotationZ1.."-"..RotationZ2..")")
+		OPLastSelectedGroupRotZ = RotationZ1
+		rateLimited = true
+		C_Timer.After(1,function() rateLimited = false end)
 	else
+		local RotationX = OPRotationSliderX:GetValue()
+		local RotationY = OPRotationSliderY:GetValue()
+		local RotationZ = OPRotationSliderZ:GetValue()
+		local localGUID = tonumber(OPLastSelectedObjectData[1])
+		if RotationX < 0 then RotationX = 0; dprint("RotX < 0, Made 0"); end
+		if RotationY < 0 then RotationY = 0; dprint("RotY < 0, Made 0"); end
+		if RotationZ < 0 then RotationZ = 0; dprint("RotZ < 0, Made 0"); end
 		--C_Epsilon.RotateObject(localGUID ,RotationX, RotationY, RotationZ)
-		dprint("C_Epsilon.RotateObject("..localGUID..","..RotationX..","..RotationY..","..RotationZ..")")
-	end	
+		if sendToServer then
+			cmd("go rot "..RotationX.." "..RotationY.." "..RotationZ)
+		else
+			--C_Epsilon.RotateObject(localGUID ,RotationX, RotationY, RotationZ)
+			dprint("C_Epsilon.RotateObject("..localGUID..","..RotationX..","..RotationY..","..RotationZ..")")
+		end	
+	end
 end
 
 function roundToNthDecimal(num, n)
@@ -1066,68 +1101,64 @@ StaticPopupDialogs["OP_OBJ_ANIMATION"] = {
 	hasEditBox = true,
 }
 
+
+
+--- Word Generator
+local objectSpawningData = {}
+local objectsWaitingToSpawn = false
+local function resumeProcessingObjectSpawning()
+	if objectsWaitingToSpawn then
+		objectsWaitingToSpawn = false
+		dprint("WordGen - Resuming Spawning Objects")
+		local groupLeaderID = OPLastSelectedObjectData[1]
+		local next = next
+		if next(objectSpawningData) == nil then
+			dprint("No Objects to Spawn?")
+		else
+			for k in pairs(objectSpawningData) do
+				local letterID, offset = objectSpawningData[k][1], objectSpawningData[k][2]
+				cmd("go spawn "..letterID.." move left "..offset)
+				cmd("go group add "..groupLeaderID)
+				dprint("Spawned object ("..letterID..") left ("..offset..") to GUID ("..groupLeaderID..")'s group.")
+			end
+			table.wipe(objectSpawningData)
+			dprint("Wiping objectSpawningData table")
+		end
+	end
+end
+
 StaticPopupDialogs["OP_TOOLS_WORDGEN"] = {
-	text = "Word Generator",
+	text = "Text Generator",
 	button1 = START,
 	button2 = CANCEL,
 	OnAccept = function( self )
 		local word = string.upper(self.editBox:GetText())
+		word = word:gsub("%|%|","|")
 		local startingLetterID = 64 -- FIX THIS TO FIRST LETTER ID
 		local letterWidth = 0.75
-		local groupLeaderID
-		for i = 1,#word do 
-			local letterID = string.byte(word,i)
-			if letterID >= 65 and letterID <= 90 then -- Letter
-				letterID = letterID - 65 -- offset to A == 0
-				letterID = letterID + startingLetterID
-				if i == 1 then
-					cmd("go spawn "..letterID)
-					groupLeaderID = false
-					--while not groupLeaderID do
-						--if OPLastSelectedObjectData[1] then groupLeaderID = OPLastSelectedObjectData[1]; dprint("Got Group Leader ID for WordGen") end
-					--end
-				else
-					C_Timer.After(0.5, function()
-						if not groupLeaderID then groupLeaderID = OPLastSelectedObjectData[1] end
-						C_Timer.After(0.5, function()
-							cmd("go spawn "..letterID.." move left "..letterWidth*(i-1))
-							cmd("go group add "..groupLeaderID)
-						end)
-					end)
+		local isFirstObjectSpawned = false
+		
+			for i = 1,#word do 
+				local letterID = string.byte(word,i)
+				if letterID >= 65 and letterID <= 90 then -- Letter
+					letterID = letterID - 65 -- offset to A == 0
+					letterID = letterID + startingLetterID
+				elseif wordGenCharMap[letterID] then -- if supported symbol, or number
+					letterID = wordGenCharMap[letterID]
+				else -- unsupported or space
+					dprint("Character not Supported, or Space, Skipped with Blank Space")
+					letterID = 0
 				end
-			elseif letterID >= 48 and letterID <= 57 then -- Number
-				letterID = letterID - 47 -- offset to 0 == 1
-				letterID = wordGenNumMap[letterID]
-				if i == 1 then
-					cmd("go spawn "..letterID)
-					groupLeaderID = false
-				else
-					C_Timer.After(0.5, function()
-						if not groupLeaderID then groupLeaderID = OPLastSelectedObjectData[1] end
-						C_Timer.After(0.5, function()
-							cmd("go spawn "..letterID.." move left "..letterWidth*(i-1))
-							cmd("go group add "..groupLeaderID)
-						end)
-					end)
+				if not isFirstObjectSpawned then
+					if letterID ~= 0 then cmd("go spawn "..letterID.. " move left "..letterWidth*(i-1)); isFirstObjectSpawned = true end
+				elseif letterID ~= 0 then
+					-- add data to objectSpawningData table
+					local realLetterWidth = letterWidth*(i-1)
+					table.insert(objectSpawningData, {letterID, realLetterWidth})
+					objectsWaitingToSpawn = true
 				end
-			elseif wordGenSymMap[letterID] then -- if supported symbol
-				letterID = wordGenSymMap[letterID]
-				if i == 1 then
-					cmd("go spawn "..letterID)
-					groupLeaderID = false
-				else
-					C_Timer.After(0.5, function()
-						if not groupLeaderID then groupLeaderID = OPLastSelectedObjectData[1] end
-						C_Timer.After(0.5, function()
-							cmd("go spawn "..letterID.." move left "..letterWidth*(i-1))
-							cmd("go group add "..groupLeaderID)
-						end)
-					end)
-				end
-			else -- unsupported or space
-				dprint("Character not Supported, or Space, Skipped with Blank Space")
 			end
-		end
+
 	end,
 	EditBoxOnEnterPressed = function(self)
 		self:GetParent().button1:Click("LeftButton")
@@ -1496,6 +1527,10 @@ function RunChecks(Message)
 
 -- GObject Rotate Message Filter
 	if RotateClarifier and Message:gsub("|.........",""):find("rotated") then
+		--if clearmsg:find("group") then 
+			--OPLastSelectedGroupRotZ = clearmsg:match("Z: (%-?%d+%.%d+)")
+			--dprint("OPLastSelectedGroupRotZ: "..OPLastSelectedGroupRotZ)
+		--end
 		dprint("RotateClarifier Caught Message")
 		return true
 
@@ -1549,8 +1584,9 @@ local function OMChatFilter(Self,Event,Message)
 		end
 	end
 	--]]
-	if clearmsg:find("Selected gameobject group") or clearmsg:find("Spawned gameobject group") or clearmsg:find("Spawned blueprint") or clearmsg:find("added %d+ objects to gameobject group") then
+	if clearmsg:find("Selected gameobject group") or clearmsg:find("Spawned gameobject group") or clearmsg:find("Spawned blueprint") or clearmsg:find("added %d+ objects to gameobject group") or clearmsg:find("added the gameobject .* to gameobject group") then
 		updateGroupSelected(true)
+		OPLastSelectedGroupRotZ = OPLastSelectedObjectData[11]
 		dprint("isGroupSelected true")
 	end
 		
@@ -1688,9 +1724,11 @@ local function Addon_OnEvent(self, event, ...)
 				
 				local guid, entry, name, filedataid, x, y, z, orientation, rx, ry, rz, HasTint, red, green, blue, alpha, spell, scale, groupLeader, objType, saturation = strsplit(strchar(31),objdetails)
 				OPLastSelectedObjectData = {strsplit(strchar(31), objdetails)}
+				OPLastSelectedGroupRotZ = nil
 				if OPMasterTable.Options["debug"] then
 					print("GOBINFO:", unpack(OPLastSelectedObjectData))
 				end
+				resumeProcessingObjectSpawning()
 				
 				-- Update Object
 				if OPParamAutoUpdateButton:GetChecked() then

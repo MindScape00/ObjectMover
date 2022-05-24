@@ -3946,13 +3946,19 @@
 						</Anchors>
 						<Scripts>
 							<OnClick>
-								OPManagerCMD("go sel")
+								if IsShiftKeyDown() then 
+									OPManagerCMD("go group sel")
+								else
+									OPManagerCMD("go sel")
+								end
 							</OnClick>
 							<OnEnter>
 							if OPMasterTable.Options["showTooltips"] == true then
 								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
 								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Select the nearest object to you.", nil, nil, nil, nil, true)
+									GameTooltip:AddLine(" ")
+									GameTooltip:AddLine("Hold shift to select your current object's group.",1,1,1,true)
 									GameTooltip:Show()
 								end)
 							end
@@ -3961,6 +3967,13 @@
 								GameTooltip_Hide()
 								if self.Timer then self.Timer:Cancel() end
 							</OnLeave>
+							<OnUpdate>
+								if IsShiftKeyDown() then
+									self.Text:SetText("Select Group")
+								else
+									self.Text:SetText("Select")
+								end
+							</OnUpdate>
 						</Scripts>
 						<ButtonText parentKey="Text">
 							<FontHeight val="10" />
@@ -3978,13 +3991,13 @@
 						</Anchors>
 						<Scripts>
 							<OnClick>
-								OPManagerCMD("go unsel")
+								OPManagerCMD("go","unsel",true)
 							</OnClick>
 							<OnEnter>
 							if OPMasterTable.Options["showTooltips"] == true then
 								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
 								self.Timer = C_Timer.NewTimer(0.5,function()
-									GameTooltip:SetText("Copies the currently selected object in the same spot.", nil, nil, nil, nil, true)
+									GameTooltip:SetText("Unselects your currently selected object, or group.", nil, nil, nil, nil, true)
 									GameTooltip:Show()
 								end)
 							end
@@ -4010,13 +4023,13 @@
 						</Anchors>
 						<Scripts>
 							<OnClick>
-								OPManagerCMD("go copy f 0")
+								OPManagerCMD("go","copy f 0",true)
 							</OnClick>
 							<OnEnter>
 							if OPMasterTable.Options["showTooltips"] == true then
 								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
 								self.Timer = C_Timer.NewTimer(0.5,function()
-									GameTooltip:SetText("Copies the currently selected object in the same spot.", nil, nil, nil, nil, true)
+									GameTooltip:SetText("Copies the currently selected object, or group, in the same spot.", nil, nil, nil, nil, true)
 									GameTooltip:Show()
 								end)
 							end
@@ -4043,7 +4056,11 @@
 						<Scripts>
 							<OnClick>
 								if button == "RightButton" then
-									OPManagerCMD("go del")
+									if IsShiftKeyDown() then
+										OPManagerCMD("go group del")
+									else
+										OPManagerCMD("go del")
+									end
 								else
 									OPManagerPrint("You must right click the delete button to delete an object.")
 								end
@@ -4055,6 +4072,48 @@
 									GameTooltip:SetText("Deletes the selected object.", nil, nil, nil, nil, true)
 									GameTooltip:AddLine(" ")
 									GameTooltip:AddLine("You must right click for this to work to avoid accidental deletion.",1,1,1,true)
+									GameTooltip:Show()
+								end)
+							end
+							</OnEnter>
+							<OnLeave>
+								GameTooltip_Hide()
+								if self.Timer then self.Timer:Cancel() end
+							</OnLeave>
+							<OnUpdate>
+								if IsShiftKeyDown() then
+									self.Text:SetText("Delete Group")
+								else
+									self.Text:SetText("Delete")
+								end
+							</OnUpdate>
+						</Scripts>
+						<ButtonText parentKey="Text">
+							<FontHeight val="10" />
+						</ButtonText>
+						<NormalFont style="GameFontNormalSmall" />
+						<HighlightFont style="GameFontHighlightSmall" />
+						<DisabledFont style="GameFontDisableSmall" />
+					</Button>
+					<Button parentKey="WordGenButton" inherits="UIPanelButtonTemplate" text="Text Generator">
+						<Size x="80" y="24" />
+						<Anchors>
+							<Anchor point="BOTTOMRIGHT">
+								<Offset x="-10" y="10" />
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								StaticPopup_Show("OP_TOOLS_WORDGEN")
+							</OnClick>
+							<OnEnter>
+							if OPMasterTable.Options["showTooltips"] == true then
+								GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+								self.Timer = C_Timer.NewTimer(0.5,function()
+									GameTooltip:SetText("Opens a Dialogue Box where you can type &amp; spawn letter, number, and symbol GameObjects.", nil, nil, nil, nil, true)
+									GameTooltip:AddLine(" ")
+									GameTooltip:AddLine("Supported Symbols:",1,1,1,true)
+									GameTooltip:AddLine("! / &amp; - + ; : ? | &lt; &gt;",1,1,1,true)
 									GameTooltip:Show()
 								end)
 							end
@@ -4081,7 +4140,8 @@
 							<OnLoad>
 								self.staticList = {
 									{ text = "Select a Visibility", isTitle = true},
-									{ text = "Ultra Low (10)", func = function() OPSetObjVis(10); end },
+									{ text = "Ultra Low (5)", func = function() OPSetObjVis(5); end },
+									{ text = "Super Low (10)", func = function() OPSetObjVis(10); end },
 									{ text = "Very Low (50)", func = function() OPSetObjVis(50); end },
 									{ text = "Low (100)", func = function() OPSetObjVis(100); end },
 									{ text = "Medium (300)", func = function() OPSetObjVis(300); end },
@@ -4128,7 +4188,7 @@
 									{ text = "Custom", func = function() StaticPopup_Show("OP_OBJ_ANIMATION"); end },
 								}
 								OP_genStaticDropdownChild( self, "OPAnimationDropdownMenu", self.staticList, "Animation", 55 )
-								OPVisibilityDropdownMenuButton:HookScript("OnEnter", function(self)
+								OPAnimationDropdownMenuButton:HookScript("OnEnter", function(self)
 									if OPMasterTable.Options["showTooltips"] == true then
 										GameTooltip:SetOwner(self, "ANCHOR_LEFT")
 										self.Timer = C_Timer.NewTimer(0.5,function()
@@ -4137,7 +4197,7 @@
 										end)
 									end
 								end)
-								OPVisibilityDropdownMenuButton:HookScript("OnLeave", function(self)
+								OPAnimationDropdownMenuButton:HookScript("OnLeave", function(self)
 									GameTooltip_Hide()
 									if self.Timer then self.Timer:Cancel() end
 								end)

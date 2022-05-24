@@ -1,13 +1,27 @@
 ObjectMoverChangelog = [[
-#v7.2.0 (May?? 1st, 2022)
+#v7.2.0 (June?? 1st, 2022)
 	
-	- NEW: You can now toggle the mouse-over Tooltips in the ObjectMover 'Options' tab (right-click the ObjectMover Icon)
-	- UPDATED: Rotate Sliders now use Client-Side rotation until you let go, then it saves - others will only see the final rotation after it saves.
-	- UPDATED: Speaking of icons: ObjectMover now has a new Minimap icon, made by Tia!! Look for the new Blue & Gold icon. Thanks T! <3
-	- UPDATED: Extended Information (i) panel renamed to "Selected Object Info" to better describe what it shows. 
+	- NEW: You can now toggle the mouse-over Tooltips in the 
+	      ObjectMover 'Options' tab (right-click the ObjectMover Icon)
+	- NEW: Text Generator option within the Manager Tab! This allows you 
+	      to type text (letters, numbers, and supported symbols) into a 
+	      dialogue box, then hit Start to spawn the text using the 
+	      Epsilon_Haven objects! Objects are automatically grouped once 
+	      spawned for easy moving & scaling.
+	- UPDATED: Rotate Sliders now use Client-Side rotation until you let go,
+	      then it saves - others will only see the final rotation after it saves.
+	- UPDATED: Rotate Z Slider now works - kinda - on Groups. 
+	      You NEED TO HAVE AUTO-UPDATE ON & SELECT THE LEAD OBJECT
+	      FIRST, OR start at 0 when selecting the group. It's the best I 
+	      could do at 2am, leave me alone :(
+	- UPDATED: ObjectMover now has a new Minimap icon, made by Tia!! 
+	      Look for the new Blue & Gold icon. Thanks T! <3
+	- UPDATED: Extended Information (i) panel renamed to "Selected 
+	      Object Info" to better describe what it shows. 
 	   - This panel can now be separated from the main panel by dragging
 	   from the title. You can also resize it on it's own.
-	   - This panel can be toggled to auto-show on login in the 'Options' tab.
+	   - This panel can be toggled to auto-show on login in the 'Options' 
+	      tab.
 	   - Added more object data to the Selected Object Info panel (Scale &
 	   Object Dimensions).
 	      - Object Dimensions will show a pop-up of the non-rounded
