@@ -908,7 +908,7 @@ function OPRotateObject(sendToServer)
 		RotateClarifier = true
 	--end
 	if isGroupSelected then 
-		if rateLimited == true then return; end
+		if rateLimited == true and not sendToServer then return; end
 		local RotationZ1 = OPRotationSliderZ:GetValue()
 		local RotationZ2 = tonumber(OPLastSelectedGroupRotZ) or tonumber(OPLastSelectedObjectData[11])
 		if RotationZ2 < 0 then RotationZ2 = RotationZ2+360 elseif RotationZ2 > 360 then RotationZ2 = RotationZ2-360 end
