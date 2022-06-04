@@ -3547,6 +3547,8 @@
 										GameTooltip:AddLine(" ")
 										GameTooltip:AddLine("Rotation will automatically apply (including Roll and Pitch) as it changes.", 1, 1, 1, true)
 										GameTooltip:AddLine(" ")
+										GameTooltip:AddLine("Rotating while a group is selected will rotate the group on the Z ONLY (Turn)\nTIP: Turn on AutoUpdate and select the leader object FIRST for accurate rotations.\nRotations of groups are rate limited to 1 rotation every second, but your final rotation will always apply.", 1, 1, 1, true)
+										GameTooltip:AddLine(" ")
 										GameTooltip:AddLine("Modifiers (Hold while Dragging):\nDefault - whole numbers (1)\nSHIFT - 1 decimal place (0.1)\nALT - 2 decimal places (0.01)",1, 1, 1, true)
 										GameTooltip:Show()
 									end)

@@ -2,12 +2,12 @@
 ## Title: ObjectMover
 ## Author: MindScape
 ## Version: 7.1.1
-## Notes: Move, Turn, Tilt, Tint, and Manipulate Objects with ease! Type /om to show, or click the Gear icon on the mini-map!
+## Notes: Move, Turn, Tilt, Tint, and Manipulate Objects with ease! Type /om to show, or click the icon on the mini-map!
 ## DefaultState: Enabled
 ## SavedVariables: OPAutoDimObjectDB, OPMasterTable
-## X-Changes: Rotate Object is now Client-Side until you let go, then it saves to the server.
+## X-Changes: Rotate & Tint Changes! Right-Click the Mini-Map Icon for full change log!
 
-# Original Addon by Dkcaptain (AKA Nomer) / Almost completely remade to update to Epsilon and expanded by MindScape.
+# Original Addon by Dkcaptain (AKA Nomer) / Almost completely remade & expanded for Epsilon by MindScape.
 # Did you know, this was originally called "ObjectPlayground"! There's references in the code to it by "OP" still as the original abbreviation.
 
 ObjectMover.lua

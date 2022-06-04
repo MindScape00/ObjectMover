@@ -41,8 +41,8 @@ local wordGenCharMap = {
 	[63] = "10001077", -- ?
 	[59] = "10001078", -- ;
 	[124] = "10001073", -- | -> sword replacement
-	[60] = "0", -- <
-	[62] = "0", -- >
+	[60] = "10001538", -- <
+	[62] = "10001537", -- >
 }
 
 -------------------------------------------------------------------------------
@@ -1133,7 +1133,7 @@ StaticPopupDialogs["OP_TOOLS_WORDGEN"] = {
 	OnAccept = function( self )
 		local word = string.upper(self.editBox:GetText())
 		word = word:gsub("%|%|","|")
-		local startingLetterID = 64 -- FIX THIS TO FIRST LETTER ID
+		local startingLetterID = 10001510
 		local letterWidth = 0.75
 		local isFirstObjectSpawned = false
 		
@@ -1141,7 +1141,7 @@ StaticPopupDialogs["OP_TOOLS_WORDGEN"] = {
 				local letterID = string.byte(word,i)
 				if letterID >= 65 and letterID <= 90 then -- Letter
 					letterID = letterID - 65 -- offset to A == 0
-					letterID = letterID + startingLetterID
+					letterID = startingLetterID + letterID
 				elseif wordGenCharMap[letterID] then -- if supported symbol, or number
 					letterID = wordGenCharMap[letterID]
 				else -- unsupported or space
