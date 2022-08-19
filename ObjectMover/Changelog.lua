@@ -1,5 +1,5 @@
 ObjectMoverChangelog = [[
-#v7.2.0 (June?? 1st, 2022)
+#v7.2.0 (September? 1st, 2022)
 	
 	- NEW: You can now toggle the mouse-over Tooltips in the 
 	      ObjectMover 'Options' tab (right-click the ObjectMover Icon)

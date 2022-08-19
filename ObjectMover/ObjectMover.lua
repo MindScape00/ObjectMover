@@ -922,16 +922,16 @@ function OPRotateObject(sendToServer)
 		local RotationX = OPRotationSliderX:GetValue()
 		local RotationY = OPRotationSliderY:GetValue()
 		local RotationZ = OPRotationSliderZ:GetValue()
-		local localGUID = tonumber(OPLastSelectedObjectData[1])
+		local localGUIDLow = OPLastSelectedObjectData[22]
+		local localGUIDHigh = OPLastSelectedObjectData[23]
 		if RotationX < 0 then RotationX = 0; dprint("RotX < 0, Made 0"); end
 		if RotationY < 0 then RotationY = 0; dprint("RotY < 0, Made 0"); end
 		if RotationZ < 0 then RotationZ = 0; dprint("RotZ < 0, Made 0"); end
-		--C_Epsilon.RotateObject(localGUID ,RotationX, RotationY, RotationZ)
 		if sendToServer then
 			cmd("go rot "..RotationX.." "..RotationY.." "..RotationZ)
 		else
-			--C_Epsilon.RotateObject(localGUID ,RotationX, RotationY, RotationZ)
-			dprint("C_Epsilon.RotateObject("..localGUID..","..RotationX..","..RotationY..","..RotationZ..")")
+			--C_Epsilon.RotateObject(localGUIDLow, localGUIDHigh ,RotationX, RotationY, RotationZ)
+			dprint("C_Epsilon.RotateObject("..localGUIDLow..","..localGUIDHigh..","..RotationX..","..RotationY..","..RotationZ..")")
 		end	
 	end
 end
@@ -1700,11 +1700,11 @@ ChatFrame_AddMessageEventFilter("CHAT_MSG_TARGETICONS", OMChatFilter);
 ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_CONVERSATION_NOTICE", OMChatFilter);
 
 -------------------------------------------------------------------------------
--- Recieving GObject Info on Select
+-- Recieving GObject Info on Select / Object Update
 -------------------------------------------------------------------------------
 
 --[[
-1 guid / 2 entry / 3 name / 4 filedataid / 5 x / 6 y / 7 z / 8 rx / 9 ry / 10 rz / 11 Orientation / 12 HasTint / 13 red / 14 green / 15 blue / 16 alpha / 17 spell / 18 scale / 19 Group Leader ID / 20 objType / 21 saturation
+1 DB_guid / 2 entry / 3 name / 4 filedataid / 5 x / 6 y / 7 z / 8 rx / 9 ry / 10 rz / 11 Orientation / 12 HasTint / 13 red / 14 green / 15 blue / 16 alpha / 17 spell / 18 scale / 19 Group Leader ID / 20 objType / 21 saturation / 22 RealGUID_Low / 23 RealGUID_High
 
 77283554 827585 7af_shaman_rockslab_a02.m2 1329986 -433.999 135.15 41.3903 0 0 0 0 0 100 100 100 0 0 1 0 5 
 ]]
@@ -1721,7 +1721,7 @@ local function Addon_OnEvent(self, event, ...)
 				updateGroupSelected(false)
 				dprint("isGroupSelected false")
 				
-				local guid, entry, name, filedataid, x, y, z, orientation, rx, ry, rz, HasTint, red, green, blue, alpha, spell, scale, groupLeader, objType, saturation = strsplit(strchar(31),objdetails)
+				local guid, entry, name, filedataid, x, y, z, orientation, rx, ry, rz, HasTint, red, green, blue, alpha, spell, scale, groupLeader, objType, saturation, rGUIDLow, rGUIDHigh = strsplit(strchar(31),objdetails)
 				OPLastSelectedObjectData = {strsplit(strchar(31), objdetails)}
 				OPLastSelectedGroupRotZ = nil
 				if OPMasterTable.Options["debug"] then
