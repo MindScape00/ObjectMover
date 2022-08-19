@@ -930,7 +930,7 @@ function OPRotateObject(sendToServer)
 		if sendToServer then
 			cmd("go rot "..RotationX.." "..RotationY.." "..RotationZ)
 		else
-			--C_Epsilon.RotateObject(localGUIDLow, localGUIDHigh ,RotationX, RotationY, RotationZ)
+			C_Epsilon.RotateObject(localGUIDLow, localGUIDHigh ,RotationX, RotationY, RotationZ)
 			dprint("C_Epsilon.RotateObject("..localGUIDLow..","..localGUIDHigh..","..RotationX..","..RotationY..","..RotationZ..")")
 		end	
 	end
