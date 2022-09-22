@@ -110,16 +110,6 @@ end
 -- Loading Sequence
 -------------------------------------------------------------------------------
 
-local dontUseClientRotation -- = true
-if C_Epsilon.RotateObject then
-	dprint("C_Epsilon.RotateObject exists, we can use client-side rotation!")
-	dontUseClientRotation = false
-else
-	dprint("C_Epsilon.RotateObject doesn't exist, don't use client-side rotation!")
-	dontUseClientRotation = true
-end
-
-
 local function isNotDefined(s)
 	return s == nil or s == '';
 end
@@ -184,6 +174,15 @@ function OPInitializeLoading()
 		FrameLoadingPoints = 0
 		dprint("Frames Loaded: Rotation Enabled.")
 	end
+end
+
+local dontUseClientRotation -- = true
+if C_Epsilon.RotateObject then
+	dprint("C_Epsilon.RotateObject exists, we can use client-side rotation!")
+	dontUseClientRotation = false
+else
+	dprint("C_Epsilon.RotateObject doesn't exist, don't use client-side rotation!")
+	dontUseClientRotation = true
 end
 
 local OPAddon_OnLoad = CreateFrame("frame","OPAddon_OnLoad");
