@@ -432,7 +432,7 @@
 								self.Timer = C_Timer.NewTimer(0.5,function()
 									GameTooltip:SetText("Shows an extended panel with Currently Selected Object Information.", nil, nil, nil, nil, true)
 									GameTooltip:AddLine(" ")
-									GameTooltip:AddLine("Right Click to reset that panel's size.",1,1,1,true)
+									GameTooltip:AddLine("Right Click to re-attach the Info frame to the main frame.",1,1,1,true)
 									GameTooltip:Show()
 								end)
 							end
@@ -449,7 +449,11 @@
 										OPPanelPopout:Show()
 									end
 								elseif button == "RightButton" then
-									OPPanelPopout:SetWidth(185)
+									local parent = OPPanelPopout
+									parent:SetUserPlaced(false)
+									parent:ClearAllPoints()
+									parent:SetPoint("TOPRIGHT", OPMainFrame, "TOPLEFT", 0, 0)
+									parent:SetHeight(OPMainFrame:GetHeight()-10)
 								end
 							</OnClick>
 						</Scripts>
@@ -4459,6 +4463,9 @@
 					if child ~= 1 then child:SetScale(n) end
 				end
 				self:SetHeight(355*n)
+				if not OPPanelPopout:IsUserPlaced() then
+					OPPanelPopout:SetHeight(n*355)
+				end
 			</OnSizeChanged>
 		</Scripts>
 	</Frame>
@@ -4507,7 +4514,7 @@
 			</Layer>
 		</Layers>
 		<Frames>
-			<Button parentKey="CloseButton" inherits="UIPanelCloseButton" text="Button1">
+			<Button parentKey="CloseButton" inherits="UIPanelCloseButton" registerForClicks="LeftButtonUp, RightButtonUp">
 				<Size x="25" y="25" />
 				<Anchors>
 					<Anchor point="TOPRIGHT">
@@ -4516,8 +4523,31 @@
 				</Anchors>
 				<Scripts>
 					<OnClick>
-						HideParentPanel(self);
+						if button == "RightButton" then
+							local parent = self:GetParent()
+							parent:SetUserPlaced(false)
+							parent:ClearAllPoints()
+							parent:SetPoint("TOPRIGHT", OPMainFrame, "TOPLEFT", 0, 0)
+							parent:SetHeight(OPMainFrame:GetHeight()-10)
+						else
+							HideParentPanel(self);
+						end
 					</OnClick>
+					<OnEnter>
+						if OPMasterTable.Options["showTooltips"] == true then
+							GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+							self.Timer = C_Timer.NewTimer(0.5,function()
+								GameTooltip:SetText("Close", nil, nil, nil, nil, true)
+								GameTooltip:AddLine(" ")
+								GameTooltip:AddLine("Right Click to re-attach to the main frame.",1,1,1,true)
+								GameTooltip:Show()
+							end)
+						end
+					</OnEnter>
+					<OnLeave>
+						GameTooltip_Hide()
+						if self.Timer then self.Timer:Cancel() end
+					</OnLeave>
 				</Scripts>
 			</Button>
 			<Frame parentKey="ObjName">
@@ -5054,14 +5084,14 @@
 			</OnDragStart>
 			<OnDragStop>self:StopMovingOrSizing();</OnDragStop>
 			<OnSizeChanged>
-				local n = self:GetWidth()
-				local n = n / 180
+				local n = self:GetHeight()
+				local n = n / 345
 				local childrens = {self:GetChildren()}
 				for _,child in ipairs(childrens) do
 					if child ~= 1 then child:SetScale(n) end
-					self.Title:SetScale(n)
 				end
-				self:SetHeight(345*n)
+				self.Title:SetScale(n)
+				self:SetWidth(180*n)
 			</OnSizeChanged>
 			<OnMouseDown>
 				self:Raise()
