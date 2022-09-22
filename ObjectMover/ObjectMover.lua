@@ -14,6 +14,8 @@ local addonVersion, addonAuthor, addonName = GetAddOnMetadata(MYADDON, "Version"
 local OPmoveLength, OPmoveWidth, OPmoveHeight, MessageCount, ObjectClarifier, SpawnClarifier, ScaleClarifier, RotateClarifier, OPObjectSpell, cmdPref, isGroupSelected, m, rateLimited = 0, 0, 0, 0, false, false, false, false, nil, "go", nil, nil, false
 BINDING_HEADER_OBJECTMANIP, SLASH_SHOWCLOSE1, SLASH_SHOWCLOSE2, SLASH_SHOWCLOSE3 = "Object Mover", "/obj", "/om", "/op"
 
+local dontUseClientRotation = true
+
 local addonPrefix = "EPISLON_OBJ_INFO"
 
 local isWMO = {[14] = true, [15] = true, [33] = true, [38] = true, [43] = true, [54] = true}
@@ -914,7 +916,6 @@ function OPRotateObject(sendToServer)
 		if RotationZ2 < 0 then RotationZ2 = RotationZ2+360 elseif RotationZ2 > 360 then RotationZ2 = RotationZ2-360 end
 		local newRotZ = RotationZ1 - RotationZ2
 		cmd("go group turn "..newRotZ)
-		print("Rotating by newRotZ - "..newRotZ.." ("..RotationZ1.."-"..RotationZ2..")")
 		OPLastSelectedGroupRotZ = RotationZ1
 		rateLimited = true
 		C_Timer.After(1,function() rateLimited = false end)
@@ -927,7 +928,7 @@ function OPRotateObject(sendToServer)
 		if RotationX < 0 then RotationX = 0; dprint("RotX < 0, Made 0"); end
 		if RotationY < 0 then RotationY = 0; dprint("RotY < 0, Made 0"); end
 		if RotationZ < 0 then RotationZ = 0; dprint("RotZ < 0, Made 0"); end
-		if sendToServer then
+		if sendToServer or dontUseClientRotation then
 			cmd("go rot "..RotationX.." "..RotationY.." "..RotationZ)
 		else
 			C_Epsilon.RotateObject(localGUIDLow, localGUIDHigh ,RotationX, RotationY, RotationZ)
