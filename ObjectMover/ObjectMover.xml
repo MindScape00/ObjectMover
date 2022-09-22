@@ -445,6 +445,7 @@
 								if button == "LeftButton" then
 									if OPPanelPopout:IsShown() then
 										OPPanelPopout:Hide()
+										OPPanelPopout.visWithMainFrame = false
 									else
 										OPPanelPopout:Show()
 									end
@@ -452,7 +453,7 @@
 									local parent = OPPanelPopout
 									parent:SetUserPlaced(false)
 									parent:ClearAllPoints()
-									parent:SetPoint("TOPRIGHT", OPMainFrame, "TOPLEFT", 0, 0)
+									parent:SetPoint("RIGHT", OPMainFrame, "LEFT", 0, 0)
 									parent:SetHeight(OPMainFrame:GetHeight()-10)
 								end
 							</OnClick>
@@ -4434,7 +4435,15 @@
 			<OnShow>
 				OPMainFrame_OnShow()
 				self:Raise()
+				if not OPPanelPopout:IsUserPlaced() and OPPanelPopout.visWithMainFrame == true then
+					OPPanelPopout:Show()
+				end
 			</OnShow>
+			<OnHide>
+				if not OPPanelPopout:IsUserPlaced() then
+					OPPanelPopout:Hide()
+				end
+			</OnHide>
 			<OnMouseDown>
 				self:Raise()
 			</OnMouseDown>
@@ -4523,14 +4532,15 @@
 				</Anchors>
 				<Scripts>
 					<OnClick>
+						local parent = self:GetParent()
 						if button == "RightButton" then
-							local parent = self:GetParent()
 							parent:SetUserPlaced(false)
 							parent:ClearAllPoints()
-							parent:SetPoint("TOPRIGHT", OPMainFrame, "TOPLEFT", 0, 0)
+							parent:SetPoint("RIGHT", OPMainFrame, "LEFT", 0, 0)
 							parent:SetHeight(OPMainFrame:GetHeight()-10)
 						else
 							HideParentPanel(self);
+							parent.visWithMainFrame = false
 						end
 					</OnClick>
 					<OnEnter>
@@ -5070,7 +5080,8 @@
 				self:RegisterForDrag("LeftButton");
 			</OnLoad>
 			<OnShow>
-				if self:GetHeight() > UIParent:GetHeight() then self:SetWidth(max(180,UIParent:GetHeight()*0.52)) end
+				if self:GetHeight() > UIParent:GetHeight() then self:SetHeight(max(180,UIParent:GetHeight())) end
+				self.visWithMainFrame = true
 				OPMasterTable.Options["wasPopoutShown"] = true
 				self:Raise()
 			</OnShow>
