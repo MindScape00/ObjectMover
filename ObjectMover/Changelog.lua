@@ -31,7 +31,7 @@ ObjectMoverChangelog = [[
 	      object. 
 	      - If an object is completely transparent, it will show the
 	         non-transparent object so you can see what's selected!
-	- CHANGED: Tint & Overlay pannel now let's you better control if you're using Tint or Overlay - this comes on the heels of Tint now supporting Saturation as well!
+	- CHANGED: Tint & Overlay pannel now let's you better control if you're using Tint or Overlay, and now supports using Saturation with Tint. This was meant to come way earlier, sorry!
 	- CHANGED: Move Object has been replaced with Move Player. It made no sense that OBJECTMOVER moved PLAYERS by default, not objects. This is corrected. Thank you everyone asking in Discord, "Why is object mover moving my character and not the object?", for pointing out this logical flaw.
 	
 	- UPCOMING: Rotate Sliders use Client-Side rotation until you let go,

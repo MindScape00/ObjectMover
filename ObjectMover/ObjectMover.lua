@@ -14,15 +14,6 @@ local addonVersion, addonAuthor, addonName = GetAddOnMetadata(MYADDON, "Version"
 local OPmoveLength, OPmoveWidth, OPmoveHeight, MessageCount, ObjectClarifier, SpawnClarifier, ScaleClarifier, RotateClarifier, OPObjectSpell, cmdPref, isGroupSelected, m, rateLimited = 0, 0, 0, 0, false, false, false, false, nil, "go", nil, nil, false
 BINDING_HEADER_OBJECTMANIP, SLASH_SHOWCLOSE1, SLASH_SHOWCLOSE2, SLASH_SHOWCLOSE3 = "Object Mover", "/obj", "/om", "/op"
 
-local dontUseClientRotation -- = true
-if C_Epsilon.RotateObject then
-	print("C_Epsilon.RotateObject exists, we can use client-side rotation!")
-	dontUseClientRotation = false
-else
-	print("C_Epsilon.RotateObject doesn't exist, don't use client-side rotation!")
-	dontUseClientRotation = true
-end
-
 local addonPrefix = "EPISLON_OBJ_INFO"
 
 local isWMO = {[14] = true, [15] = true, [33] = true, [38] = true, [43] = true, [54] = true}
@@ -62,13 +53,24 @@ local function cprint(text)
 	print("|cffFFD700ObjectMover: "..(text and text or "ERROR").."|r")
 end
 
-local function dprint(text, force, rest)
-	if force == true or OPMasterTable.Options["debug"] then
+local function dprint(force, text, ...)
+	if text then
+		if force == true or SpellCreatorMasterTable.Options["debug"] then
+			local rest = ... or ""
+			local line = strmatch(debugstack(2),":(%d+):")
+			if line then
+				print(addonColor..addonName.." DEBUG "..line..": "..text, rest, " |r")
+			else
+				print(addonColor..addonName.." DEBUG: "..text, rest, " |r")
+				print(debugstack(2))
+			end
+		end
+	elseif SpellCreatorMasterTable.Options["debug"] then
 		local line = strmatch(debugstack(2),":(%d+):")
 		if line then
-			print("|cffFFD700ObjectMover DEBUG "..line..": "..text..(rest and " | "..rest or "").." |r")
+			print(addonColor..addonName.." DEBUG "..line..": "..force.." |r")
 		else
-			print("|cffFFD700ObjectMover DEBUG: "..text..(rest and " | "..rest or "").." |r")
+			print(addonColor..addonName.." DEBUG: "..force.." |r")
 			print(debugstack(2))
 		end
 	end
@@ -107,6 +109,16 @@ end
 -------------------------------------------------------------------------------
 -- Loading Sequence
 -------------------------------------------------------------------------------
+
+local dontUseClientRotation -- = true
+if C_Epsilon.RotateObject then
+	dprint("C_Epsilon.RotateObject exists, we can use client-side rotation!")
+	dontUseClientRotation = false
+else
+	dprint("C_Epsilon.RotateObject doesn't exist, don't use client-side rotation!")
+	dontUseClientRotation = true
+end
+
 
 local function isNotDefined(s)
 	return s == nil or s == '';
@@ -163,6 +175,7 @@ OPFramesAreLoaded = false
 FrameLoadingPoints = 0
 OPSaveType = nil
 ObjectSelectLineCount = 3
+local OP_AutoDimensionModelFrame = nil
 
 function OPInitializeLoading()
 	FrameLoadingPoints = FrameLoadingPoints+1
@@ -176,7 +189,7 @@ end
 local OPAddon_OnLoad = CreateFrame("frame","OPAddon_OnLoad");
 OPAddon_OnLoad:RegisterEvent("ADDON_LOADED");
 OPAddon_OnLoad:SetScript("OnEvent", function(self,event,name)
-	if name == "ObjectMover" then
+	if name == addonName then
 		OPMiniMapLoadPosition()
 		loadMasterTable()
 	
@@ -212,18 +225,18 @@ OPAddon_OnLoad:SetScript("OnEvent", function(self,event,name)
 		end
 		
 		-- Create our ModelScene handler frame for use later in auto-dimensions
-		m = CreateFrame("ModelScene")
-		Mixin(m, ModelSceneMixin)
-		m.o = m:CreateActor(nil, "ObjectMoverActorTemplate")
-		m.o.OnModelLoaded = function()
+		OP_AutoDimensionModelFrame = CreateFrame("ModelScene")
+		Mixin(OP_AutoDimensionModelFrame, ModelSceneMixin)
+		OP_AutoDimensionModelFrame.o = OP_AutoDimensionModelFrame:CreateActor(nil, "ObjectMoverActorTemplate")
+		OP_AutoDimensionModelFrame.o.OnModelLoaded = function()
 			dprint("Model Loaded - Getting boundingbox")
-			local mX1, mY1, mZ1, mX2, mY2, mZ2 = m.o:GetActiveBoundingBox()
+			local mX1, mY1, mZ1, mX2, mY2, mZ2 = OP_AutoDimensionModelFrame.o:GetActiveBoundingBox()
 			local mX = mX1-mX2; local mY = mY1-mY2; local mZ = mZ1-mZ2
 			OPLengthBox:SetText(roundToNthDecimal(abs(mX),7))
 			OPWidthBox:SetText(roundToNthDecimal(abs(mY),7))
 			OPHeightBox:SetText(roundToNthDecimal(abs(mZ),7))
 			dprint("AUTODIM: X: "..mX.." ("..mX1.." | "..mX2.."), Y: "..mY.." ("..mY1.." | "..mY2.."), Z: "..mZ.." ("..mZ1.." | "..mZ2..")")
-			m.o:ClearModel()
+			OP_AutoDimensionModelFrame.o:ClearModel()
 		end
 		
 		-- Hook our OnEnter for the MiniMap Icon Tooltip
@@ -643,7 +656,7 @@ function OPGetObject(button)
 		else
 			--print("I would have crashed you here if this is a WMO, type:"..OPLastSelectedObjectData[20])
 			if OPLastSelectedObjectData[4] then
-				m.o:SetModelByFileID(OPLastSelectedObjectData[4])
+				OP_AutoDimensionModelFrame.o:SetModelByFileID(OPLastSelectedObjectData[4])
 				dprint("Generating ModelFrame to get Bounding Box (file ID "..OPLastSelectedObjectData[4]..")")
 				if OPLastSelectedObjectData[18] then
 					OPScaleBox:SetText(OPLastSelectedObjectData[18])
