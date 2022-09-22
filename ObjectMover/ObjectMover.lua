@@ -11,6 +11,8 @@
 local MYADDON, MyAddOn = ...
 local addonVersion, addonAuthor, addonName = GetAddOnMetadata(MYADDON, "Version"), GetAddOnMetadata(MYADDON, "Author"), GetAddOnMetadata(MYADDON, "Title")
 
+local addonColor = "|cff".."FFD700"
+
 local OPmoveLength, OPmoveWidth, OPmoveHeight, MessageCount, ObjectClarifier, SpawnClarifier, ScaleClarifier, RotateClarifier, OPObjectSpell, cmdPref, isGroupSelected, m, rateLimited = 0, 0, 0, 0, false, false, false, false, nil, "go", nil, nil, false
 BINDING_HEADER_OBJECTMANIP, SLASH_SHOWCLOSE1, SLASH_SHOWCLOSE2, SLASH_SHOWCLOSE3 = "Object Mover", "/obj", "/om", "/op"
 
@@ -50,7 +52,7 @@ local wordGenCharMap = {
 -------------------------------------------------------------------------------
 
 local function cprint(text)
-	print("|cffFFD700ObjectMover: "..(text and text or "ERROR").."|r")
+	print(addonColor..addonName..": "..(text and text or "ERROR").."|r")
 end
 
 local function dprint(force, text, ...)
@@ -79,9 +81,9 @@ end
 local function eprint(text,rest)
 	local line = strmatch(debugstack(2),":(%d+):")
 	if line then
-		print("|cffFFD700 ObjectMover Error @ "..line..": "..text.." | "..(rest and " | "..rest or "").." |r")
+		print(addonColor..addonName.." Error @ "..line..": "..text.." | "..(rest and " | "..rest or "").." |r")
 	else
-		print("|cffFFD700 ObjectMover @ ERROR: "..text.." | "..rest.." |r")
+		print(addonColor..addonName.." @ ERROR: "..text.." | "..rest.." |r")
 		print(debugstack(2))
 	end
 end
