@@ -8,8 +8,6 @@ ObjectMoverChangelog = [[
 	      dialogue box, then hit Start to spawn the text using the 
 	      Epsilon_Haven objects! Objects are automatically grouped once 
 	      spawned for easy moving & scaling.
-	- UPDATED: Rotate Sliders now use Client-Side rotation until you let go,
-	      then it saves - others will only see the final rotation after it saves.
 	- UPDATED: Rotate Z Slider now works - kinda - on Groups. 
 	      You NEED TO HAVE AUTO-UPDATE ON & SELECT THE LEAD OBJECT
 	      FIRST, OR start at 0 when selecting the group. It's the best I 
@@ -34,7 +32,12 @@ ObjectMoverChangelog = [[
 	      - If an object is completely transparent, it will show the
 	         non-transparent object so you can see what's selected!
 	- CHANGED: Tint & Overlay pannel now let's you better control if you're using Tint or Overlay - this comes on the heels of Tint now supporting Saturation as well!
-	- CHANGED: Move Object has been replaced with Move Player. It made no sense that OBJECTMOVER moved PLAYERS by default, not objects. This is corrected. Thank you everyone asking "Why is object mover moving my character and not the object?" in discord for pointing out this logical flaw.
+	- CHANGED: Move Object has been replaced with Move Player. It made no sense that OBJECTMOVER moved PLAYERS by default, not objects. This is corrected. Thank you everyone asking in Discord, "Why is object mover moving my character and not the object?", for pointing out this logical flaw.
+	
+	- UPCOMING: Rotate Sliders use Client-Side rotation until you let go,
+      then it saves - others will only see the final rotation after it saves.
+      This is implemented and should activate when server-support is added.
+      Unitl then, object rotation will continue to work the same.
 
 ## _________________________________________________
 

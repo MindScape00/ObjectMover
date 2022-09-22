@@ -1,10 +1,10 @@
 ## Interface: 80300
-## Title: ObjectMover
+## Title: ObjectMover-dev
 ## Author: MindScape
-## Version: 7.1.2
+## Version: 7.2.0
 ## Notes: Move, Turn, Tilt, Tint, and Manipulate Objects with ease! Type /om to show, or click the icon on the mini-map!
 ## DefaultState: Enabled
-## SavedVariables: OPAutoDimObjectDB, OPMasterTable
+## SavedVariables: OPMasterTable
 ## X-Changes: Rotate & Tint Changes! Right-Click the Mini-Map Icon for full change log!
 
 # Original Addon by Dkcaptain (AKA Nomer) / Almost completely remade & expanded for Epsilon by MindScape.
