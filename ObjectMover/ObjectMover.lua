@@ -55,7 +55,7 @@ end
 
 local function dprint(force, text, ...)
 	if text then
-		if force == true or SpellCreatorMasterTable.Options["debug"] then
+		if force == true or OPMasterTable.Options["debug"] then
 			local rest = ... or ""
 			local line = strmatch(debugstack(2),":(%d+):")
 			if line then
@@ -65,7 +65,7 @@ local function dprint(force, text, ...)
 				print(debugstack(2))
 			end
 		end
-	elseif SpellCreatorMasterTable.Options["debug"] then
+	elseif OPMasterTable.Options["debug"] then
 		local line = strmatch(debugstack(2),":(%d+):")
 		if line then
 			print(addonColor..addonName.." DEBUG "..line..": "..force.." |r")
