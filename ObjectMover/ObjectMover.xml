@@ -29,7 +29,7 @@
 			</OnModelLoaded>
         </Scripts>
     </Actor>
-	<Frame name="OPMainFrame" hidden="true" enableMouse="true" movable="true" resizable="true" clampedToScreen="true" parent="UIParent" ignoreParentScale="true">
+	<Frame name="OPMainFrame" hidden="true" enableMouse="true" movable="true" resizable="true" clampedToScreen="true" parent="UIParent" ignoreParentScale="true" toplevel="true">
 		<Size x="355" y="355" />
 		<ResizeBounds>
 			<minResize x="200" y="200"/>
@@ -4429,7 +4429,11 @@
 		<Scripts>
 			<OnShow>
 				OPMainFrame_OnShow()
+				self:Raise()
 			</OnShow>
+			<OnMouseDown>
+				self:Raise()
+			</OnMouseDown>
 			<OnLoad>
 				self:RegisterForDrag("LeftButton");
 				OPCreateLoadDropDownMenus()
@@ -4458,7 +4462,7 @@
 			</OnSizeChanged>
 		</Scripts>
 	</Frame>
-	<Frame name="OPPanelPopout" hidden="true" movable="true" resizable="true" clampedToScreen="true" parent="UIParent" ignoreParentScale="true">
+	<Frame name="OPPanelPopout" hidden="true" movable="true" resizable="true" clampedToScreen="true" parent="UIParent" ignoreParentScale="true" toplevel="true">
 		<Size x="180" y="345" />
 		<ResizeBounds>
 			<minResize x="90" y="172"/>
@@ -5038,6 +5042,7 @@
 			<OnShow>
 				if self:GetHeight() > UIParent:GetHeight() then self:SetWidth(max(180,UIParent:GetHeight()*0.52)) end
 				OPMasterTable.Options["wasPopoutShown"] = true
+				self:Raise()
 			</OnShow>
 			<OnHide>
 				OPMasterTable.Options["wasPopoutShown"] = false
@@ -5058,6 +5063,9 @@
 				end
 				self:SetHeight(345*n)
 			</OnSizeChanged>
+			<OnMouseDown>
+				self:Raise()
+			</OnMouseDown>
 		</Scripts>
 	</Frame>
 	<Frame name="OPMainSaveFrame" frameStrata="DIALOG" hidden="true" enableMouse="true" clampedToScreen="true">
@@ -5272,7 +5280,7 @@
 		</Scripts>
 		<HighlightTexture file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight" alphaMode="ADD" />
 	</Button>
-	<Frame name="OPNewOptionsFrame" hidden="true" enableMouse="true" movable="true" clampedToScreen="true" parent="UIParent">
+	<Frame name="OPNewOptionsFrame" hidden="true" enableMouse="true" movable="true" clampedToScreen="true" toplevel="true" parent="UIParent">
 		<Size x="500" y="600" />
 		<Anchors>
 			<Anchor point="CENTER"/>
@@ -5653,6 +5661,9 @@
 			</OnLoad>
 			<OnDragStart>self:StartMoving();</OnDragStart>
 			<OnDragStop>self:StopMovingOrSizing();</OnDragStop>
+			<OnMouseDown>
+				self:Raise()
+			</OnMouseDown>
 		</Scripts>
 	</Frame>
 </Ui>
