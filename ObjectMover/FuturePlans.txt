@@ -1,7 +1,0 @@
-- Further localization Support
-
-- Teleporter Manager buttons
-	- "Add Tele" -> Does ".go tele on" -> 
-- Group management
-- Create Bluebrint button (Pop-up with name entry box)
-- Spawn Bluebrint Button (This will 100% need pagination of the loading since people can have hundreds of blueprints - may need a custom pop-up menu that's scrollable with infinite buttons?)
