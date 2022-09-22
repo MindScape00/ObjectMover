@@ -561,14 +561,16 @@ function OPMainFrame_OnShow(self)
 	-- Check if Version Update for Changelog
 	if OPFramesAreLoaded then
 		if OPMasterTable.Options["LastVersion"] then
+			--[[
 			local cmajor, cminor, crev = strsplit(".", addonVersion,3)
 			local lmajor, lminor, lrev = strsplit(".", OPMasterTable.Options["LastVersion"],3)
 			local showChangelog = false
 			if cmajor > lmajor then showChangelog = true 
 			elseif cminor > lminor then showChangelog = true
 			elseif crev > lrev then showChangelog = true end
+			--]]
 			
-			if showChangelog then
+			if OPMasterTable.Options["LastVersion"] ~= addonVersion then
 				OPNewOptionsFrame:Show()
 				PanelTemplates_SetTab(OPNewOptionsFrame, 2);
 				OPNewOptionsFrame.MainArea.Changelog:Show();
