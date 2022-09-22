@@ -943,11 +943,11 @@ function OPRotateObject(sendToServer)
 		rateLimited = true
 		C_Timer.After(1,function() rateLimited = false end)
 	else
-		local RotationX = OPRotationSliderX:GetValue()
-		local RotationY = OPRotationSliderY:GetValue()
-		local RotationZ = OPRotationSliderZ:GetValue()
-		local localGUIDLow = OPLastSelectedObjectData[22]
-		local localGUIDHigh = OPLastSelectedObjectData[23]
+		local RotationX = tonumber(OPRotationSliderX:GetValue())
+		local RotationY = tonumber(OPRotationSliderY:GetValue())
+		local RotationZ = tonumber(OPRotationSliderZ:GetValue())
+		local localGUIDLow = tonumber(OPLastSelectedObjectData[22])
+		local localGUIDHigh = tonumber(OPLastSelectedObjectData[23])
 		if RotationX < 0 then RotationX = 0; dprint("RotX < 0, Made 0"); end
 		if RotationY < 0 then RotationY = 0; dprint("RotY < 0, Made 0"); end
 		if RotationZ < 0 then RotationZ = 0; dprint("RotZ < 0, Made 0"); end
@@ -1844,7 +1844,7 @@ local function Addon_OnEvent(self, event, ...)
 				eprint("Illegal Sender ("..sender..") | (Expected:"..self..")")
 			end
 			dprint("Caught "..prefix.." prefix")
-			dprint(event, ...)
+			dprint(false, event, ...)
 		end
 	elseif event == "PLAYER_LOGIN" then
 		local successfulRequest = C_ChatInfo.RegisterAddonMessagePrefix(addonPrefix)
@@ -1873,10 +1873,10 @@ end
 SLASH_OPDEBUG1, SLASH_OPDEBUG2 = '/opdebug', '/omdebug';
 function SlashCmdList.OPDEBUG(msg, editbox) -- 4.
 	if msg:find("clarifier") then
-		dprint("RotateClarifier = "..tostring(RotateClarifier).." | SpawnClarifier = "..tostring(SpawnClarifier).." | ObjectClarifier = "..tostring(ObjectClarifier).." | ScaleClarifier = "..tostring(ScaleClarifier), true)
+		dprint(true, "RotateClarifier = "..tostring(RotateClarifier).." | SpawnClarifier = "..tostring(SpawnClarifier).." | ObjectClarifier = "..tostring(ObjectClarifier).." | ScaleClarifier = "..tostring(ScaleClarifier))
 	else
 		OPMasterTable.Options["debug"] = not OPMasterTable.Options["debug"]
-		dprint("Object Mover Debug Set to: "..tostring(OPMasterTable.Options["debug"]),true)
+		dprint(true, "Object Mover Debug Set to: "..tostring(OPMasterTable.Options["debug"]))
 		if OPMasterTable.Options["debug"] and OPMainFrame:GetAlpha() < 1 then 
 			if OPMainFrame.Timer then OPMainFrame.Timer:Cancel() end
 			UIFrameFadeIn(OPMainFrame,0.3,OPMainFrame:GetAlpha(),1)
