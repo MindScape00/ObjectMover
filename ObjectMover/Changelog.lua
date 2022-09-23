@@ -1,4 +1,16 @@
 ObjectMoverChangelog = [[
+#v7.2.1 (September 23rd, 2022)
+
+	- UPDATED: You can once again use Tint with Saturation 0. This will 
+	      use the tint command like before, with no saturation (which is 
+	      actually 100 saturation).
+	- UPDATED: 'Use Overlay' now defaults to being off. It also now auto 
+	       updates when selecting an object using tint or overlay.
+	- UPDATED: The mouse-over help ToolTip for saturation is updated to
+	       be more accurate and give better info on how 0 is handled.
+
+## _________________________________________________
+
 #v7.2.0 (September 22nd, 2022)
 	
 	- NEW: You can now toggle the mouse-over Tooltips in the 
@@ -61,17 +73,12 @@ ObjectMoverChangelog = [[
 
 ## _________________________________________________
 
-# v7.0.1 (b/No Version Change) (August 31, 2021)
-
-	- Added more GameObject_Type's to isWMO to help prevent crashes on |cffFFAAAA!go select|r.
-
 # v7.0.1 (August 3, 2021)
 
 	- Added an in-game Changelog/Help Manual (Options tab added but not functional yet)
 	- Made the main window respect ALT+Z + Better UI Frame
 	- Made the main window resizable (Grabby button in the bottom right - |cffFFAAAARight-Click|r to reset the size to default)
-	
-	- Reminded everyone that "Double" and "Half" features are still here. You can |cffFFAAAAShift-Click|r on the x2 and 1/2 buttons on Length/Width/Height in order to update all three at the same time, which is exactly what the old checkboxes did in the background.
+	- (Aug. 31 -- 	- Added more GameObject_Type's to isWMO to help prevent crashes on |cffFFAAAA!go select|r.)
 
 ## _________________________________________________
 
@@ -90,19 +97,12 @@ ObjectMoverChangelog = [[
 	- CHANGED: Added a "Classic Layout" button in Movement to revert the movement buttons to closer to the original layout
 	- REMOVED: Double & Halve checkboxes. 
 		- You can still use the Double (x2) and Halve (1/2) buttons to change each dimension, or SHIFT-CLICK them to update all dimensions together.
-	Behind the Scenes:
-	- Minimap Icon is better and more adaptable to if you use other minimaps / UI's
-	- Improved ToolTips & UI Indications when things are disabled
-	- Improved Slider Logic
-	- Keybindings are sorted into their own category to be easier to find
 
 ## _________________________________________________
 
 # v6.0.0 (March 21, 2020)
 
-	- Auto Update Rot. finished and activated  (note: ".go pitch/roll/turn" will be off until the next server mini-update due to syntax issues in the old reply - it will automatically work perfect once the server updates to the new command syntax!)
-	- Major restructure of the ChatFilter to clean it up. It should be way more reliable. No more "My commands aren't showing in chat anymore wtf?" hopefully.
-	- Move Relative now uses the server commands for best performance
+	- ...
 	- More Cowbell
 	
 ## _________________________________________________
