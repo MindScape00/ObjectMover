@@ -122,13 +122,13 @@ function loadMasterTable()
 	if isNotDefined(OPMasterTable.Options["debug"]) then OPMasterTable.Options["debug"] = false end
 	if isNotDefined(OPMasterTable.Options["SliderStep"]) then OPMasterTable.Options["SliderStep"] = 0.01 end
 	if isNotDefined(OPMasterTable.Options["locked"]) then OPMasterTable.Options["locked"] = false end
-	if isNotDefined(OPMasterTable.Options["fadePanel"]) then OPMasterTable.Options["fadePanel"] = true end
+	if isNotDefined(OPMasterTable.Options["fadePanel"]) then OPMasterTable.Options["fadePanel"] = false end
 	if isNotDefined(OPMasterTable.Options["autoShow"]) then OPMasterTable.Options["autoShow"] = false end
 	if isNotDefined(OPMasterTable.Options["autoShowPopout"]) then OPMasterTable.Options["autoShowPopout"] = false end
 	if isNotDefined(OPMasterTable.Options["wasPopoutShown"]) then OPMasterTable.Options["wasPopoutShown"] = false end
 	if isNotDefined(OPMasterTable.Options["showTooltips"]) then OPMasterTable.Options["showTooltips"] = true end
 	if isNotDefined(OPMasterTable.Options["MovePlayer"]) then OPMasterTable.Options["MovePlayer"] = false end
-	if isNotDefined(OPMasterTable.Options["useOverlayMethod"]) then OPMasterTable.Options["useOverlayMethod"] = true end
+	if isNotDefined(OPMasterTable.Options["useOverlayMethod"]) then OPMasterTable.Options["useOverlayMethod"] = false end
 	if not OPMasterTable.ParamPresetKeys then OPMasterTable.ParamPresetKeys = {"Building Tile","Fine Positioning"} end
 	if not OPMasterTable.ParamPresetContent then OPMasterTable.ParamPresetContent = {
 		["Building Tile"] = {
