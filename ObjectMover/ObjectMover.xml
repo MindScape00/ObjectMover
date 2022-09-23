@@ -2534,7 +2534,7 @@
 									self.Timer = C_Timer.NewTimer(0.5,function()
 										GameTooltip:SetText("Drag to change color overlay saturation on an Object", nil, nil, nil, nil, true)
 										GameTooltip:AddLine(" ")
-										GameTooltip:AddLine("Setting the Saturation to 0 will use |cffFFAAAATint|r instead of |cffFFAAAAOverlay|r.",1,1,1,true)
+										GameTooltip:AddLine("Setting the Saturation to 0 for |cffFFAAAAOverlay|r will remove the Overlay.\n\rSetting the Saturation to 0 for |cffFFAAAATint|r will use 100 full (100) saturation\n\rTo fully desaturate an object (remove all color), use spell |cffFFAAAA123948|r.",1,1,1,true)
 										GameTooltip:Show()
 									end)
 								end
@@ -2772,6 +2772,8 @@
 									GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
 									self.Timer = C_Timer.NewTimer(0.5,function()
 										GameTooltip:SetText("Switch between using Tint or Overlay as your coloring method.", nil, nil, nil, nil, true)
+										GameTooltip:AddLine(" ", 1, 1, 1, 1)
+										GameTooltip:AddLine("Tip: Object too 'shiny' compared to tinting before? Turn off |cffFFAAAAOverlay|r to use |cffFFAAAATint|r!", 1, 1, 1, 1)
 										GameTooltip:Show()
 									end)
 								end

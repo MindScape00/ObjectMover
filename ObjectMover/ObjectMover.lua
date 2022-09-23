@@ -190,7 +190,8 @@ end
 local OPAddon_OnLoad = CreateFrame("frame","OPAddon_OnLoad");
 OPAddon_OnLoad:RegisterEvent("ADDON_LOADED");
 OPAddon_OnLoad:SetScript("OnEvent", function(self,event,name)
-	if name == addonName then
+	print(name)
+	if name == addonName or name == addonName.."-dev" then
 		OPMiniMapLoadPosition()
 		loadMasterTable()
 	
@@ -578,7 +579,7 @@ function OPMainFrame_OnShow(self)
 				OPNewOptionsFrame.MainArea.Changelog:Show();
 				OPNewOptionsFrame.MainArea.Help:Hide();
 				OPNewOptionsFrame.MainArea.NewOptions:Hide();
-				dprint("Addon version "..addonVersion.." detected as being > last version seen ("..OPMasterTable.Options["LastVersion"]..")")
+				dprint("Addon version "..addonVersion.." detected as being ~= last version seen ("..OPMasterTable.Options["LastVersion"]..")")
 			end
 			
 			OPMasterTable.Options["LastVersion"] = addonVersion
@@ -589,7 +590,7 @@ function OPMainFrame_OnShow(self)
 			OPNewOptionsFrame.MainArea.Help:Hide();
 			OPNewOptionsFrame.MainArea.NewOptions:Hide();
 			OPMasterTable.Options["LastVersion"] = addonVersion
-			dprint("Addon version "..addonVersion.." detected as being > .. well, nothing.")
+			dprint("Addon version "..addonVersion.." detected as being ~= .. well, nothing.")
 		end
 	end
 end
@@ -874,7 +875,11 @@ function OPOverlayObject()
 		if OPMasterTable.Options["useOverlayMethod"] == true then 
 			cmd(cmdPref.." overlay "..r.." "..g.." "..b.." "..s.." "..t)
 		else
-			cmd(cmdPref.." tint "..r.." "..g.." "..b.." "..s.." "..t)
+			if s == 0 then
+				cmd(cmdPref.." tint "..r.." "..g.." "..b.." "..t)
+			else
+				cmd(cmdPref.." tint "..r.." "..g.." "..b.." "..s.." "..t)
+			end
 		end
 	end
 end
@@ -1746,6 +1751,7 @@ local function Addon_OnEvent(self, event, ...)
 				dprint("isGroupSelected false")
 				
 				local guid, entry, name, filedataid, x, y, z, orientation, rx, ry, rz, HasTint, red, green, blue, alpha, spell, scale, groupLeader, objType, saturation, rGUIDLow, rGUIDHigh = strsplit(strchar(31),objdetails)
+				HasTint = tonumber(HasTint)
 				OPLastSelectedObjectData = {strsplit(strchar(31), objdetails)}
 				OPLastSelectedGroupRotZ = nil
 				if OPMasterTable.Options["debug"] then
@@ -1807,6 +1813,13 @@ local function Addon_OnEvent(self, event, ...)
 				--if OPTintAutoUpdateButton:GetChecked() then
 				if OPOverlayAutoUpdateButton:GetChecked() then
 					if not OPOverlayDragging then
+						if HasTint == 1 then -- using normal tint
+							OPOverlayUseOverlayCheckbutton:SetChecked(false)
+							OPMasterTable.Options["useOverlayMethod"] = false
+						elseif HasTint == 2 then -- using overlay
+							OPOverlayUseOverlayCheckbutton:SetChecked(true)
+							OPMasterTable.Options["useOverlayMethod"] = true
+						end
 						OPOverlaySliderR:SetValue(red)
 						OPOverlaySliderG:SetValue(green)
 						OPOverlaySliderB:SetValue(blue)
