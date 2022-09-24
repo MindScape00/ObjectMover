@@ -886,17 +886,17 @@
 							</OnEscapePressed>
 							<OnTextChanged>
 								if self:GetText() == self:GetText():match("%d+") or self:GetText() == self:GetText():match("%d+%.%d+") or self:GetText() == self:GetText():match("%.%d+") then
-									ScaleObject:Enable()
+									OPScaleObjectToggle:Enable()
 									self:SetTextColor(255,255,255,1)
 									OPMasterTable.Options["Scale"] = self:GetText()
 								elseif self:GetText() == "" then
 									self:SetTextColor(255,255,255,1)
-									ScaleObject:Disable()
+									OPScaleObjectToggle:Disable()
 								elseif self:GetText():find("%a") then
 									self:SetText(self:GetText():gsub("%a", ""))
 								else
 									self:SetTextColor(1,0,0,1)
-									ScaleObject:Disable()
+									OPScaleObjectToggle:Disable()
 								end
 							</OnTextChanged>
 							<OnEditFocusLost>
@@ -915,7 +915,7 @@
 							</Shadow>
 						</FontString>
 					</EditBox>
-					<CheckButton name="ScaleObject">
+					<CheckButton name="OPScaleObjectToggle">
 						<Size x="24" y="24" />
 						<Anchors>
 							<Anchor point="RIGHT" relativeTo="OPScaleBox" relativePoint="LEFT">

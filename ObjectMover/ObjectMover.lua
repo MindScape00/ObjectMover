@@ -669,7 +669,6 @@ function OPGetObject(button)
 		if isWMO[tonumber(OPLastSelectedObjectData[20])] then
 			dprint("Object was WMO")
 		else
-			--print("I would have crashed you here if this is a WMO, type:"..OPLastSelectedObjectData[20])
 			if OPLastSelectedObjectData[4] then
 				OP_AutoDimensionModelFrame.o:SetModelByFileID(OPLastSelectedObjectData[4])
 				dprint("Generating ModelFrame to get Bounding Box (file ID "..OPLastSelectedObjectData[4]..")")
@@ -691,7 +690,7 @@ end
 
 --Update Internal Dimensions for movement when used, factoring in scale, double and halve options
 function updateDimensions(val)
-	if ScaleObject:GetChecked() == true and ScaleObject:IsEnabled() then
+	if OPScaleObjectToggle:GetChecked() == true and OPScaleObjectToggle:IsEnabled() then
 		if val == "length" then if tonumber(OPLengthBox:GetText()) ~= nil then OPmoveLength = (tonumber(OPLengthBox:GetText())*tonumber(OPScaleBox:GetText())) end end
 		if val == "width" then if tonumber(OPWidthBox:GetText()) ~= nil then OPmoveWidth = (tonumber(OPWidthBox:GetText())*tonumber(OPScaleBox:GetText())) end end
 		if val == "height" then if tonumber(OPHeightBox:GetText()) ~= nil then OPmoveHeight = (tonumber(OPHeightBox:GetText())*tonumber(OPScaleBox:GetText())) end end
@@ -830,7 +829,7 @@ function OPSpawn()
 	if CheckIfValid(OPObjectIDBox) then
 		SpawnClarifier = true
 		--Check if we have an object ID in the object ID box, if we do, spawn it
-		if ScaleObject:GetChecked() == true and ScaleObject:IsEnabled() then
+		if OPScaleObjectToggle:GetChecked() == true and OPScaleObjectToggle:IsEnabled() then
 			SendChatMessage(".go spawn "..OPObjectIDBox:GetText().." scale "..OPScaleBox:GetText())
 		else
 			SendChatMessage(".go spawn "..OPObjectIDBox:GetText())

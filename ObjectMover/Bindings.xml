@@ -20,22 +20,17 @@
 	<Binding category="Object Mover" name="Get Object ID">
 			OPGetObject()
 	</Binding>
+	<Binding category="Object Mover" name="Toggle Scale">
+			if OPScaleObjectToggle:IsEnabled() then OPScaleObjectToggle:SetChecked(not OPScaleObjectToggle:GetChecked()) end
+	</Binding>
 	<Binding category="Object Mover" name="Teleport to Object">
 			OPTeletoObject()
 	</Binding>
 	<Binding category="Object Mover" name="Spawn Object">
 			OPSpawn()
 	</Binding>
-	<Binding category="Object Mover" name="Toggle Spawn on Move">
-			if SpawnonMoveButton:GetChecked() == true then
-				SpawnonMoveButton:SetChecked(false)
-				OPMasterTable.Options["SpawnOnMove"] = false
-			else
-				SpawnonMoveButton:SetChecked(true)
-				OPMasterTable.Options["SpawnOnMove"] = true
-			end
-	</Binding>
 	<Binding category="Object Mover" name="Toggle Move Player">
+		if not OPMovePlayerInstead:IsEnabled() then return; end
 			if OPMovePlayerInstead:GetChecked() == true then
 				OPMovePlayerInstead:SetChecked(false)
 				OPMasterTable.Options["MovePlayer"] = false
@@ -48,7 +43,19 @@
 				SpawnonMoveButton:Enable()
 			end
 	</Binding>
+	<Binding category="Object Mover" name="Toggle Spawn on Move">
+		if not SpawnonMoveButton:IsEnabled() then return; end
+			if SpawnonMoveButton:GetChecked() == true then
+				SpawnonMoveButton:SetChecked(false)
+				OPMasterTable.Options["SpawnOnMove"] = false
+			else
+				SpawnonMoveButton:SetChecked(true)
+				OPMasterTable.Options["SpawnOnMove"] = true
+			end
+	</Binding>
+
 	<Binding category="Object Mover" name="Toggle Move Relative to Player">
+		if not RelativeToPlayerToggle:IsEnabled() then return; end
 			if RelativeToPlayerToggle:GetChecked() == true then
 				RelativeToPlayerToggle:SetChecked(false)
 				OPMasterTable.Options["RelativeToPlayer"] = false
