@@ -39,11 +39,13 @@
 			if OPMovePlayerInstead:GetChecked() == true then
 				OPMovePlayerInstead:SetChecked(false)
 				OPMasterTable.Options["MovePlayer"] = false
-				RelativeToPlayerToggle:Disable()
+				RelativeToPlayerToggle:Enable()
+				SpawnonMoveButton:Disable()
 			else
 				OPMovePlayerInstead:SetChecked(true)
 				OPMasterTable.Options["MovePlayer"] = true
-				RelativeToPlayerToggle:Enable()
+				RelativeToPlayerToggle:Disable()
+				SpawnonMoveButton:Enable()
 			end
 	</Binding>
 	<Binding category="Object Mover" name="Toggle Move Relative to Player">
