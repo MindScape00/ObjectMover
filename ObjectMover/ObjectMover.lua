@@ -14,7 +14,7 @@ local addonVersion, addonAuthor, addonName = GetAddOnMetadata(MYADDON, "Version"
 local addonColor = "|cff".."FFD700"
 
 local OPmoveLength, OPmoveWidth, OPmoveHeight, MessageCount, ObjectClarifier, SpawnClarifier, ScaleClarifier, RotateClarifier, OPObjectSpell, cmdPref, isGroupSelected, m, rateLimited = 0, 0, 0, 0, false, false, false, false, nil, "go", nil, nil, false
-BINDING_HEADER_OBJECTMANIP, SLASH_SHOWCLOSE1, SLASH_SHOWCLOSE2, SLASH_SHOWCLOSE3 = "Object Mover", "/obj", "/om", "/op"
+BINDING_HEADER_OBJECTMANIP, SLASH_OM_SHOWCLOSE1, SLASH_OM_SHOWCLOSE2, SLASH_OM_SHOWCLOSE3 = "Object Mover", "/obj", "/om", "/op"
 
 local addonPrefix = "EPISLON_OBJ_INFO"
 
@@ -1919,7 +1919,7 @@ f:RegisterEvent("PLAYER_LOGIN");
 -- Slash Command Handlers
 -------------------------------------------------------------------------------
 
-function SlashCmdList.SHOWCLOSE()
+function SlashCmdList.OM_SHOWCLOSE()
 	if not OPMainFrame:IsShown() then
 		OPMainFrame:Show()
 	else

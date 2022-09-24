@@ -5311,7 +5311,7 @@
 				if button == "RightButton" then 
 					if not OPNewOptionsFrame:IsShown() then OPNewOptionsFrame:Show() else OPNewOptionsFrame:Hide() end
 				elseif button == "LeftButton" then
-					SlashCmdList.SHOWCLOSE()
+					SlashCmdList.OM_SHOWCLOSE()
 				elseif button == "MiddleButton" then
 					if OPPanelPopout:IsShown() then
 						OPPanelPopout:Hide()

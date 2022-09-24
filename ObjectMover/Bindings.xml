@@ -35,14 +35,14 @@
 				OPMasterTable.Options["SpawnOnMove"] = true
 			end
 	</Binding>
-	<Binding category="Object Mover" name="Toggle Move Object">
-			if OPMoveObjectInstead:GetChecked() == true then
-				OPMoveObjectInstead:SetChecked(false)
-				OPMasterTable.Options["MoveObject"] = false
+	<Binding category="Object Mover" name="Toggle Move Player">
+			if OPMovePlayerInstead:GetChecked() == true then
+				OPMovePlayerInstead:SetChecked(false)
+				OPMasterTable.Options["MovePlayer"] = false
 				RelativeToPlayerToggle:Disable()
 			else
-				OPMoveObjectInstead:SetChecked(true)
-				OPMasterTable.Options["MoveObject"] = true
+				OPMovePlayerInstead:SetChecked(true)
+				OPMasterTable.Options["MovePlayer"] = true
 				RelativeToPlayerToggle:Enable()
 			end
 	</Binding>
@@ -54,5 +54,8 @@
 				RelativeToPlayerToggle:SetChecked(true)
 				OPMasterTable.Options["RelativeToPlayer"] = true
 			end
+	</Binding>
+	<Binding category="Object Mover" name="Show ObjectMover">
+			SlashCmdList.OM_SHOWCLOSE
 	</Binding>
 </Bindings>
