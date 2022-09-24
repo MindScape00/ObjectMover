@@ -1,4 +1,13 @@
 ObjectMoverChangelog = [[
+#v7.2.2 (September 25rd, 2022)
+	- UPDATED: Group Rotation support re-done; now more reliable, and
+	      it works when you select/spawn a group/bp right away. Also
+	      respects the Auto-Update button toggle now. #respect.
+	      (This is much better than the previous 2am-made support..)
+	- Removed a debug print when loading in. Oops.
+
+## _________________________________________________
+
 #v7.2.1 (September 23rd, 2022)
 
 	- UPDATED: You can once again use Tint with Saturation 0. This will 

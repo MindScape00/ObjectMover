@@ -434,6 +434,18 @@ function OPObjectPreviewer_OnClick(self,button,down)
 	-- nothing right now, let's add some fun stuff later to manipulate the camera angle? idk
 end
 
+local useRotateClarifierQ = false
+local rotateClarifierQ
+local function updateRotateClarifierQ(num)
+if useRotateClarifierQ then
+	rotateClarifierQ = rotateClarifierQ+num
+	if rotateClarifierQ <= 0 then
+		RotateClarifier = false
+	else
+		RotateClarifier = true
+	end
+end
+end
 
 -------------------------------------------------------------------------------
 -- Minimap Icon Handlers
@@ -942,6 +954,7 @@ function OPRotateObject(sendToServer)
 		local RotationZ2 = tonumber(OPLastSelectedGroupRotZ) or tonumber(OPLastSelectedObjectData[11])
 		if RotationZ2 < 0 then RotationZ2 = RotationZ2+360 elseif RotationZ2 > 360 then RotationZ2 = RotationZ2-360 end
 		local newRotZ = RotationZ1 - RotationZ2
+		updateRotateClarifierQ(1)
 		cmd("go group turn "..newRotZ)
 		OPLastSelectedGroupRotZ = RotationZ1
 		rateLimited = true
@@ -956,6 +969,7 @@ function OPRotateObject(sendToServer)
 		if RotationY < 0 then RotationY = 0; dprint("RotY < 0, Made 0"); end
 		if RotationZ < 0 then RotationZ = 0; dprint("RotZ < 0, Made 0"); end
 		if sendToServer or dontUseClientRotation then
+			updateRotateClarifierQ(1)
 			cmd("go rot "..RotationX.." "..RotationY.." "..RotationZ)
 		else
 			C_Epsilon.RotateObject(localGUIDLow, localGUIDHigh ,RotationX, RotationY, RotationZ)
@@ -1547,17 +1561,14 @@ function OPClearRotateChatFilterDontSpamIfStillRotating()
 	end
 end
 
-function RunChecks(Message)
+local function checkForFilter(Message)
 	
 	local clearmsg = gsub(Message,"|cff%x%x%x%x%x%x","");
 	local clearmsg = clearmsg:gsub("|r","")
 
 -- GObject Rotate Message Filter
 	if RotateClarifier and Message:gsub("|.........",""):find("rotated") then
-		--if clearmsg:find("group") then 
-			--OPLastSelectedGroupRotZ = clearmsg:match("Z: (%-?%d+%.%d+)")
-			--dprint("OPLastSelectedGroupRotZ: "..OPLastSelectedGroupRotZ)
-		--end
+		updateRotateClarifierQ(-1)
 		dprint("RotateClarifier Caught Message")
 		return true
 
@@ -1733,11 +1744,11 @@ local function OMChatFilter(Self,Event,Message)
 	if ObjectClarifier or SpawnClarifier or ScaleClarifier or RotateClarifier then
 		--Check to see if we sent a request and we don't want to see messages
 		if OPShowMessagesToggle:GetChecked() ~= true then
-			if (RunChecks(Message)) then
+			if (checkForFilter(Message)) then
 				return true
 			end
 		else
-			RunChecks(Message)
+			checkForFilter(Message)
 		end
 	end
 	
