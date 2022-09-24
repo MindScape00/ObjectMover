@@ -190,7 +190,6 @@ end
 local OPAddon_OnLoad = CreateFrame("frame","OPAddon_OnLoad");
 OPAddon_OnLoad:RegisterEvent("ADDON_LOADED");
 OPAddon_OnLoad:SetScript("OnEvent", function(self,event,name)
-	print(name)
 	if name == addonName or name == addonName.."-dev" then
 		OPMiniMapLoadPosition()
 		loadMasterTable()
@@ -1593,6 +1592,7 @@ function RunChecks(Message)
 	end
 end
 
+local isWaitingForGroupData
 local function OMChatFilter(Self,Event,Message)
 	
 	local clearmsg = gsub(Message,"|cff%x%x%x%x%x%x","");
@@ -1612,17 +1612,65 @@ local function OMChatFilter(Self,Event,Message)
 		end
 	end
 	--]]
+	
 	if clearmsg:find("Selected gameobject group") or clearmsg:find("Spawned gameobject group") or clearmsg:find("Spawned blueprint") or clearmsg:find("added %d+ objects to gameobject group") or clearmsg:find("added the gameobject .* to gameobject group") then
 		updateGroupSelected(true)
-		OPLastSelectedGroupRotZ = OPLastSelectedObjectData[11]
 		dprint("isGroupSelected true")
-	end
+		local groupID = nil
 		
+		if clearmsg:find("Selected") or clearmsg:find("Spawned") then
+			isWaitingForGroupData = true
+			dprint("Listening for Group Data")
+		elseif OPRotAutoUpdate:GetChecked() then
+			groupID = clearmsg:find("with leader.*DBGUID: (%d)")
+			if groupID then
+				cmd("go group sel "..groupID)
+				dprint("Added objects to a group, re-selecting group to capture the rotation..")
+			else
+				cprint("ALERT: Objects added to group with Auto-Rotate enabled, but we couldn't get the group data. Please re-select the group.")
+			end
+		end
+		
+	end
+	
+	if isWaitingForGroupData then
+		local yaw = nil
+		if clearmsg:find("Yaw/Turn:") then
+			yaw = tonumber(clearmsg:match("Pitch: %-?%d*%.%d*, Roll: %-?%d*%.%d*, Yaw/Turn: (%-?%d*%.%d*)"))
+		elseif clearmsg:find("with orientation:") then
+			yaw = tonumber(clearmsg:match("orientation: (%-?%d*%.%d*)"))
+		end
+		if yaw then 
+			if OPRotAutoUpdate:GetChecked() then
+				OPRotationSliderZ:SetValueStep(0.0001)
+				OPRotationSliderZ:SetValue(yaw)
+				dprint("Set Slider Z to "..yaw)
+			end
+			OPLastSelectedGroupRotZ = yaw
+			isWaitingForGroupData = false
+			dprint("Group Data collected, not listening.")
+		end
+	end
 	---------- Auto Update Rotation CAPTURES ----------
 	
 	if OPRotAutoUpdate:GetChecked()==true and not RotateClarifier then -- Is the AutoUpdate Rot enabled? (Check if RotateClarifier is enabled - if it is, we don't do anything as to not impact the sliders functioning normally)
-		if clearmsg:find("You have rotated .* [%X%Y%Z]+") then -- Did we get a rotated object message?
+		if clearmsg:find("You have rotated group .* [%X%Y%Z]+") then -- Did we get a rotated object message?
 			dontFuckingRotate = true -- Stop the sliders from actually causing a rotation
+			dprint("Group Rotate detected")
+
+			if clearmsg:find("Z:") then	-- Matching for Group Rotation Message which is always relative..
+				local z = tonumber(clearmsg:match("Z: (%-?%d*%.%d*)"))
+				if z < 0 then z = z+360 elseif z > 360 then z = z-360 end
+				OPRotationSliderZ:SetValueStep(0.0001)
+				local newYaw = OPRotationSliderZ:GetValue() + z
+				if newYaw < 0 then newYaw = newYaw+360 elseif newYaw > 360 then newYaw = newYaw-360 end
+				OPRotationSliderZ:SetValue(newYaw)
+				dprint("Set Slider Z to "..newYaw)
+			end
+			dontFuckingRotate = false -- Allow sliders to cause rotation again
+		end
+
+			-- Old Rotate Message Filters for auto-updating the sliders. Replaced by Gob_Info
 			--[[
 			if clearmsg:find("X:") then
 				local x
@@ -1650,22 +1698,7 @@ local function OMChatFilter(Self,Event,Message)
 				OPRotationSliderY:SetValue(y)
 				dprint("Set Slider Y to "..y)
 			end
-			if clearmsg:find("Z:") then
-				local z
-				if clearmsg:find("from Z.*to Z") then
-					z = tonumber(clearmsg:match("to Z: (%-?%d*%.%d*)"))
-					dprint("Relative Rotation Caught")
-				else
-					z = tonumber(clearmsg:match("Z: (%-?%d*%.%d*)"))
-				end
-				if z < 0 then z = z+360 elseif z > 360 then z = z-360 end
-				OPRotationSliderZ:SetValueStep(0.0001)
-				OPRotationSliderZ:SetValue(z)
-				dprint("Set Slider Z to "..z)
-			end
 			--]]
-			dontFuckingRotate = false -- Allow sliders to cause rotation again
-		end
 		
 		--[[
 		if clearmsg:find("Pitch: %-?%d*%.%d*, Roll: %-?%d*%.%d*, Yaw/Turn: %-?%d*%.%d*") then
@@ -1911,7 +1944,7 @@ function SlashCmdList.OPDELPARAM(msg, editbox) -- 4.
 				end
 			end
 		else
-			print("ObjectMover SYNTAX: '/opdelparam [name of Parameter Pre-set to delete, Case Sensitive]'")
+			cprint("SYNTAX: '/opdelparam [name of Parameter Pre-set to delete, Case Sensitive]'")
 		end
 	else
 		if OPDeleteParamByMenuConfirm then
@@ -1949,7 +1982,7 @@ function SlashCmdList.OPDELROT(msg, editbox) -- 4.
 				end
 			end
 		else
-			print("ObjectMover SYNTAX: '/opdelparam [name of Parameter Pre-set to delete, Case Sensitive]'")
+			cprint("SYNTAX: '/opdelparam [name of Parameter Pre-set to delete, Case Sensitive]'")
 		end
 	else
 		if OPDeleteRotByMenuConfirm then
