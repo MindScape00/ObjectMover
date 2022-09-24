@@ -56,6 +56,6 @@
 			end
 	</Binding>
 	<Binding category="Object Mover" name="Show ObjectMover">
-			SlashCmdList.OM_SHOWCLOSE
+			SlashCmdList.OM_SHOWCLOSE()
 	</Binding>
 </Bindings>
