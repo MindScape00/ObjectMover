@@ -16,8 +16,6 @@ local addonColor = "|cff".."FFD700"
 local OPmoveLength, OPmoveWidth, OPmoveHeight, MessageCount, ObjectClarifier, SpawnClarifier, ScaleClarifier, RotateClarifier, OPObjectSpell, cmdPref, isGroupSelected, m, rateLimited = 0, 0, 0, 0, false, false, false, false, nil, "go", nil, nil, false
 BINDING_HEADER_OBJECTMANIP, SLASH_OM_SHOWCLOSE1, SLASH_OM_SHOWCLOSE2, SLASH_OM_SHOWCLOSE3 = "Object Mover", "/obj", "/om", "/op"
 
-local addonPrefix = "EPISLON_OBJ_INFO"
-
 local isWMO = {[14] = true, [15] = true, [33] = true, [38] = true, [43] = true, [54] = true}
 local ObjectTypes = {[0]="DOOR",[1]="BUTTON",[2]="QUESTGIVER",[3]="CHEST",[4]="BINDER",[5]="GENERIC",[6]="TRAP",[7]="CHAIR",[8]="SPELL_FOCUS",[9]="TEXT",[10]="GOOBER",[11]="TRANSPORT",[12]="AREADAMAGE",[13]="CAMERA",[14]="MAP_OBJECT (WMO)",[15]="MAP_OBJ_TRANSPORT (WMO)",[16]="DUEL_ARBITER",[17]="FISHINGNODE",[18]="RITUAL",[19]="MAILBOX",[20]="DO_NOT_USE",[21]="GUARDPOST",[22]="SPELLCASTER",[23]="MEETINGSTONE",[24]="FLAGSTAND",[25]="FISHINGHOLE",[26]="FLAGDROP",[27]="MINI_GAME",[28]="DO_NOT_USE_2",[29]="CONTROL_ZONE",[30]="AURA_GENERATOR",[31]="DUNGEON_DIFFICULTY",[32]="BARBER_CHAIR",[33]="DESTRUCTIBLE_BUILDING (WMO)",[34]="GUILD_BANK",[35]="TRAPDOOR",[36]="NEW_FLAG",[37]="NEW_FLAG_DROP",[38]="GARRISON_BUILDING (WMO)",[39]="GARRISON_PLOT",[40]="CLIENT_CREATURE",[41]="CLIENT_ITEM",[42]="CAPTURE_POINT (WMO)",[43]="PHASEABLE_MO",[44]="GARRISON_MONUMENT",[45]="GARRISON_SHIPMENT",[46]="GARRISON_MONUMENT_PLAQUE",[47]="ITEM_FORGE",[48]="UI_LINK",[49]="KEYSTONE_RECEPTACLE",[50]="GATHERING_NODE",[51]="CHALLENGE_MODE_REWARD",[52]="MULTI",[53]="SIEGEABLE_MULTI",[54]="SIEGEABLE_MO (WMO)",[55]="PVP_REWARD",[56]="PLAYER_CHOICE_CHEST",[57]="LEGENDARY_FORGE",[58]="GARR_TALENT_TREE",[59]="WEEKLY_REWARD_CHEST",[60]="CLIENT_MODEL"}
 local ObjectAnims = {[0]="Stand", [145]="Spawn",[146]="Close",[147]="Closed",[148]="Open",[149]="Opened",[150]="Destroy",[157]="Despawn"}
@@ -89,8 +87,8 @@ local function eprint(text,rest)
 end
 
 local function cmd(text)
-  SendChatMessage("."..text, "GUILD");
-  dprint("Sending Command: "..text)
+	SendChatMessage("."..text, "GUILD");
+--	dprint("Sending Command: "..text)
 end
 
 function OPManagerPrint(text)
@@ -109,7 +107,7 @@ function OPManagerCMD(mainCom, text, groupCheck)
 end
 
 -------------------------------------------------------------------------------
--- Loading Sequence
+-- Loading Sequence & Helper Functions
 -------------------------------------------------------------------------------
 
 local function isNotDefined(s)
@@ -126,6 +124,7 @@ function loadMasterTable()
 	if isNotDefined(OPMasterTable.Options["autoShow"]) then OPMasterTable.Options["autoShow"] = false end
 	if isNotDefined(OPMasterTable.Options["autoShowPopout"]) then OPMasterTable.Options["autoShowPopout"] = false end
 	if isNotDefined(OPMasterTable.Options["wasPopoutShown"]) then OPMasterTable.Options["wasPopoutShown"] = false end
+	if isNotDefined(OPMasterTable.Options["showMessages"]) then OPMasterTable.Options["showMessages"] = false end
 	if isNotDefined(OPMasterTable.Options["showTooltips"]) then OPMasterTable.Options["showTooltips"] = true end
 	if isNotDefined(OPMasterTable.Options["MovePlayer"]) then OPMasterTable.Options["MovePlayer"] = false end
 	if isNotDefined(OPMasterTable.Options["useOverlayMethod"]) then OPMasterTable.Options["useOverlayMethod"] = false end
@@ -163,8 +162,8 @@ end
 
 loadMasterTable()
 
-OPFramesAreLoaded = false
-FrameLoadingPoints = 0
+local OPFramesAreLoaded = false
+local FrameLoadingPoints = 0
 OPSaveType = nil
 ObjectSelectLineCount = 3
 local OP_AutoDimensionModelFrame = nil
@@ -180,10 +179,10 @@ end
 
 local dontUseClientRotation
 if C_Epsilon.RotateObject then
---	print("C_Epsilon.RotateObject exists, we can use client-side rotation!")
+	dprint("C_Epsilon.RotateObject exists - Using Client-Side rotation.")
 	dontUseClientRotation = false
 else
---	print("C_Epsilon.RotateObject doesn't exist, don't use client-side rotation!")
+	dprint("C_Epsilon.RotateObject doesn't exist - Falling back to full server-side rotation.")
 	dontUseClientRotation = true
 end
 
@@ -387,7 +386,6 @@ function OPObjectPreviewerActor_OnModelLoaded(self)
 		end
 	end
 end
---]]
 
 function OPObjectPreviewer_OnLoad(self)
 	self.cameras = {};
@@ -434,17 +432,24 @@ function OPObjectPreviewer_OnClick(self,button,down)
 	-- nothing right now, let's add some fun stuff later to manipulate the camera angle? idk
 end
 
-local useRotateClarifierQ = false
-local rotateClarifierQ
-local function updateRotateClarifierQ(num)
-if useRotateClarifierQ then
-	rotateClarifierQ = rotateClarifierQ+num
-	if rotateClarifierQ <= 0 then
-		RotateClarifier = false
-	else
-		RotateClarifier = true
-	end
-end
+-- Chat Filter Cache
+
+local chatFilterCounter = { -- count = # of messages pending to filter, message = the format of the reply message to match for filtering - Can be a table if multiple possible messages.
+["ROTATE"] = {count = 0, message = ""},
+["SPAWN"] = {count = 0, message = ""},
+["SCALE"] = {count = 0, message = "GameObject .* has been set to scale"},
+["MOVE"] = {count = 0, message = ""},
+["COLOR"] = {count = 0, message = ""},
+["GROUP_ADD"] = {count = 0, message = ""},
+["ANIM"] = {count = 0, message = ""},
+["VIS"] = {count = 0, message = ""},
+}
+
+local chatFilterFailureMessage = {"Syntax", "was not found", "You do not have", "Incorrect"}
+
+local function updateChatFilterQ(com, num)
+	chatFilterCounter[com].count = chatFilterCounter[com].count + num
+	dprint("Chat Filter Updated: "..com.." = "..chatFilterCounter[com].count)
 end
 
 -------------------------------------------------------------------------------
@@ -657,7 +662,7 @@ function CheckIfValid(Box, IsNotObjectID, Function)
 		end
 	elseif not IsNotObjectID and Box:GetText() == Box:GetText():match("%d+") then
 			if Function then Function() else return true end
-		--If we want to find an object ID, and the box's text is an object ID, and if we want to run a function, then run the function, else if we don't want to run a function, just tell them that the box's text is legal
+		--If testing for Object ID, and the box's text is a valid to be an Object ID, and if we want to run a function, then run the function, else if we don't want to run a function, just tell them that the box's text is legal
 	end
 end
 
@@ -840,23 +845,10 @@ end
 function OPTeletoObject()
 	if isGroupSelected then cmdPref = "go group" else cmdPref = "go" end
 	cmd(cmdPref.." go")
-	print("Command was "..cmdPref)
 end
 
 function OPScaleObject(scale)
 	cmd("go scale "..scale)
-end
-
-function EnableBoxes(Box1, Box2)
-	--This is just to cut down on the xml size when enabling and disabling the Halve and Bifold checkboxes via binding - make sure we're not both checked
-	if Box1:GetChecked() then
-		Box1:SetChecked(false)
-	else
-		Box1:SetChecked(true)
-	end
-	if Box2:GetChecked() then
-		Box2:SetChecked(false)
-	end
 end
 
 -- Overlay Stuff
@@ -953,7 +945,7 @@ function OPRotateObject(sendToServer)
 		local RotationZ2 = tonumber(OPLastSelectedGroupRotZ) or tonumber(OPLastSelectedObjectData[11])
 		if RotationZ2 < 0 then RotationZ2 = RotationZ2+360 elseif RotationZ2 > 360 then RotationZ2 = RotationZ2-360 end
 		local newRotZ = RotationZ1 - RotationZ2
-		updateRotateClarifierQ(1)
+		updateChatFilterQ("ROTATE",1)
 		cmd("go group turn "..newRotZ)
 		OPLastSelectedGroupRotZ = RotationZ1
 		rateLimited = true
@@ -968,7 +960,7 @@ function OPRotateObject(sendToServer)
 		if RotationY < 0 then RotationY = 0; dprint("RotY < 0, Made 0"); end
 		if RotationZ < 0 then RotationZ = 0; dprint("RotZ < 0, Made 0"); end
 		if sendToServer or dontUseClientRotation then
-			updateRotateClarifierQ(1)
+			updateChatFilterQ("ROTATE",1)
 			cmd("go rot "..RotationX.." "..RotationY.." "..RotationZ)
 		else
 			C_Epsilon.RotateObject(localGUIDLow, localGUIDHigh ,RotationX, RotationY, RotationZ)
@@ -1092,6 +1084,7 @@ StaticPopupDialogs["OP_OBJ_VISIBILITY"] = {
 	hideOnEscape = true,
 	hasEditBox = true,
 }
+
 StaticPopupDialogs["OP_OBJ_ANIMATION"] = {
 	text = "Animation",
 	button1 = APPLY,
@@ -1140,7 +1133,6 @@ StaticPopupDialogs["OP_OBJ_ANIMATION"] = {
 	hideOnEscape = true,
 	hasEditBox = true,
 }
-
 
 
 --- Word Generator
@@ -1567,7 +1559,7 @@ local function checkForFilter(Message)
 
 -- GObject Rotate Message Filter
 	if RotateClarifier and Message:gsub("|.........",""):find("rotated") then
-		updateRotateClarifierQ(-1)
+		--updateRotateClarifierQ(-1)
 		dprint("RotateClarifier Caught Message")
 		return true
 
@@ -1772,7 +1764,7 @@ ChatFrame_AddMessageEventFilter("CHAT_MSG_TARGETICONS", OMChatFilter);
 ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_CONVERSATION_NOTICE", OMChatFilter);
 
 -------------------------------------------------------------------------------
--- Recieving GObject Info on Select / Object Update
+-- Receiving GObject Info on Select / Object Update
 -------------------------------------------------------------------------------
 
 --[[
@@ -1782,9 +1774,9 @@ ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_CONVERSATION_NOTICE", OMChatFilter)
 ]]
 
 local function Addon_OnEvent(self, event, ...)
-	if event == "CHAT_MSG_ADDON" then
+	if event == "CHAT_MSG_ADDON" then			-- Addon Message Receiving
 		local prefix = select(1,...)
-		if prefix == "EPSILON_OBJ_INFO" or prefix == "EPSILON_OBJ_SEL" then
+		if prefix == "EPSILON_OBJ_INFO" or prefix == "EPSILON_OBJ_SEL" then -- If OBJ_INFO or OBJ_SEL message, process the data to our 'cache'
 			local objdetails = select(2,...)
 			local sender = select(4,...)
 			local self = table.concat({UnitFullName("PLAYER")}, "-")
@@ -1903,10 +1895,9 @@ local function Addon_OnEvent(self, event, ...)
 			dprint(false, event, ...)
 		end
 	elseif event == "PLAYER_LOGIN" then
-		local successfulRequest = C_ChatInfo.RegisterAddonMessagePrefix(addonPrefix)
-		if successfulRequest ~= true then
-			message("ObjectMover failed to create AddonMessage listener, automatic update options disabled. Use /reload to try again.")
-		end
+		C_ChatInfo.RegisterAddonMessagePrefix("EPSILON_OBJ_INFO")
+		C_ChatInfo.RegisterAddonMessagePrefix("EPSILON_OBJ_SEL")
+		self:UnregisterEvent(event)
 	end
 end
 local f = CreateFrame("Frame")

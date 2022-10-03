@@ -1830,6 +1830,16 @@
 								GameTooltip_Hide()
 								if self.Timer then self.Timer:Cancel() end
 							</OnLeave>
+							<OnClick>
+								if self:GetChecked() == true then
+									OPMasterTable.Options["showMessages"] = true
+								else
+									OPMasterTable.Options["showMessages"] = false
+								end
+							</OnClick>
+							<OnShow>
+								if OPMasterTable.Options["showMessages"] == true then self:SetChecked(true) end
+							</OnShow>
 						</Scripts>
 						<NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
 						<PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
