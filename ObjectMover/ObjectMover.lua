@@ -446,10 +446,12 @@ local chatFilterCounter = { -- count = # of messages pending to filter, message 
 }
 
 local chatFilterFailureMessage = {"Syntax", "was not found", "You do not have", "Incorrect"}
+local lastCommandToFilter
 
 local function updateChatFilterQ(com, num)
 	chatFilterCounter[com].count = chatFilterCounter[com].count + num
 	dprint("Chat Filter Updated: "..com.." = "..chatFilterCounter[com].count)
+	lastCommandToFilter = com
 end
 
 -------------------------------------------------------------------------------
@@ -1600,6 +1602,26 @@ local function OMChatFilter(Self,Event,Message)
 	local clearmsg = gsub(Message,"|cff%x%x%x%x%x%x","");
 	local clearmsg = clearmsg:gsub("|r","");
 	
+	local caughtInQ = false
+	for k,v in pairs( chatFilterCounter ) do
+		if v.count > 0 then
+			if clearmsg:find(v.message) then
+				print("Should Filter this Message?")
+				updateChatFilterQ(k, -1)
+				caughtInQ = true
+				break	-- break the loop, we found and processed the message, no need to keep filtering
+			end
+		end
+	end
+	if not caughtInQ then
+		for k,v in ipairs(chatFilterFailureMessage) do
+			if clearmsg:find(v) then
+				print("Should Filter this message?")
+				updateChatFilterQ(lastCommandToFilter, -1)
+				break
+			end
+		end
+	end
 	--[[
 	if clearmsg:find("Selected gameobject") or clearmsg:find("Spawned gameobject") then
 		if not clearmsg:find("[aA]dd") and not clearmsg:find("group") then
