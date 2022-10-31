@@ -234,7 +234,7 @@ StaticPopupDialogs["HTMLUTILS_HYPERLINK_COPYBOX"] = {
 
 function HTML_HyperlinkClick_Copy(self,link)
 	local popup = StaticPopup_Show("HTMLUTILS_HYPERLINK_COPYBOX", link);
-	local width = popup.text:GetStringWidth()
+	local width = max(popup.text:GetStringWidth(), 100)
 	popup.editBox:SetWidth(width);
 	popup:SetWidth(width+50)
 	popup.text:SetText(BROWSER_COPY_LINK)
