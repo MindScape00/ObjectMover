@@ -20,30 +20,6 @@ local isWMO = {[14] = true, [15] = true, [33] = true, [38] = true, [43] = true, 
 local ObjectTypes = {[0]="DOOR",[1]="BUTTON",[2]="QUESTGIVER",[3]="CHEST",[4]="BINDER",[5]="GENERIC",[6]="TRAP",[7]="CHAIR",[8]="SPELL_FOCUS",[9]="TEXT",[10]="GOOBER",[11]="TRANSPORT",[12]="AREADAMAGE",[13]="CAMERA",[14]="MAP_OBJECT (WMO)",[15]="MAP_OBJ_TRANSPORT (WMO)",[16]="DUEL_ARBITER",[17]="FISHINGNODE",[18]="RITUAL",[19]="MAILBOX",[20]="DO_NOT_USE",[21]="GUARDPOST",[22]="SPELLCASTER",[23]="MEETINGSTONE",[24]="FLAGSTAND",[25]="FISHINGHOLE",[26]="FLAGDROP",[27]="MINI_GAME",[28]="DO_NOT_USE_2",[29]="CONTROL_ZONE",[30]="AURA_GENERATOR",[31]="DUNGEON_DIFFICULTY",[32]="BARBER_CHAIR",[33]="DESTRUCTIBLE_BUILDING (WMO)",[34]="GUILD_BANK",[35]="TRAPDOOR",[36]="NEW_FLAG",[37]="NEW_FLAG_DROP",[38]="GARRISON_BUILDING (WMO)",[39]="GARRISON_PLOT",[40]="CLIENT_CREATURE",[41]="CLIENT_ITEM",[42]="CAPTURE_POINT (WMO)",[43]="PHASEABLE_MO",[44]="GARRISON_MONUMENT",[45]="GARRISON_SHIPMENT",[46]="GARRISON_MONUMENT_PLAQUE",[47]="ITEM_FORGE",[48]="UI_LINK",[49]="KEYSTONE_RECEPTACLE",[50]="GATHERING_NODE",[51]="CHALLENGE_MODE_REWARD",[52]="MULTI",[53]="SIEGEABLE_MULTI",[54]="SIEGEABLE_MO (WMO)",[55]="PVP_REWARD",[56]="PLAYER_CHOICE_CHEST",[57]="LEGENDARY_FORGE",[58]="GARR_TALENT_TREE",[59]="WEEKLY_REWARD_CHEST",[60]="CLIENT_MODEL"}
 local ObjectAnims = {[0]="Stand", [145]="Spawn",[146]="Close",[147]="Closed",[148]="Open",[149]="Opened",[150]="Destroy",[157]="Despawn"}
 
-local wordGenCharMap = {
-	[48] = "10001083",     --0
-	[49] = "10001086",     --1
-	[50] = "10001081",     --2
-	[51] = "10001082",     --3
-	[52] = "10001089",     --4
-	[53] = "10001085",     --5
-	[54] = "10001079",     --6
-	[55] = "10001087",     --7
-	[56] = "10001088",     --8
-	[57] = "10001084",     --9
-	
-	[33] = "10001067", -- !
-	[47] = "10001068", -- /
-	[38] = "10001069", -- &
-	[45] = "10001071", -- -
-	[43] = "10001075", -- +
-	[58] = "10001076", -- :
-	[63] = "10001077", -- ?
-	[59] = "10001078", -- ;
-	[124] = "10001073", -- | -> sword replacement
-	[60] = "10001538", -- <
-	[62] = "10001537", -- >
-}
 
 -------------------------------------------------------------------------------
 -- Simple Chat & Print Functions
@@ -149,14 +125,14 @@ function loadMasterTable()
 
 
 	if not OPMasterTable.RotPresetKeys then OPMasterTable.RotPresetKeys = {"Reset (0,0,0)"} end
-	if not OPMasterTable.RotPresetContent then 
+	if not OPMasterTable.RotPresetContent then
 	OPMasterTable.RotPresetContent = {
 		["Reset (0,0,0)"] = {
 			["RotX"] = 0,
 			["RotY"] = 0,
 			["RotZ"] = 0,
 			},
-		}	
+		}
 	end
 end
 
@@ -192,7 +168,7 @@ OPAddon_OnLoad:SetScript("OnEvent", function(self,event,name)
 	if name == addonName or name == addonName.."-dev" then
 		OPMiniMapLoadPosition()
 		loadMasterTable()
-	
+
 		--Quickly Show / Hide the Frame on Start-Up to initialize everything for key bindings & loading
 		C_Timer.After(1,function()
 			OPMainFrame:Show();
@@ -207,7 +183,7 @@ OPAddon_OnLoad:SetScript("OnEvent", function(self,event,name)
 			if OPMasterTable.Options["autoShowPopout"] then OPPanelPopout:Show() end
 			if OPMasterTable.Options["wasPopoutShown"] == 1 then OPPanelPopout:Show() end
 		end)
-		
+
 		-- Adjust Radial Offset for Minimap Icon for alternate UI Overhaul Addons
 		if IsAddOnLoaded("AzeriteUI") then
 			RadialOffset = 18;
@@ -223,7 +199,7 @@ OPAddon_OnLoad:SetScript("OnEvent", function(self,event,name)
 		else
 			RadialOffset = 10;
 		end
-		
+
 		-- Create our ModelScene handler frame for use later in auto-dimensions
 		OP_AutoDimensionModelFrame = CreateFrame("ModelScene")
 		Mixin(OP_AutoDimensionModelFrame, ModelSceneMixin)
@@ -238,7 +214,7 @@ OPAddon_OnLoad:SetScript("OnEvent", function(self,event,name)
 			dprint("AUTODIM: X: "..mX.." ("..mX1.." | "..mX2.."), Y: "..mY.." ("..mY1.." | "..mY2.."), Z: "..mZ.." ("..mZ1.." | "..mZ2..")")
 			OP_AutoDimensionModelFrame.o:ClearModel()
 		end
-		
+
 		-- Hook our OnEnter for the MiniMap Icon Tooltip
 		ObjectManipulator_MinimapButton:SetScript("OnEnter", function(self)
 			SetCursor("Interface/CURSOR/architect.blp");
@@ -278,7 +254,7 @@ function OPObjectPreviewGenerateFrame()
 		self:OnUpdate(elapsed)
 		OPPanelPopout.ObjPreview.Scene.Camera:SetYaw(OPPanelPopout.ObjPreview.Scene.Camera:GetYaw() + elapsed / 10)
 	end)
-	
+
 	OPPanelPopout.ObjPreview.Scene.Actor = OPPanelPopout.ObjPreview.Scene:CreateActor("OPPrevierwerObject", ObjectMoverActorTemplate)
 	local actor = OPPanelPopout.ObjPreview.Scene.Actor
 	function actor:OnModelLoaded(self)
@@ -304,28 +280,28 @@ end
 
 local function getSpellVisualKitByValues(tintType,r,g,b,a,s)
 	local useNewSystem = true
-	
+
 	local colorIncrement = 5
 	local transparencyIncrement = 20
 	local saturationIncrement = 20
-	
+
 	if tonumber(a) == 100 then return; end -- if set to fully transparent, we will ignore and show the base object.
 	local rStepped = tonumber(r)/colorIncrement
 	local gStepped = tonumber(g)/colorIncrement
 	local bStepped = tonumber(b)/colorIncrement
 	local aStepped = tonumber(a)/transparencyIncrement
 	local sStepped = tonumber(s)/saturationIncrement
-	
+
 	local ColourSteps = (100 / colorIncrement) + 1;
-    local SaturationSteps = (100 / saturationIncrement);		
-	
-	local startingID = 100000	
+    local SaturationSteps = (100 / saturationIncrement);
+
+	local startingID = 100000
 	if useNewSystem then
 		startingID = 100001 -- Tint SpellVisual Start ID
 	end
-	if tonumber(tintType) == 2 then 
+	if tonumber(tintType) == 2 then
 		-- adjust starting ID if Overlay
-		startingID = 331526; -- Overlay SpellVisual Start ID 
+		startingID = 331526; -- Overlay SpellVisual Start ID
 	end
 
 	spellVisualID = startingID
@@ -335,7 +311,7 @@ local function getSpellVisualKitByValues(tintType,r,g,b,a,s)
 	spellVisualID = spellVisualID + ((SaturationSteps - sStepped) * ColourSteps^3);
 	spellVisualID = spellVisualID + (aStepped * ((ColourSteps^3) * SaturationSteps));
 		dprint("SpellVisualID: "..spellVisualID)
-		
+
 	local spellVisualKitID = spellVisualID+30000
 		dprint("SpellVisualKitID: "..spellVisualKitID)
 	return (spellVisualKitID);
@@ -356,7 +332,7 @@ function OPObjectPreviewerActor_OnModelLoaded(self)
     camera:SetMaxZoomDistance(size*2)
     camera:SetZoomDistance(size*0.9)
     camera:SnapAllInterpolatedValues();
-	
+
 	-- Generating Bounding Box Sizes for the PopOut Panel Info
 	if self:GetModelFileID() == 1 then
 		OPSelectedObjectDimX = nil
@@ -369,7 +345,7 @@ function OPObjectPreviewerActor_OnModelLoaded(self)
 		OPSelectedObjectDimY = abs(ly)
 		OPSelectedObjectDimZ = abs(lz)
 	end
-	
+
 	if tonumber(OPLastSelectedObjectData[12]) ~= 0 then -- if it has a tint set, let's calculate the spell visual kit for it
 		local tintType = OPLastSelectedObjectData[12]
 		local r = OPLastSelectedObjectData[13]
@@ -378,7 +354,7 @@ function OPObjectPreviewerActor_OnModelLoaded(self)
 		local a = OPLastSelectedObjectData[16]
 		local s = OPLastSelectedObjectData[21]
 		self:SetSpellVisualKit(getSpellVisualKitByValues(tintType,r,g,b,a,s))
-		if tonumber(a) == 100 then 
+		if tonumber(a) == 100 then
 			self:SetAlpha(1)
 		else
 			local frameA = (100-a)/100
@@ -586,11 +562,11 @@ function OPMainFrame_OnShow(self)
 			local cmajor, cminor, crev = strsplit(".", addonVersion,3)
 			local lmajor, lminor, lrev = strsplit(".", OPMasterTable.Options["LastVersion"],3)
 			local showChangelog = false
-			if cmajor > lmajor then showChangelog = true 
+			if cmajor > lmajor then showChangelog = true
 			elseif cminor > lminor then showChangelog = true
 			elseif crev > lrev then showChangelog = true end
 			--]]
-			
+
 			if OPMasterTable.Options["LastVersion"] ~= addonVersion then
 				OPNewOptionsFrame:Show()
 				PanelTemplates_SetTab(OPNewOptionsFrame, 2);
@@ -599,7 +575,7 @@ function OPMainFrame_OnShow(self)
 				OPNewOptionsFrame.MainArea.NewOptions:Hide();
 				dprint("Addon version "..addonVersion.." detected as being ~= last version seen ("..OPMasterTable.Options["LastVersion"]..")")
 			end
-			
+
 			OPMasterTable.Options["LastVersion"] = addonVersion
 		else
 			OPNewOptionsFrame:Show()
@@ -619,7 +595,7 @@ end
 
 --
 function updateGroupSelected(status)
-	if status then 
+	if status then
 		isGroupSelected = status
 	else
 		isGroupSelected = false
@@ -876,7 +852,7 @@ function OPOverlayObject()
 		local t = OPOverlaySliderT:GetValue()
 		local s = 100-OPOverlaySliderS:GetValue()
 		if isGroupSelected then cmdPref = "go group" else cmdPref = "go" end
-		if OPMasterTable.Options["useOverlayMethod"] == true then 
+		if OPMasterTable.Options["useOverlayMethod"] == true then
 			cmd(cmdPref.." overlay "..r.." "..g.." "..b.." "..s.." "..t)
 		else
 			if s == 0 then
@@ -941,7 +917,7 @@ function OPRotateObject(sendToServer)
 	--if RotateClarifier == false then
 		RotateClarifier = true
 	--end
-	if isGroupSelected then 
+	if isGroupSelected then
 		if rateLimited == true and not sendToServer then return; end
 		local RotationZ1 = OPRotationSliderZ:GetValue()
 		local RotationZ2 = tonumber(OPLastSelectedGroupRotZ) or tonumber(OPLastSelectedObjectData[11])
@@ -967,7 +943,7 @@ function OPRotateObject(sendToServer)
 		else
 			C_Epsilon.RotateObject(localGUIDLow, localGUIDHigh ,RotationX, RotationY, RotationZ)
 			dprint("C_Epsilon.RotateObject("..localGUIDLow..","..localGUIDHigh..","..RotationX..","..RotationY..","..RotationZ..")")
-		end	
+		end
 	end
 end
 
@@ -1018,7 +994,7 @@ StaticPopupDialogs["OP_TINTS_SPELL"] = {
 	OnShow = function(self)
 		if OPObjectSpell and OPObjectSpell ~= "" and OPObjectSpell ~= nil then
 			self.editBox:SetText(OPObjectSpell)
-		else 
+		else
 			self.editBox:SetText("")
 		end
 		if self.editBox:GetText() ~= "" then
@@ -1138,6 +1114,80 @@ StaticPopupDialogs["OP_OBJ_ANIMATION"] = {
 
 
 --- Word Generator
+local wordGenCharMap = {
+	[48] = "10001083",     --0
+	[49] = "10001086",     --1
+	[50] = "10001081",     --2
+	[51] = "10001082",     --3
+	[52] = "10001089",     --4
+	[53] = "10001085",     --5
+	[54] = "10001079",     --6
+	[55] = "10001087",     --7
+	[56] = "10001088",     --8
+	[57] = "10001084",     --9
+
+	[33] = "10001067", -- !
+	[47] = "10001068", -- /
+	[38] = "10001069", -- &
+	[45] = "10001071", -- -
+	[43] = "10001075", -- +
+	[58] = "10001076", -- :
+	[63] = "10001077", -- ?
+	[59] = "10001078", -- ;
+	[124] = "10001073", -- | -> sword replacement
+	[60] = "10001538", -- <
+	[62] = "10001537", -- >
+}
+
+local startingLetterID = 10001510
+
+local function getCharIndexOffet(char, index)
+	local letterID = string.byte(char, index)
+	if letterID >= 65 and letterID <= 90 then -- Letter
+		letterID = letterID - 65 -- offset to A == 0
+		letterID = startingLetterID + letterID
+	elseif wordGenCharMap[letterID] then -- if supported symbol, or number
+		letterID = wordGenCharMap[letterID]
+	else -- unsupported or space
+		--dprint("Character not Supported, or Space, Skipped with Blank Space")
+		letterID = 0
+	end
+	return letterID
+end
+
+local wordGenCharOffsets = {
+	[getCharIndexOffet("B")] = { x = 0, y = -0.0275 },
+	[getCharIndexOffet("E")] = { x = 0, y = 0.01 },
+	[getCharIndexOffet("F")] = { x = 0, y = 0.0175 },
+	[getCharIndexOffet("H")] = { x = 0, y = 0.01 },
+	[getCharIndexOffet("I")] = { x = 0, y = 0.0175 },
+	[getCharIndexOffet("J")] = { x = 0, y = -0.0175 },
+	[getCharIndexOffet("K")] = { x = 0, y = 0.035 },
+	[getCharIndexOffet("L")] = { x = 0, y = 0.0175 },
+	[getCharIndexOffet("N")] = { x = 0, y = -0.035 },
+	[getCharIndexOffet("O")] = { x = 0, y = -0.035 },
+	[getCharIndexOffet("Q")] = { x = 0, y = 0.0025 },
+	[getCharIndexOffet("R")] = { x = 0, y = 0.0175 },
+	[getCharIndexOffet("S")] = { x = 0, y = -0.0125 },
+	[getCharIndexOffet("T")] = { x = 0, y = 0.01 },
+	[getCharIndexOffet("U")] = { x = 0, y = 0.0125 },
+	[getCharIndexOffet("V")] = { x = 0, y = -0.02 },
+	[getCharIndexOffet("W")] = { x = 0, y = 0.03 },
+	[getCharIndexOffet("X")] = { x = 0, y = 0.02 },
+	[getCharIndexOffet("Z")] = { x = 0, y = -0.03 },
+}
+
+local function spawnCharWithOffset(letterID, offsetX)
+	print("new spawning function")
+	if wordGenCharOffsets[letterID] then
+		local charData = wordGenCharOffsets[letterID]
+		cmd("go spawn "..letterID.." move left "..offsetX.." move up "..charData.y)
+		dprint("object required y-offset by "..charData.y)
+	else
+		cmd("go spawn "..letterID.." move left "..offsetX)
+	end
+end
+
 local objectSpawningData = {}
 local objectsWaitingToSpawn = false
 local function resumeProcessingObjectSpawning()
@@ -1151,7 +1201,7 @@ local function resumeProcessingObjectSpawning()
 		else
 			for k in pairs(objectSpawningData) do
 				local letterID, offset = objectSpawningData[k][1], objectSpawningData[k][2]
-				cmd("go spawn "..letterID.." move left "..offset)
+				spawnCharWithOffset(letterID, offset)
 				cmd("go group add "..groupLeaderID)
 				dprint("Spawned object ("..letterID..") left ("..offset..") to GUID ("..groupLeaderID..")'s group.")
 			end
@@ -1168,23 +1218,16 @@ StaticPopupDialogs["OP_TOOLS_WORDGEN"] = {
 	OnAccept = function( self )
 		local word = string.upper(self.editBox:GetText())
 		word = word:gsub("%|%|","|")
-		local startingLetterID = 10001510
 		local letterWidth = 0.75
 		local isFirstObjectSpawned = false
-		
-			for i = 1,#word do 
-				local letterID = string.byte(word,i)
-				if letterID >= 65 and letterID <= 90 then -- Letter
-					letterID = letterID - 65 -- offset to A == 0
-					letterID = startingLetterID + letterID
-				elseif wordGenCharMap[letterID] then -- if supported symbol, or number
-					letterID = wordGenCharMap[letterID]
-				else -- unsupported or space
-					dprint("Character not Supported, or Space, Skipped with Blank Space")
-					letterID = 0
-				end
+
+			for i = 1,#word do
+				local letterID = getCharIndexOffet(word,i)
 				if not isFirstObjectSpawned then
-					if letterID ~= 0 then cmd("go spawn "..letterID.. " move left "..letterWidth*(i-1)); isFirstObjectSpawned = true end
+					if letterID ~= 0 then
+						spawnCharWithOffset(letterID, letterWidth*(i-1));
+						isFirstObjectSpawned = true
+					end
 				elseif letterID ~= 0 then
 					-- add data to objectSpawningData table
 					local realLetterWidth = letterWidth*(i-1)
@@ -1273,7 +1316,7 @@ function OPSaveMenuParamSave(name)
 					return
 				elseif confirmPSaveOverwrite then
 					if name == confirmPSaveOverwriteName then
-						confirmPSaveOverwrite = false 
+						confirmPSaveOverwrite = false
 						OPSaveMenuParamSaveForReal(name,false)
 					else
 						message("The name specified conflicts with an already saved Parameter Pre-set name. Hit save again to confirm that you wish to overwrite the previous save.")
@@ -1372,7 +1415,7 @@ function OP_genStaticDropdownChild( parent, dropdownName, staticList, title, wid
 	if not width then width = 55 end
 	local newDropdown = CreateFrame("Frame", dropdownName, parent, "UIDropDownMenuTemplate")
 	newDropdown:SetPoint("CENTER")
-		
+
 	local function newDropdown_Initialize( dropdownName, level )
 		for index,value in ipairs(_G[parent:GetName()].staticList) do
 		--for index = 1, #dropdownName.staticList do
@@ -1382,7 +1425,7 @@ function OP_genStaticDropdownChild( parent, dropdownName, staticList, title, wid
 			end
 		end
 	end
-	
+
 	UIDropDownMenu_Initialize(newDropdown, newDropdown_Initialize, "nope", nil, staticList)
 	UIDropDownMenu_SetWidth(newDropdown, width);
 	UIDropDownMenu_SetButtonWidth(newDropdown, width+15)
@@ -1393,13 +1436,13 @@ function OP_genStaticDropdownChild( parent, dropdownName, staticList, title, wid
 	_G[dropdownName.."Text"]:SetWidth(width-15)
 	local fontName,fontHeight,fontFlags = _G[dropdownName.."Text"]:GetFont()
 	_G[dropdownName.."Text"]:SetFont(fontName, 6)
-	
+
 	newDropdown:GetParent():SetWidth(newDropdown:GetWidth())
-	newDropdown:GetParent():SetHeight(newDropdown:GetHeight())	
+	newDropdown:GetParent():SetHeight(newDropdown:GetHeight())
 end
 
 function OPCreateLoadDropDownMenus()
-	
+
 	--Param Loading
 	local paramPresetDropSelect = CreateFrame("Frame", "paramPresetDropDownMenu", OPPanel2, "UIDropDownMenuTemplate")
 	paramPresetDropSelect:SetPoint("TOP", OPParamSaveButton, "BOTTOM", 2, -2)
@@ -1418,7 +1461,7 @@ function OPCreateLoadDropDownMenus()
 		GameTooltip_Hide()
 		if paramPresetDropSelect.Timer then paramPresetDropSelect.Timer:Cancel() end
 	end)
-	
+
 	local function ParamPresetOnClick(self)
 		local button = GetMouseButtonClicked()
 		if button == "LeftButton" then
@@ -1466,7 +1509,7 @@ function OPCreateLoadDropDownMenus()
 	paramPresetDropDownMenuText:SetFontObject("GameFontWhiteTiny2")
 	local fontName,fontHeight,fontFlags = paramPresetDropDownMenuText:GetFont()
 	paramPresetDropDownMenuText:SetFont(fontName, 6)
-	
+
 	-- Rot Loading
 	local rotPresetDropSelect = CreateFrame("Frame", "rotPresetDropDownMenu", OPPanel4Rotation, "UIDropDownMenuTemplate")
 	rotPresetDropSelect:SetPoint("LEFT", OPRotSaveButton, "RIGHT", -15, -1)
@@ -1485,7 +1528,7 @@ function OPCreateLoadDropDownMenus()
 		GameTooltip_Hide()
 		if rotPresetDropSelect.Timer then rotPresetDropSelect.Timer:Cancel() end
 	end)
-	
+
 	local function RotPresetOnClick(self)
 		local button = GetMouseButtonClicked()
 		if button == "LeftButton" then
@@ -1504,7 +1547,7 @@ function OPCreateLoadDropDownMenus()
 				end
 				dprint("Tried to load Rot Pre-set: "..self.value)
 				dprint(origx.." | "..origy.." | "..origz)
-				
+
 				OPRotateObject(true);
 				OPIMFUCKINGROTATINGDONTSPAMME = true
 				OPClearRotateChatFilter()
@@ -1555,7 +1598,7 @@ function OPClearRotateChatFilterDontSpamIfStillRotating()
 end
 
 local function checkForFilter(Message)
-	
+
 	local clearmsg = gsub(Message,"|cff%x%x%x%x%x%x","");
 	local clearmsg = clearmsg:gsub("|r","")
 
@@ -1585,7 +1628,7 @@ local function checkForFilter(Message)
 			ScaleClarifier = false
 			dprint("ScaleClarifier Caught Syntax or Failure, Disabled.")
 			return false
-		elseif clearmsg:find("GameObject .* has been set to scale") then 
+		elseif clearmsg:find("GameObject .* has been set to scale") then
 			ScaleClarifier = false
 			dprint("ScaleClarifier Caught SCALE Message")
 			return true
@@ -1598,10 +1641,10 @@ end
 
 local isWaitingForGroupData
 local function OMChatFilter(Self,Event,Message)
-	
+
 	local clearmsg = gsub(Message,"|cff%x%x%x%x%x%x","");
 	local clearmsg = clearmsg:gsub("|r","");
-	
+
 	local caughtInQ = false
 	for k,v in pairs( chatFilterCounter ) do
 		if v.count > 0 then
@@ -1636,12 +1679,12 @@ local function OMChatFilter(Self,Event,Message)
 		end
 	end
 	--]]
-	
+
 	if clearmsg:find("Selected gameobject group") or clearmsg:find("Spawned gameobject group") or clearmsg:find("Spawned blueprint") or clearmsg:find("added %d+ objects to gameobject group") or clearmsg:find("added the gameobject .* to gameobject group") then
 		updateGroupSelected(true)
 		dprint("isGroupSelected true")
 		local groupID = nil
-		
+
 		if clearmsg:find("Selected") or clearmsg:find("Spawned") then
 			isWaitingForGroupData = true
 			dprint("Listening for Group Data")
@@ -1654,9 +1697,9 @@ local function OMChatFilter(Self,Event,Message)
 				cprint("ALERT: Objects added to group with Auto-Rotate enabled, but we couldn't get the group data. Please re-select the group.")
 			end
 		end
-		
+
 	end
-	
+
 	if isWaitingForGroupData then
 		local yaw = nil
 		if clearmsg:find("Yaw/Turn:") then
@@ -1664,7 +1707,7 @@ local function OMChatFilter(Self,Event,Message)
 		elseif clearmsg:find("with orientation:") then
 			yaw = tonumber(clearmsg:match("orientation: (%-?%d*%.%d*)"))
 		end
-		if yaw then 
+		if yaw then
 			if OPRotAutoUpdate:GetChecked() then
 				OPRotationSliderZ:SetValueStep(0.0001)
 				OPRotationSliderZ:SetValue(yaw)
@@ -1676,7 +1719,7 @@ local function OMChatFilter(Self,Event,Message)
 		end
 	end
 	---------- Auto Update Rotation CAPTURES ----------
-	
+
 	if OPRotAutoUpdate:GetChecked()==true and not RotateClarifier then -- Is the AutoUpdate Rot enabled? (Check if RotateClarifier is enabled - if it is, we don't do anything as to not impact the sliders functioning normally)
 		if clearmsg:find("You have rotated group .* [%X%Y%Z]+") then -- Did we get a rotated object message?
 			dontFuckingRotate = true -- Stop the sliders from actually causing a rotation
@@ -1723,7 +1766,7 @@ local function OMChatFilter(Self,Event,Message)
 				dprint("Set Slider Y to "..y)
 			end
 			--]]
-		
+
 		--[[
 		if clearmsg:find("Pitch: %-?%d*%.%d*, Roll: %-?%d*%.%d*, Yaw/Turn: %-?%d*%.%d*") then
 			local pitch = tonumber(clearmsg:match("Pitch: (%-?%d*%.%d*), Roll: %-?%d*%.%d*, Yaw/Turn: %-?%d*%.%d*"))
@@ -1733,7 +1776,7 @@ local function OMChatFilter(Self,Event,Message)
 			local yaw = tonumber(clearmsg:match("Pitch: %-?%d*%.%d*, Roll: %-?%d*%.%d*, Yaw/Turn: (%-?%d*%.%d*)"))
 			if yaw < 0 then yaw = yaw+360 end
 			dprint(clearmsg)
-			
+
 			dontFuckingRotate = true
 			OPRotationSliderX:SetValueStep(0.0001)
 			OPRotationSliderY:SetValueStep(0.0001)
@@ -1742,18 +1785,18 @@ local function OMChatFilter(Self,Event,Message)
 			OPRotationSliderY:SetValue(pitch)
 			OPRotationSliderZ:SetValue(yaw)
 			dontFuckingRotate = false
-			
+
 			dprint("Roll: "..roll.." | Pitch: "..pitch.." | Turn: "..yaw)
 		end
 		--]]
 	end
-	
-	
+
+
 	------------------------------------------------
-	
-	
+
+
 	---- Handling Hiding Messages to avoid Spam ----
-	
+
 	if ObjectClarifier or SpawnClarifier or ScaleClarifier or RotateClarifier then
 		--Check to see if we sent a request and we don't want to see messages
 		if OPShowMessagesToggle:GetChecked() ~= true then
@@ -1764,8 +1807,8 @@ local function OMChatFilter(Self,Event,Message)
 			checkForFilter(Message)
 		end
 	end
-	
-	
+
+
 end
 
 --Apply filter
@@ -1792,7 +1835,7 @@ ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_CONVERSATION_NOTICE", OMChatFilter)
 --[[
 1 DB_guid / 2 entry / 3 name / 4 filedataid / 5 x / 6 y / 7 z / 8 rx / 9 ry / 10 rz / 11 Orientation / 12 HasTint / 13 red / 14 green / 15 blue / 16 alpha / 17 spell / 18 scale / 19 Group Leader ID / 20 objType / 21 saturation / 22 RealGUID_Low / 23 RealGUID_High
 
-77283554 827585 7af_shaman_rockslab_a02.m2 1329986 -433.999 135.15 41.3903 0 0 0 0 0 100 100 100 0 0 1 0 5 
+77283554 827585 7af_shaman_rockslab_a02.m2 1329986 -433.999 135.15 41.3903 0 0 0 0 0 100 100 100 0 0 1 0 5
 ]]
 
 local function Addon_OnEvent(self, event, ...)
@@ -1803,10 +1846,10 @@ local function Addon_OnEvent(self, event, ...)
 			local sender = select(4,...)
 			local self = table.concat({UnitFullName("PLAYER")}, "-")
 			if sender == self or string.gsub(self,"%s+","") then
-				
+
 				updateGroupSelected(false)
 				dprint("isGroupSelected false")
-				
+
 				local guid, entry, name, filedataid, x, y, z, orientation, rx, ry, rz, HasTint, red, green, blue, alpha, spell, scale, groupLeader, objType, saturation, rGUIDLow, rGUIDHigh = strsplit(strchar(31),objdetails)
 				HasTint = tonumber(HasTint)
 				OPLastSelectedObjectData = {strsplit(strchar(31), objdetails)}
@@ -1815,7 +1858,7 @@ local function Addon_OnEvent(self, event, ...)
 					print("GOBINFO:", unpack(OPLastSelectedObjectData))
 				end
 				resumeProcessingObjectSpawning()
-				
+
 				-- Update Object
 				if OPParamAutoUpdateButton:GetChecked() then
 					if prefix == "EPSILON_OBJ_SEL" then
@@ -1824,7 +1867,7 @@ local function Addon_OnEvent(self, event, ...)
 						OPScaleBox:SetText(tonumber(scale))
 					end
 				end
-				
+
 				-- Update Manager Tab
 				local shortname = name:gsub(".*/+","")
 				dprint("Name: "..name)
@@ -1839,7 +1882,7 @@ local function Addon_OnEvent(self, event, ...)
 					dprint("Setting Manager Object Text Font Size: "..fontHeight-1)
 				end
 				--OPPanel4Manager.GroupLeaderIndicator.Entry:SetText(groupLeader)
-				
+
 				-- update extended info
 				OPPanelPopout.ObjName.Text:SetText(shortname)
 				local fontName,fontHeight,fontFlags = OPPanelPopout.ObjName.Text:GetFont()
@@ -1864,8 +1907,8 @@ local function Addon_OnEvent(self, event, ...)
 					OPPanelPopout.ObjDimensions.Text:SetText("No Data for WMOs")
 				end
 				--OPPanelPopout.ObjState.Text:SetText(entry)
-				--OPPanelPopout.ObjAnim.Text:SetText(objType.." - "..ObjectTypes[tonumber(objType)])				
-				
+				--OPPanelPopout.ObjAnim.Text:SetText(objType.." - "..ObjectTypes[tonumber(objType)])
+
 				-- Update Tints & Spell
 				--if OPTintAutoUpdateButton:GetChecked() then
 				if OPOverlayAutoUpdateButton:GetChecked() then
@@ -1886,8 +1929,8 @@ local function Addon_OnEvent(self, event, ...)
 							dprint("Updating Overlay Sliders, saturation: "..saturation)
 						end
 					end
-					
-					
+
+
 					if spell and spell ~= "" and tonumber(spell) > 0 then
 						OPObjectSpell = spell
 						updateSpellButton()
@@ -1896,7 +1939,7 @@ local function Addon_OnEvent(self, event, ...)
 						updateSpellButton()
 					end
 				end
-				
+
 				-- Update Rotations
 				if OPRotAutoUpdate:GetChecked() and not RotateClarifier then
 					rx, ry, rz = tonumber(rx),tonumber(ry),tonumber(rz)
@@ -1946,7 +1989,7 @@ function SlashCmdList.OPDEBUG(msg, editbox) -- 4.
 	else
 		OPMasterTable.Options["debug"] = not OPMasterTable.Options["debug"]
 		dprint(true, "Object Mover Debug Set to: "..tostring(OPMasterTable.Options["debug"]))
-		if OPMasterTable.Options["debug"] and OPMainFrame:GetAlpha() < 1 then 
+		if OPMasterTable.Options["debug"] and OPMainFrame:GetAlpha() < 1 then
 			if OPMainFrame.Timer then OPMainFrame.Timer:Cancel() end
 			UIFrameFadeIn(OPMainFrame,0.3,OPMainFrame:GetAlpha(),1)
 		end
